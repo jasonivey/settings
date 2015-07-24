@@ -11,6 +11,8 @@ Plugin 'wincent/command-t.git'
 Plugin 'rhysd/vim-clang-format.git'
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'davidhalter/jedi-vim.git'
+Plugin 'rbgrouleff/bclose.vim.git'
+Plugin 'a.vim'
 
 set noautochdir
 
