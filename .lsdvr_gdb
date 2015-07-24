@@ -1,0 +1,5 @@
+set sysroot /opt/toolchains/CodeSourcery/mips-linux-gnu/libc/soft-float/el
+set solib-search-path ../lib
+target remote 10.20.31.124:2345
+b main
+c
