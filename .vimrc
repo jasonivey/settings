@@ -85,7 +85,11 @@ autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
 " Adjust clang auto-complete options
 if has("macunix")
-  let g:clang_library_path='/Library/Developer/CommandLineTools/usr/lib/'
+  if !empty(glob('/usr/lib/libclang.dylib'))
+    let g:clang_library_path='/usr/lib/'
+  else
+    let g:clang_library_path='/Library/Developer/CommandLineTools/usr/lib/'
+  endif
 else
   let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang.so'
 endif
