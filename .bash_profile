@@ -22,3 +22,6 @@ export GOPATH=/usr/local/go
 # MacPorts Installer addition on 2012-05-06_at_04:38:27: adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
+
+echo 'Hostname:         '`hostname`
+python ~/scripts/network_info.py
