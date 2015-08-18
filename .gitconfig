@@ -1,15 +1,16 @@
 [user]
-  name = jason.ivey
-  email = jason.ivey@movenetworks.com
+    name = Jason Ivey 
+    email = jason.ivey@movenetworks.com
 
 [alias]
-  st = status
-  ci = commit
-  br = branch
-  co = checkout
-  d = diff
-  lg = log -p
-	gerrit = !/usr2/bin/gerrit-flow/gerrit.py
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    d = diff
+    lg = log -p
+    last = log -1 HEAD
+    unstage = reset HEAD --
 
 [color]
 	ui = true
