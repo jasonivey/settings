@@ -1,5 +1,6 @@
 # .bash_profile
 
+# environment variables
 export PATH=$PATH:$HOME/settings:$HOME/scripts
 export PS1='\w$(vcprompt -f %b)> '
 
@@ -13,15 +14,13 @@ alias dir='ls -laG'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
-alias edit='vi'
+alias edit='vim'
+alias cpwp='rsync -aP'
+alias mvwp='rsync -aP --remove-source-files'
 
-alias copy='cp'
-alias ren='mv'
-alias md='mkdir'
+echo 'Hostname:         '`hostname`
+python $HOME/scripts/network_info.py
 
 # MacPorts Installer addition on 2012-05-06_at_04:38:27: adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
-
-echo 'Hostname:         '`hostname`
-python ~/scripts/network_info.py

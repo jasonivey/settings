@@ -1,9 +1,9 @@
 # .bash_aliases
 # Alias definitions.
 
-#if [ -f ~/.bash_aliases ]; then
-#    . ~/.bash_aliases
-#fi
+# environment variables
+export PS1='\w$(vcprompt -f %b)> '
+export PATH=$PATH:$HOME/settings:$HOME/scripts
 
 # aliases
 alias df='df -h'
@@ -13,13 +13,8 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias edit='vim'
-alias copy='cp'
-alias ren='mv'
-alias md='mkdir'
-
-# environment variables
-export PS1='\w$(vcprompt -f %b)> '
-export PATH=$PATH:~/settings:~/bin:~/scripts
+alias cpwp='rsync -aP'
+alias mvwp='rsync -aP --remove-source-files'
 
 # display hostname and ip addresses
 IP_ETH0=$(ifconfig eth0 | grep '\<inet\>' | sed -n '1p' | tr -s ' ' | cut -d ' ' -f3 | cut -d ':' -f2)
