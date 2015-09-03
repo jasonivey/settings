@@ -11,12 +11,11 @@ then
     sudo echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 fi
 
-files=".bash_profile
+files=".bash_aliases
 .gdbinit
 .gitconfig
 .tmux.conf
-.vimrc
-.vim"
+.vimrc"
 
 for f in $files
 do
