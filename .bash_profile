@@ -15,8 +15,10 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias edit='vim'
+alias view='vim'
 alias cpwp='rsync -aP'
 alias mvwp='rsync -aP --remove-source-files'
+alias update-path='export PATH=$PATH:`pwd`'
 
 echo 'Hostname:         '`hostname`
 python $HOME/scripts/network_info.py
