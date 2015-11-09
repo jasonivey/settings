@@ -20,7 +20,7 @@ alias cpwp='rsync -aP'
 alias mvwp='rsync -aP --remove-source-files'
 alias update-path='export PATH=$PATH:`pwd`'
 alias waf-clean='rm -rf .waf-* build pyenv .lock-*'
-lias pylint='pylint -r n --rcfile=~/settings/pylintrc'
+alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
 
 echo 'Hostname:         '`hostname`
 python $HOME/scripts/network_info.py
