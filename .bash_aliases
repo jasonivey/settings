@@ -4,6 +4,8 @@
 # environment variables
 export PS1='\w$(vcprompt -f %b)> '
 export PATH=$PATH:$HOME/settings:$HOME/scripts
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
+#export PROMPT_COMMAND='echo -ne "\033]0;`hostname` - ${PWD/#$HOME/~}\007"'
 
 # aliases
 alias df='df -h'

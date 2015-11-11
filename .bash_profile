@@ -3,6 +3,8 @@
 # environment variables
 export PATH=$PATH:$HOME/settings:$HOME/scripts
 export PS1='\w$(vcprompt -f %b)> '
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
+#export PROMPT_COMMAND='echo -ne "\033]0;`hostname` - ${PWD/#$HOME/~}\007"'
 
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/scripts
