@@ -1,13 +1,39 @@
 # .bash_aliases
-# Alias definitions.
 
 # environment variables
-export PS1='\w$(vcprompt -f %b)> '
 export PATH=$PATH:$HOME/settings:$HOME/scripts
-export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
-#export PROMPT_COMMAND='echo -ne "\033]0;`hostname` - ${PWD/#$HOME/~}\007"'
 
-# aliases
+# prompt_command is a callback which is called right before the prompt is printed
+# this sets the tab title to the current working directory in iTerm2
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/\~}\007"'
+
+function set_prompt {
+    local BLACK="\[\033[0;30m\]"
+    local BLACKBOLD="\[\033[1;30m\]"
+    local RED="\[\033[0;31m\]"
+    local REDBOLD="\[\033[1;31m\]"
+    local GREEN="\[\033[0;32m\]"
+    local GREENBOLD="\[\033[1;32m\]"
+    local YELLOW="\[\033[0;33m\]"
+    local YELLOWBOLD="\[\033[1;33m\]"
+    local BLUE="\[\033[0;34m\]"
+    local BLUEBOLD="\[\033[1;34m\]"
+    local PURPLE="\[\033[0;35m\]"
+    local PURPLEBOLD="\[\033[1;35m\]"
+    local CYAN="\[\033[0;36m\]"
+    local CYANBOLD="\[\033[1;36m\]"
+    local WHITE="\[\033[0;37m\]"
+    local WHITEBOLD="\[\033[1;37m\]"
+    local RESETCOLOR="\[\e[00m\]"
+
+    export PS1="$BLUE\w$RED"'$(vcprompt -f %b)'"$BLUE → $RESETCOLOR"
+    #export PS1='\w$(vcprompt -f %b)> '
+}
+
+# setting the PS1 environment variable will set the prompt to a specific color and the working directory
+set_prompt
+
+# User specific aliases and functions
 alias df='df -h'
 alias ls='ls -la --color=auto'
 alias dir='ls -la --color=auto'
@@ -22,6 +48,7 @@ alias update-path='export PATH=$PATH:`pwd`'
 alias waf-clean='rm -rf .waf-* build pyenv .lock-*'
 alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
 
+# aliases to set the color of the tab in iTerm2
 alias tab-blank='echo -n -e "\033]6;1;bg;*;default\a"'
 alias tab-lime='echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;green;brightness;255\a"'
 alias tab-red='echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a"'
@@ -36,5 +63,9 @@ alias tab-green='echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0
 alias tab-teal='echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;128\a"'
 alias tab-navy='echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;128\a"'
 
+# to set the color of the tabs in iTerm2 for this computer customize .bashrc
+#tab-lime
+
+# for each new bash shell print out the hostname and network information
 echo 'Hostname:         '`hostname`
 python $HOME/scripts/network_info.py
