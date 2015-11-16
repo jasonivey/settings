@@ -33,6 +33,12 @@ function set_prompt {
 # setting the PS1 environment variable will set the prompt to a specific color and the working directory
 set_prompt
 
+if [ -f "$HOME/settings/.lscolors" ]; then
+    export LS_COLORS="`cat ~/settings/.lscolors | \
+        grep "\w" | grep -v "^#" | sed "s/#.*//" | \
+        awk '{for(i=1; i<=NF; i++){ if(i==1) printf "%s=", $i; else if(i==NF) printf "%s:", $i; else printf "%s;", $i; }}'`"
+fi
+
 # User specific aliases and functions
 alias df='df -h'
 alias ls='ls -la --color=auto'
