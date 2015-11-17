@@ -12,6 +12,7 @@ then
 fi
 
 files=".bash_aliases
+.dircolors
 .gdbinit
 .gitconfig
 .tmux.conf
