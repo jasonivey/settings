@@ -83,23 +83,33 @@ let g:clang_format#command ='clang-format'
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
-" Adjust clang auto-complete options
+" The location of the libclang depending on linux (specify fullpath) or mac (specify directory)
 if has("macunix")
   if !empty(glob('/usr/lib/libclang.dylib'))
+    " This works on OS X Lion - 10.7
     let g:clang_library_path='/usr/lib/'
-  else
+  elseif !empty(glob('/Library/Developer/CommandLineTools/usr/lib/libclang.dylib'))
+    " This works on OS X Yosemite - 10.10
     let g:clang_library_path='/Library/Developer/CommandLineTools/usr/lib/'
+  else
+    " This works on OS X El Capitan - 10.11
+    let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
   endif
 else
+  " The standard linux x64 location
   let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang.so'
 endif
+
+" echo g:clang_library_path
+
+" Adjust clang auto-complete options
 let g:clang_user_options='|| exit 0'
 let g:clang_complete_copen=1
 let g:clang_complete_patterns=0
 let g:clang_complete_macros=1
 let g:clang_use_library=1
 let g:clang_sort_algo='alpha'
-let g:clang_debug=1
+let g:clang_debug=0
 
 " Adjust NERDTree to always show hidden files
 let g:NERDChristmasTree       = 1
@@ -128,7 +138,3 @@ set wildignore+=*.o,*.d,*.git
 
 " SuperTab options
 let g:SuperTabDefaultCompletionType='<c-n>'
-
-" Pathogen bundle installer
-"call pathogen#infect()
-"call pathogen#helptags()
