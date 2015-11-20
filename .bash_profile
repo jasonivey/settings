@@ -33,9 +33,19 @@ function set_prompt {
 # setting the PS1 environment variable will set the prompt to a specific color and the working directory
 set_prompt
 
+# utility function to generate cscope output
+function set_cscope {
+    local CWD=`pwd`
+    pushd $CWD > /dev/null
+    cd /
+    eval `find $CWD -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > $CWD/cscope.files`
+    popd > /dev/null
+    eval `cscope -b`
+}
+
 # for use with the GO language installation
 export GOROOT=/usr/local/go
-export GOPATH=$HOME/scripts
+export GOPATH=$HOME/scripts/go
 
 # User specific aliases and functions
 alias df='df -h'
@@ -52,6 +62,7 @@ alias mvwp='rsync -aP --remove-source-files'
 alias update-path='export PATH=$PATH:`pwd`'
 alias waf-clean='rm -rf .waf-* build pyenv .lock-*'
 alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
+alias set-cscope='set_cscope'
 
 # aliases to set the color of the tab in iTerm2
 alias tab-blank='echo -n -e "\033]6;1;bg;*;default\a"'

@@ -12,6 +12,7 @@ Plugin 'rhysd/vim-clang-format.git'
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'davidhalter/jedi-vim.git'
 Plugin 'rbgrouleff/bclose.vim.git'
+Plugin 'autoload_cscope.vim'
 Plugin 'a.vim'
 
 set noautochdir

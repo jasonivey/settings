@@ -35,6 +35,20 @@ set_prompt
 
 test -r $HOME/.dircolors && eval "$(dircolors $HOME/.dircolors)"
 
+# utility function to generate cscope output
+function set_cscope {
+    local CWD=`pwd`
+    pushd $CWD > /dev/null
+    cd /
+    eval `find $CWD -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > $CWD/cscope.files`
+    popd > /dev/null
+    eval `cscope -b`
+}
+
+# for use with the GO language installation
+export GOROOT=/usr/lib/go
+export GOPATH=$HOME/scripts/go
+
 # User specific aliases and functions
 alias df='df -h'
 alias ls='ls -la --color=auto'
@@ -49,6 +63,7 @@ alias mvwp='rsync -aP --remove-source-files'
 alias update-path='export PATH=$PATH:`pwd`'
 alias waf-clean='rm -rf .waf-* build pyenv .lock-*'
 alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
+alias set-cscope='set_cscope'
 
 # aliases to set the color of the tab in iTerm2
 alias tab-blank='echo -n -e "\033]6;1;bg;*;default\a"'
