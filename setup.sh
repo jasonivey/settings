@@ -23,13 +23,34 @@ do
     ln -fsn $DIR/$f ~/$f
 done
 
+sudo apt-get install python-software-properties
+
+if [ "$(lsb_release -sc)" == "precise" ]; then
+    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+fi
+
+echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.5 main"     | sudo tee    /etc/apt/sources.list.d/llvm.list
+echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.5 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
+echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.7 main"     | sudo tee -a /etc/apt/sources.list.d/llvm.list
+echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.7 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
+echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)" main"         | sudo tee -a /etc/apt/sources.list.d/llvm.list
+echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)" main"     | sudo tee -a /etc/apt/sources.list.d/llvm.list
+
+wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key |sudo apt-key add -
+
+sudo apt-get update
+
 sudo apt-get install openssh-server \
+    cscope \
+    silversearcher-ag \
     git \
     git-core \
     mercurial \
     build-essential \
     clang-3.5 \
     clang-format-3.5 \
+    clang-3.7 \
+    clang-format-3.7 \
     pkg-config \
     libcppunit-dev \
     yasm \

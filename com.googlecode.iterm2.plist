@@ -123,7 +123,7 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>489 542 924 485 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>163 222 1270 926 0 0 2560 1417 </string>
+	<string>0 67 2558 1350 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>645 268 1270 926 0 0 2560 1417 </string>
 	<key>NeverWarnAboutShortLivedSessions_528541F6-28D0-472C-9AB6-A9777ECE40F2</key>
@@ -1583,10 +1583,12 @@
 			<string>/Users/jasonivey</string>
 		</dict>
 	</array>
+	<key>NoSyncNeverRemindPrefsChangesCopy</key>
+	<true/>
 	<key>NoSyncTimeOfLastPromo</key>
 	<real>468977630.80932403</real>
 	<key>NoSyncTimeOfLastPromoDownload</key>
-	<real>468977630.81143701</real>
+	<real>469659344.57697201</real>
 	<key>OnlyWhenMoreTabs</key>
 	<false/>
 	<key>OpenArrangementAtStartup</key>
@@ -1649,7 +1651,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-11-11T23:33:45Z</date>
+	<date>2015-11-19T20:55:36Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -1686,6 +1688,10 @@
 	<integer>0</integer>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
+	<key>findIgnoreCase_iTerm</key>
+	<true/>
+	<key>findRegex_iTerm</key>
+	<false/>
 	<key>iTerm Version</key>
 	<string>2.1.4</string>
 </dict>
