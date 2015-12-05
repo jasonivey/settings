@@ -125,6 +125,12 @@ nnoremap <Leader>n  :NERDTreeToggle<CR>
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
+" Adjust the NERDCommenter settings
+let g:NERDRemoveExtraSpaces=0  " if value=1 '// int a = 0;' will uncomment to 'int a = 0;'
+let g:NERDDefaultNesting=0     " disable the ability to comment block and then comment again nesting them
+map <Leader>c <plug>NERDCommenterAlignLeft
+map <Leader>u <plug>NERDCommenterUncomment
+
 filetype plugin on
 
 " Set up the auto tab and indent settings for the following types
