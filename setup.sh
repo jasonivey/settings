@@ -41,6 +41,8 @@ wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key |sudo apt-key add -
 sudo apt-get update
 
 sudo apt-get install openssh-server \
+    cscope \
+    silversearcher-ag \
     git \
     git-core \
     mercurial \
