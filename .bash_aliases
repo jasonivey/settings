@@ -5,7 +5,11 @@ export PATH=$PATH:$HOME/settings:$HOME/scripts
 
 # prompt_command is a callback which is called right before the prompt is printed
 # this sets the tab title to the current working directory in iTerm2
-export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/\~}\007"'
+if [ "$(lsb_release -sc)" == "precise" ]; then
+    export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
+else
+    export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/\~}\007"'
+fi
 
 function set_prompt {
     local BLACK="\[\033[0;30m\]"
