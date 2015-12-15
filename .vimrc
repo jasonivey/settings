@@ -98,11 +98,14 @@ if has("macunix")
     let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
   endif
 else
-  " The standard linux x64 location
-  let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang.so'
+  if !empty(glob('/usr/lib/x86_64-linux-gnu/libclang.so.1'))
+    " Post clang-3.5 libclang.so is now libclang.so.1
+    let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang.so.1'
+  else
+    " The standard linux x64 location
+    let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang.so'
+  endif
 endif
-
-" echo g:clang_library_path
 
 " Adjust clang auto-complete options
 let g:clang_user_options='|| exit 0'

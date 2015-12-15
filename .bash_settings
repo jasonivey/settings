@@ -83,7 +83,7 @@ alias set-cscope='set_cscope'
 if [ "$(uname)" == "Darwin" ]; then
     alias ls='ls -laG'
     alias dir='ls -laG'
-elif [ "$(uname -s) 1 5)" == "Linux" ]; then
+elif [ "$(uname -s)" == "Linux" ]; then
     alias ls='ls -la --color=auto'
     alias dir='ls -la --color=auto'
 fi
