@@ -89,11 +89,11 @@ alias set-cscope='set_cscope'
 if [ "$(uname)" == "Darwin" ]; then
     alias ls='ls -laG'
     alias dir='ls -laG'
-    alias rm='rm -i'
+    alias rm='trash'
 elif [ "$(uname -s)" == "Linux" ]; then
     alias ls='ls -la --color=auto'
     alias dir='ls -la --color=auto'
-    alias rm='trash'
+    alias rm='rm -i'
 fi
 
 # functions to set the color of the tab in iTerm2
