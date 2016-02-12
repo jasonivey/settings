@@ -13,10 +13,11 @@
     unstage = reset HEAD --
 
 [color]
-	ui = true
+    ui = true
 [core]
-	whitespace = cr-at-eol
+    whitespace = cr-at-eol
 [diff]
     tool = bc3
 [difftool "bc3"]
     cmd = "/usr/bin/bcompare" "-solo" "$LOCAL" "$REMOTE"
+

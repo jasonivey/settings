@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# history settings
+export HISTTIMEFORMAT='%F %T '
+export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+export HISTSIZE=4096                     # custom history size
+export HISTFILESIZE=100000               # custom history file size
+shopt -s histappend                      # append to history, don't overwrite it
+
 # environment variables
 export PATH=$PATH:$HOME/settings:$HOME/scripts
 
