@@ -85,6 +85,10 @@ alias update-path='export PATH=$PATH:`pwd`'
 alias waf-clean='rm -rf .waf-* build pyenv .lock-* *.deb `find pysrc -name *.pyc`'
 alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
 alias set-cscope='set_cscope'
+alias update='sudo apt-get update'
+alias upgrade='sudo apt-get dist-upgrade'
+alias ..='cd ..'
+alias ...='cd ../../../'
 
 if [ "$(uname)" == "Darwin" ]; then
     alias ls='ls -laG'
