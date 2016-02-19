@@ -13,7 +13,6 @@ Plugin 'tpope/vim-fugitive.git'
 Plugin 'davidhalter/jedi-vim.git'
 Plugin 'rbgrouleff/bclose.vim.git'
 Plugin 'rking/ag.vim'
-Plugin 'autoload_cscope.vim'
 Plugin 'a.vim'
 
 set noautochdir
