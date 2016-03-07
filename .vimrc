@@ -107,13 +107,9 @@ else
 endif
 
 " Adjust clang auto-complete options
-let g:clang_user_options='|| exit 0'
-let g:clang_complete_copen=1
-let g:clang_complete_patterns=0
-let g:clang_complete_macros=1
+let g:clang_close_preview=1
+let g:clang_user_options='-std=c++11'
 let g:clang_use_library=1
-let g:clang_sort_algo='alpha'
-let g:clang_debug=0
 
 " Adjust NERDTree to always show hidden files
 let g:NERDChristmasTree       = 1
@@ -143,7 +139,10 @@ autocmd Filetype c,cpp,cs,java,objc set cindent tabstop=4 softtabstop=4 shiftwid
 
 "let g:CommandTMaxFiles=1000000
 let g:CommandTMaxFiles=200000
-let g:CommandTTraverseSCM='pwd'
+let g:CommandTTraverseSCM='file'
+let g:CommandTMatchWindowReverse=0
+let g:CommandTMaxHeight=50
+"let g:CommandTAlwaysShowDotFiles=1
 set wildignore+=*.o,*.d,*.git
 
 " SuperTab options
