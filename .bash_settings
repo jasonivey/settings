@@ -131,6 +131,10 @@ fi
 
 set_prompt
 
+# Auto correct command line usage
+# - https://github.com/nvbn/thefuck
+eval "$(thefuck --alias)"
+
 # for each new bash shell print out the hostname and network information
 echo 'Hostname:         '`hostname`
 python $HOME/scripts/network_info.py
