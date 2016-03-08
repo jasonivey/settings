@@ -73,6 +73,7 @@ function set_cscope {
 }
 
 # User specific aliases and functions
+alias x='exit'
 alias df='df -h'
 alias cp='cp -i'
 alias mv='mv -i'
