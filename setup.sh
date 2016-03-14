@@ -40,55 +40,59 @@ wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key |sudo apt-key add -
 
 sudo apt-get update
 
-sudo apt-get install openssh-server \
-    cscope \
-    silversearcher-ag \
-    git \
-    git-core \
-    mercurial \
+sudo apt-get install \
     build-essential \
-    clang-3.5 \
-    clang-format-3.5 \
     clang-3.7 \
     clang-format-3.7 \
-    pkg-config \
-    libcppunit-dev \
-    yasm \
+    cmake \
+    cscope \
+    curl \
+    dos2unix \
+    git \
+    git-core \
+    libatk1.0-dev \
+    libbonoboui2-dev \
     libboost-all-dev \
     libbz2-dev \
-    cmake \
-    curl \
-    perl \
-    libperl-dev \
-    lua5.2 \
-    liblua5.2-0 \
-    liblua5.2-0-dbg \
-    liblua5.2-dev \
-    libssl-dev \
-    libncurses5-dev \
+    libcairo2-dev \
+    libcppunit-dev \
+    libcurl4-openssl-dev \
+    libffi-dev \
     libgnome2-dev \
     libgnomeui-dev \
     libgtk2.0-dev \
-    libatk1.0-dev \
-    libbonoboui2-dev \
-    libcairo2-dev \
-    libx11-dev \
-    libxpm-dev \
-    libxt-dev \
-    python-dev \
-    ruby-dev \
-    zlib1g-dev \
+    liblua5.2-0 \
+    liblua5.2-0-dbg \
+    liblua5.2-dev \
+    libncurses5-dev \
+    libperl-dev \
     libreadline6 \
     libreadline6-dev \
-    libyaml-dev \
     libsqlite3-dev \
-    sqlite3 \
+    libssl-dev \
+    libx11-dev \
     libxml2-dev \
+    libxpm-dev \
     libxslt1-dev \
-    libcurl4-openssl-dev \
+    libxt-dev \
+    libyaml-dev \
+    lua5.2 \
+    mercurial \
+    openssh-server \
+    perl \
+    pkg-config \
+    python-dev \
     python-software-properties \
-    libffi-dev \
-    dos2unix
+    ruby \
+    ruby-dev \
+    silversearcher-ag \
+    sqlite3 \
+    unzip \
+    yasm \
+    zip \
+    zlib1g \
+    zlib1g-dev \
+    zlibc \
 
 mkdir -p ~/.vim/bundle
 cd ~/.vim/bundle
