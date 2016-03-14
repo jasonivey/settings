@@ -8,21 +8,17 @@ export HISTFILESIZE=100000               # custom history file size
 shopt -s histappend                      # append to history, don't overwrite it
 
 # environment variables
-export PATH=$PATH:$HOME/settings:$HOME/scripts
+export PATH=$PATH:$HOME/settings:$HOME/scripts:/usr/local/go/bin
+
+# for use with the GO language installation
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/scripts/go
 
 if [ "$(uname)" == "Darwin" ]; then
-
-    # for use with the GO language installation
-    export GOROOT=/usr/local/go
-    export GOPATH=$HOME/scripts/go
 
     export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
 
 elif [ "$(uname -s)" == "Linux" ]; then
-
-    # for use with the GO language installation
-    export GOROOT=/usr/lib/go
-    export GOPATH=$HOME/scripts/go
 
     # prompt_command is a callback which is called right before the prompt is printed
     # this sets the tab title to the current working directory in iTerm2
@@ -72,6 +68,10 @@ function set_cscope {
     eval `cscope -b`
 }
 
+function move_into_dev {
+    cd $HOME/dev/$@
+}
+
 # User specific aliases and functions
 alias x='exit'
 alias df='df -h'
@@ -86,10 +86,11 @@ alias mvwp='rsync -aP --remove-source-files'
 alias update-path='export PATH=$PATH:`pwd`'
 alias waf-clean='rm -rf .waf-* build pyenv .lock-* *.deb `find pysrc -name *.pyc`'
 alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
-alias set-cscope='set_cscope'
+alias set-cscope=set_cscope
 alias setup-intel='source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux'
 alias update='sudo apt-get update'
 alias upgrade='sudo apt-get dist-upgrade'
+alias dev=move_into_dev
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
