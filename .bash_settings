@@ -72,6 +72,13 @@ function move_into_dev {
     cd $HOME/dev/$@
 }
 
+function set_tab_color {
+    #if [ -e "$HOME/settings/.bash_color" -a -n $TERM_PROGRAM ]; then
+    if [ -e "$HOME/settings/.bash_color" ]; then
+        tab-$(head -n 1 $HOME/settings/.bash_color)
+    fi
+}
+
 # User specific aliases and functions
 alias x='exit'
 alias df='df -h'
@@ -91,6 +98,7 @@ alias setup-intel='source /opt/intel/bin/iccvars.sh -arch intel64 -platform linu
 alias update='sudo apt-get update'
 alias upgrade='sudo apt-get dist-upgrade'
 alias dev=move_into_dev
+alias set-tab-color=set_tab_color
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -111,6 +119,10 @@ elif [ "$(uname -s)" == "Linux" ]; then
     alias rm='rm -i'
 fi
 
+if [ -e "$HOME/settings/.ssh_aliases" ]; then
+    source $HOME/settings/.ssh_aliases
+fi
+
 # functions to set the color of the tab in iTerm2
 function tab-blank() { echo -n -e "\033]6;1;bg;*;default\a" ; }
 function tab-lime() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;green;brightness;255\a" ; }
@@ -126,11 +138,7 @@ function tab-green() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;bright
 function tab-teal() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;128\a" ; }
 function tab-navy() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;128\a" ; }
 
-#if [ -e "$HOME/settings/.bash_color" -a -n $TERM_PROGRAM ]; then
-if [ -e "$HOME/settings/.bash_color" ]; then
-    tab-$(head -n 1 $HOME/settings/.bash_color)
-fi
-
+set_tab_color
 set_prompt
 
 # Auto correct command line usage
