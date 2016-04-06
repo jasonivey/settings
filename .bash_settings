@@ -119,6 +119,11 @@ elif [ "$(uname -s)" == "Linux" ]; then
     alias rm='rm -i'
 fi
 
+# only available on Mac -- git completion is installed into bash completion on Linux
+if [ -e "/usr/local/etc/bash_completion.d/git-completion.bash" ]; then
+    source /usr/local/etc/bash_completion.d/git-completion.bash
+fi
+
 if [ -e "$HOME/settings/.ssh_aliases" ]; then
     source $HOME/settings/.ssh_aliases
 fi
