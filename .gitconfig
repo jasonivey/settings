@@ -8,9 +8,11 @@
     br = branch
     co = checkout
     d = diff
-    lg = log -p
+    ld = log -p
     last = log -1 HEAD
     unstage = reset HEAD --
+    save = stash save
+    unsave = stash apply
 
 [color]
     ui = true

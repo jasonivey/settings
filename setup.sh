@@ -11,16 +11,11 @@ then
     sudo echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 fi
 
-files=".bash_aliases
-.dircolors
-.gdbinit
-.gitconfig
-.tmux.conf
-.vimrc"
+files=".bash_aliases .dircolors .gdbinit .gitconfig .tmux.conf .vimrc"
 
 for f in $files
 do
-    ln -fsn $DIR/$f ~/$f
+    ln -fsn $DIR/$f $HOME/$f
 done
 
 sudo apt-get install python-software-properties
@@ -50,6 +45,7 @@ sudo apt-get install \
     dos2unix \
     git \
     git-core \
+    htop \
     libatk1.0-dev \
     libbonoboui2-dev \
     libboost-all-dev \
@@ -94,8 +90,11 @@ sudo apt-get install \
     zlib1g-dev \
     zlibc \
 
-mkdir -p ~/.vim/bundle
-cd ~/.vim/bundle
+mkdir -p $HOME/.config/htop
+ln -fsn $DIR/htoprc $HOME/.config/htop/htoprc
+
+mkdir -p $HOME/.vim/bundle
+cd $HOME/.vim/bundle
 
 if [ ! -d "vundle" ]; then
     git clone https://github.com/gmarik/Vundle.vim.git vundle
