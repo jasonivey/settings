@@ -113,9 +113,9 @@ if [ "$(uname)" == "Darwin" ]; then
     alias ls='ls -laG'
     alias dir='ls -laG'
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        alias rm='trash'
-    else
         alias rm='rm -i'
+    else
+        alias rm='trash'
     fi
 elif [ "$(uname -s)" == "Linux" ]; then
     alias ls='ls -la --color=auto'
