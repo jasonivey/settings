@@ -112,7 +112,11 @@ alias ..........='cd ../../../../../../../../..'
 if [ "$(uname)" == "Darwin" ]; then
     alias ls='ls -laG'
     alias dir='ls -laG'
-    alias rm='trash'
+    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+        alias rm='trash'
+    else
+        alias rm='rm -i'
+    fi
 elif [ "$(uname -s)" == "Linux" ]; then
     alias ls='ls -la --color=auto'
     alias dir='ls -la --color=auto'
