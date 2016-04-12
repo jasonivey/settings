@@ -80,6 +80,7 @@ function set_tab_color {
 }
 
 # User specific aliases and functions
+alias settings='view $HOME/settings/.bash_settings'
 alias x='exit'
 alias df='df -h'
 alias cp='cp -i'
@@ -99,6 +100,7 @@ alias update='sudo apt-get update'
 alias upgrade='sudo apt-get dist-upgrade'
 alias dev=move_into_dev
 alias set-tab-color=set_tab_color
+alias matrix='cmatrix -bs -C red'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
