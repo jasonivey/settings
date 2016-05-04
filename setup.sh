@@ -99,3 +99,6 @@ cd $HOME/.vim/bundle
 if [ ! -d "vundle" ]; then
     git clone https://github.com/gmarik/Vundle.vim.git vundle
 fi
+
+source $HOME/settings/setup_vim.sh
+
