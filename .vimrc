@@ -1,3 +1,4 @@
+" vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/vundle/
@@ -14,6 +15,10 @@ Plugin 'davidhalter/jedi-vim.git'
 Plugin 'rbgrouleff/bclose.vim.git'
 Plugin 'rking/ag.vim'
 Plugin 'a.vim'
+
+" Enable code file customization with modelines
+set modeline
+set modelines=5
 
 set noautochdir
 

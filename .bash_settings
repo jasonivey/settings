@@ -1,4 +1,5 @@
 #!/bin/bash
+# vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
 # history settings
 export HISTTIMEFORMAT='%F %T '
@@ -80,15 +81,15 @@ function set_tab_color {
 }
 
 # User specific aliases and functions
-alias settings='view $HOME/settings/.bash_settings'
+alias settings='vim $HOME/settings/.bash_settings'
+alias setting='cd $HOME/settings'
 alias x='exit'
 alias df='df -h'
 alias cp='cp -i'
 alias mv='mv -i'
-alias edit='vim -O3'
-alias view='vim -O3'
-alias vi='vim -O3'
-alias vim='vim -O3'
+alias ide='vim -O3'
+alias edit='vim'
+alias view='vim'
 alias cpwp='rsync -aP'
 alias mvwp='rsync -aP --remove-source-files'
 alias update-path='export PATH=$PATH:`pwd`'

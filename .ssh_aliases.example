@@ -1,3 +1,6 @@
+#!/bin/bash
+# vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
+
 alias ssh-developer='ssh developer.movenetworks.com;set-tab-color'
 alias ssh-debug001='ssh debug001.sv1.movenetworks.com;set-tab-color'
 alias ssh-dev-box='ssh dev-box;set-tab-color'
