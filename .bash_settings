@@ -52,7 +52,6 @@ function set_prompt {
     local RESETCOLOR="\[\e[00m\]"
 
     export PS1="$BLUE\w$RED"'$(vcprompt -f %b)'"$BLUE → $RESETCOLOR"
-    #export PS1='\w$(vcprompt -f %b)> '
 }
 
 if [ "$(uname -s)" == "Linux" ]; then
@@ -74,7 +73,6 @@ function move_into_dev {
 }
 
 function set_tab_color {
-    #if [ -e "$HOME/settings/.bash_color" -a -n $TERM_PROGRAM ]; then
     if [ -e "$HOME/settings/.bash_color" ]; then
         tab-$(head -n 1 $HOME/settings/.bash_color)
     fi
