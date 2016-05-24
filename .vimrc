@@ -4,6 +4,8 @@ filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'gmarik/vundle'
 Plugin 'Rip-Rip/clang_complete.git'
 Plugin 'scrooloose/nerdtree.git'
@@ -124,6 +126,11 @@ let g:NERDTreeMapToggleHidden = 'h'
 let g:NERDTreeMapQuit         = 'q'
 let g:NERDTreeMapToggleZoom   = 'z'
 nnoremap <Leader>n  :NERDTreeToggle<CR>
+
+"Airline settings
+let g:airline#extensions#tabline#enabled=1
+set laststatus=2
+let g:airline_theme='kalisi'
 
 " Close the auto-complete tip window after selection
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
