@@ -7,7 +7,8 @@ call vundle#rc()
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'gmarik/vundle'
-Plugin 'Rip-Rip/clang_complete.git'
+"Plugin 'Rip-Rip/clang_complete.git'
+Plugin 'Valloric/YouCompleteMe.git'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'scrooloose/nerdcommenter.git'
 Plugin 'wincent/command-t.git'
@@ -77,6 +78,9 @@ set noerrorbells
 " Fix the backspace key
 set backspace=2
 
+" Map <ctrl-l> to turn off highlighting the search terms
+noremap <silent> <c-l> :nohls<cr><c-l>
+
 " Enable golang plugin modules
 if exists("g:did_load_filetypes")
   filetype off
@@ -125,7 +129,7 @@ let g:NERDTreeShowHidden      = 1
 let g:NERDTreeMapToggleHidden = 'h'
 let g:NERDTreeMapQuit         = 'q'
 let g:NERDTreeMapToggleZoom   = 'z'
-nnoremap <Leader>n  :NERDTreeToggle<CR>
+nnoremap <Leader>n :NERDTreeToggle<CR>
 
 "Airline settings
 let g:airline#extensions#tabline#enabled=1
@@ -159,3 +163,10 @@ set wildignore+=*.o,*.d,*.git
 
 " SuperTab options
 let g:SuperTabDefaultCompletionType='<c-n>'
+
+" YouCompleteMe settings
+let g:ycm_confirm_extra_conf=0
+nnoremap <leader>gt :YcmCompleter GoTo<CR>
+nnoremap <F12> :YcmCompleter GoToDefinition<CR>
+nnoremap <S-F12> :YcmCompleter GoToDeclaration<CR>
+
