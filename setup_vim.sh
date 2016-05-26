@@ -12,6 +12,7 @@ sudo apt-get -y install \
     cmake \
     cscope \
     curl \
+    exuberant-ctags \
     gettext \
     git \
     git-core \

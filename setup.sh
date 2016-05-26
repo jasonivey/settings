@@ -45,6 +45,7 @@ sudo apt-get install \
     cscope \
     curl \
     dos2unix \
+    exuberant-ctags \
     filters \
     fortune \
     fortunes \
