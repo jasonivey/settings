@@ -78,6 +78,18 @@ function set_tab_color {
     fi
 }
 
+# Check for the existense of a binary on the system
+function does_binary_exist {
+    `command -v $1 >/dev/null 2>&1`
+    local retval=$?
+    echo "retval is $retval"
+    if [[ $retval -eq 0 ]]; then
+        return $true
+    else
+        return $false
+    fi
+}
+
 # User specific aliases and functions
 alias settings='vim $HOME/settings/.bash_settings'
 alias setting='cd $HOME/settings'
@@ -158,3 +170,22 @@ eval "$(thefuck --alias)"
 # for each new bash shell print out the hostname and network information
 echo 'Hostname:         '`hostname`
 python $HOME/scripts/network_info.py
+
+
+# for each new bash shell show off some fortunes in cowsay rainbow
+# fortune | cowsay | lolcat
+if does_binary_exist fortune; then
+    if does_binary_exist cowsay; then
+        if does_binary_exist lolcat; then
+            fortune | cowsay -f elephant.cow | lolcat -a -s 500
+        else
+            fortune | cowsay -f elephant.cow
+        fi
+    else
+        if does_binary_exist lolcat; then
+            fortune | lolcat -a -s 500
+        else
+            fortune
+        fi
+    fi
+fi
