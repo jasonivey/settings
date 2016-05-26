@@ -82,7 +82,7 @@ function set_tab_color {
 function does_binary_exist {
     `command -v $1 >/dev/null 2>&1`
     local retval=$?
-    echo "retval is $retval"
+    #echo "retval is $retval"
     if [[ $retval -eq 0 ]]; then
         return $true
     else
