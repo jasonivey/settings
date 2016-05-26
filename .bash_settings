@@ -177,15 +177,15 @@ python $HOME/scripts/network_info.py
 if does_binary_exist fortune; then
     if does_binary_exist cowsay; then
         if does_binary_exist lolcat; then
-            fortune | cowsay -f elephant.cow | lolcat -a -s 500
+            fortune -a | cowsay -f elephant.cow | lolcat -a -s 500
         else
-            fortune | cowsay -f elephant.cow
+            fortune -a | cowsay -f elephant.cow
         fi
     else
         if does_binary_exist lolcat; then
-            fortune | lolcat -a -s 500
+            fortune -a | lolcat -a -s 500
         else
-            fortune
+            fortune -a
         fi
     fi
 fi

@@ -41,9 +41,14 @@ sudo apt-get install \
     clang-3.7 \
     clang-format-3.7 \
     cmake \
+    cowsay \
     cscope \
     curl \
     dos2unix \
+    filters \
+    fortune \
+    fortunes \
+    fortunes-off \
     git \
     git-core \
     htop \
@@ -73,6 +78,7 @@ sudo apt-get install \
     libxslt1-dev \
     libxt-dev \
     libyaml-dev \
+    lolcat \
     lua5.2 \
     mercurial \
     openssh-server \
@@ -90,6 +96,7 @@ sudo apt-get install \
     zlib1g \
     zlib1g-dev \
     zlibc \
+
 
 mkdir -p $HOME/.config/htop
 ln -fsn $DIR/htoprc $HOME/.config/htop/htoprc
