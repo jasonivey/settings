@@ -177,9 +177,9 @@ python $HOME/scripts/network_info.py
 if does_binary_exist fortune; then
     if does_binary_exist cowsay; then
         if does_binary_exist lolcat; then
-            fortune -a | cowsay -f elephant.cow | lolcat -a -s 500
+            fortune -a | cowsay | lolcat -a -s 500
         else
-            fortune -a | cowsay -f elephant.cow
+            fortune -a | cowsay
         fi
     else
         if does_binary_exist lolcat; then
