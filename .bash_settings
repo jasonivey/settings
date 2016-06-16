@@ -174,18 +174,18 @@ python $HOME/scripts/network_info.py
 
 # for each new bash shell show off some fortunes in cowsay rainbow
 # fortune | cowsay | lolcat
-if does_binary_exist fortune; then
-    if does_binary_exist cowsay; then
-        if does_binary_exist lolcat; then
-            fortune -a | cowsay | lolcat -a -s 500
-        else
-            fortune -a | cowsay
-        fi
-    else
-        if does_binary_exist lolcat; then
-            fortune -a | lolcat -a -s 500
-        else
-            fortune -a
-        fi
-    fi
-fi
+#if does_binary_exist fortune; then
+#    if does_binary_exist cowsay; then
+#        if does_binary_exist lolcat; then
+#            fortune -a | cowsay | lolcat -a -s 500
+#        else
+#            fortune -a | cowsay
+#        fi
+#    else
+#        if does_binary_exist lolcat; then
+#            fortune -a | lolcat -a -s 500
+#        else
+#            fortune -a
+#        fi
+#    fi
+#fi
