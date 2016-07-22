@@ -11,6 +11,7 @@
     ld = log -p
     last = log -1 HEAD
     unstage = reset HEAD --
+    latest = checkout
     save = stash save
     unsave = stash apply
 
