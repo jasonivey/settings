@@ -10,7 +10,7 @@ elif [ "$(uname -s)" == "Linux" ]; then
 fi
 
 echo
-echo "Building/Testing libqmx clang-3.8 debug"
+echo "Building/Testing libqmx clang debug"
 ./waf configure --clang=$COMPILER "$@"
 ./waf build install check "$@"
 

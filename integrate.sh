@@ -16,14 +16,14 @@ elif [ "$(uname -s)" == "Linux" ]; then
 fi
 
 echo
-echo "Building/Testing libqmx clang-3.8 debug"
+echo "Building/Testing libqmx clang debug"
 ./waf configure --clang=$COMPILER "$@"
 ./waf clean build install check "$@"
 
 clean-build
 
 echo
-echo "Building/Testing libqmx clang-3.8 release"
+echo "Building/Testing libqmx clang release"
 ./waf configure --clang=$COMPILER --release-build "$@"
 ./waf clean build install check "$@"
 
@@ -36,14 +36,14 @@ elif [ "$(uname -s)" == "Linux" ]; then
 fi
 
 echo
-echo "Building/Testing libqmx gcc-4.8 debug"
+echo "Building/Testing libqmx gcc debug"
 ./waf configure --gcc=$COMPILER "$@"
 ./waf clean build install check "$@"
 
 clean-build
 
 echo
-echo "Building/Testing libqmx gcc-4.8 release"
+echo "Building/Testing libqmx gcc release"
 ./waf configure --gcc=$COMPILER --release-build "$@"
 ./waf clean build install check "$@"
 
