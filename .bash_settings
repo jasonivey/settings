@@ -171,8 +171,9 @@ eval "$(thefuck --alias)"
 
 # for each new bash shell print out the hostname and network information
 echo 'Hostname:         '`hostname`
-python $HOME/scripts/network_info.py
-
+if [ -e "$HOME/scripts/network_info.py" ]; then
+    python $HOME/scripts/network_info.py
+fi
 
 # for each new bash shell show off some fortunes in cowsay rainbow
 # fortune | cowsay | lolcat
