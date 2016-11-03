@@ -23,9 +23,13 @@ sudo apt-get -y install \
     lua5.2 \
     perl \
     python-dev \
+    python3-dev \
     python-software-properties \
     ruby \
     ruby-dev \
+    tk8.5 \
+    tcl8.5 \
+    tcl8.5-dev \
     yasm
 
 mkdir -p /tmp/dev-tools/
@@ -36,7 +40,16 @@ if [ -n "$1" ]; then
     git co $1
 fi
 
-./configure --with-features=huge --enable-perlinterp --enable-pythoninterp --enable-tclinterp --enable-rubyinterp --enable-cscope
+./configure --with-features=huge \
+    --with-compiledby="Jason Ivey" \
+    --enable-luainterp \
+    --enable-perlinterp \
+    --enable-pythoninterp \
+    --enable-python3interp \
+    --with-tclsh=tclsh8.5 \
+    --enable-tclinterp \
+    --enable-rubyinterp \
+    --enable-cscope
 
 make
 

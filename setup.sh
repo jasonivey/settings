@@ -25,11 +25,11 @@ if [ "$(lsb_release -sc)" == "precise" ]; then
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 fi
 
-echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.5 main"     | sudo tee    /etc/apt/sources.list.d/llvm.list
-echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.5 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
-echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.7 main"     | sudo tee -a /etc/apt/sources.list.d/llvm.list
-echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.7 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
-echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)" main"         | sudo tee -a /etc/apt/sources.list.d/llvm.list
+#echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.5 main"     | sudo tee    /etc/apt/sources.list.d/llvm.list
+#echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.5 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
+#echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.7 main"     | sudo tee -a /etc/apt/sources.list.d/llvm.list
+#echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.7 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
+echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)" main"         | sudo tee    /etc/apt/sources.list.d/llvm.list
 echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)" main"     | sudo tee -a /etc/apt/sources.list.d/llvm.list
 
 wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key |sudo apt-key add -
@@ -52,6 +52,7 @@ sudo apt-get install \
     fortunes-off \
     git \
     git-core \
+    golang-go \
     htop \
     libatk1.0-dev \
     libbonoboui2-dev \
@@ -63,7 +64,10 @@ sudo apt-get install \
     libffi-dev \
     libgnome2-dev \
     libgnomeui-dev \
+    libgtest-dev \
     libgtk2.0-dev \
+    libjsoncpp-dev \
+    libjsoncpp1 \
     liblua5.2-0 \
     liblua5.2-0-dbg \
     liblua5.2-dev \
@@ -73,6 +77,7 @@ sudo apt-get install \
     libreadline6-dev \
     libsqlite3-dev \
     libssl-dev \
+    libssl-doc \
     libx11-dev \
     libxml2-dev \
     libxpm-dev \
@@ -83,9 +88,11 @@ sudo apt-get install \
     lua5.2 \
     mercurial \
     openssh-server \
+    openssl \
     perl \
     pkg-config \
     python-dev \
+    python3-dev \
     python-software-properties \
     ruby \
     ruby-dev \
