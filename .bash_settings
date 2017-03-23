@@ -127,11 +127,12 @@ alias ..........='cd ../../../../../../../../..'
 if [ "$(uname)" == "Darwin" ]; then
     alias ls='ls -laG'
     alias dir='ls -laG'
-    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        alias rm='rm -i'
-    else
-        alias rm='trash'
-    fi
+    #if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    #    alias rm='rm -i'
+    #else
+    #    alias rm='trash'
+    #    alias del='rm -i'
+    #fi
 elif [ "$(uname -s)" == "Linux" ]; then
     alias ls='ls -la --color=auto'
     alias dir='ls -la --color=auto'
