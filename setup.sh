@@ -25,18 +25,18 @@ if [ "$(lsb_release -sc)" == "precise" ]; then
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 fi
 
-#echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.5 main"     | sudo tee    /etc/apt/sources.list.d/llvm.list
-#echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.5 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
-#echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.7 main"     | sudo tee -a /etc/apt/sources.list.d/llvm.list
-#echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-3.7 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
-echo "deb http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)" main"         | sudo tee    /etc/apt/sources.list.d/llvm.list
-echo "deb-src http://llvm.org/apt/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)" main"     | sudo tee -a /etc/apt/sources.list.d/llvm.list
+wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add -
 
-wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key |sudo apt-key add -
+# GCC Adding GCC-6
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+
+# Repo for clang-4.0
+sudo apt-add-repository "deb http://apt.llvm.org/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-4.0 main"
 
 sudo apt-get update
 
 sudo apt-get install \
+    bash-completion \
     build-essential \
     clang-3.7 \
     clang-format-3.7 \
@@ -50,6 +50,8 @@ sudo apt-get install \
     fortune \
     fortunes \
     fortunes-off \
+    gcc-6 \
+    g++-6 \
     git \
     git-core \
     golang-go \
@@ -93,6 +95,7 @@ sudo apt-get install \
     pkg-config \
     python-dev \
     python3-dev \
+    python-pip \
     python-software-properties \
     ruby \
     ruby-dev \
@@ -105,6 +108,8 @@ sudo apt-get install \
     zlib1g-dev \
     zlibc \
 
+sudo pip install --upgrade pip
+sudo pip install thefuck
 
 mkdir -p $HOME/.config/htop
 ln -fsn $DIR/htoprc $HOME/.config/htop/htoprc
