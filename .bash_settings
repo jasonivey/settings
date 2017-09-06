@@ -19,6 +19,13 @@ if [ "$(uname)" == "Darwin" ]; then
 
     export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
 
+    # add bash_completion when in Mac using the $(brew --prefix) path
+    if [ -e /usr/local/bin/brew ]; then
+        if [ -f $(brew --prefix)/etc/bash_completion ]; then
+            . $(brew --prefix)/etc/bash_completion
+        fi
+    fi
+
 elif [ "$(uname -s)" == "Linux" ]; then
 
     # prompt_command is a callback which is called right before the prompt is printed
@@ -173,20 +180,3 @@ else
     echo "TODO: add the scripts repositoy to $HOME/scripts"
 fi
 
-# for each new bash shell show off some fortunes in cowsay rainbow
-# fortune | cowsay | lolcat
-#if does_binary_exist fortune; then
-#    if does_binary_exist cowsay; then
-#        if does_binary_exist lolcat; then
-#            fortune -a | cowsay | lolcat -a -s 500
-#        else
-#            fortune -a | cowsay
-#        fi
-#    else
-#        if does_binary_exist lolcat; then
-#            fortune -a | lolcat -a -s 500
-#        else
-#            fortune -a
-#        fi
-#    fi
-#fi
