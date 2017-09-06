@@ -108,9 +108,6 @@ sudo apt-get install \
     zlib1g-dev \
     zlibc \
 
-sudo pip install --upgrade pip
-sudo pip install thefuck
-
 mkdir -p $HOME/.config/htop
 ln -fsn $DIR/htoprc $HOME/.config/htop/htoprc
 

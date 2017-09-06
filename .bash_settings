@@ -166,10 +166,6 @@ function tab-navy() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightn
 set_tab_color
 set_prompt
 
-# Auto correct command line usage
-# - https://github.com/nvbn/thefuck
-eval "$(thefuck --alias)"
-
 # for each new bash shell print out the hostname and network information
 if [ -e "$HOME/scripts/network_info.py" ]; then
     python $HOME/scripts/network_info.py
