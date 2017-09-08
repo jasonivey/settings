@@ -58,7 +58,7 @@ function set_prompt {
     local WHITEBOLD="\[\033[1;37m\]"
     local RESETCOLOR="\[\e[00m\]"
 
-    export PS1="$BLUE\w$RED"'$(vcprompt -f %b)'"$BLUE → $RESETCOLOR"
+    export PS1="$BLUE\w$RED"'$(vcprompt -n -f %s:%b[%a%m%u])'"$BLUE → $RESETCOLOR"
 }
 
 if [ "$(uname -s)" == "Linux" ]; then
@@ -144,11 +144,6 @@ elif [ "$(uname -s)" == "Linux" ]; then
     alias ls='ls -la --color=auto'
     alias dir='ls -la --color=auto'
     alias rm='rm -i'
-fi
-
-# only available on Mac -- git completion is installed into bash completion on Linux
-if [ -e "/usr/local/etc/bash_completion.d/git-completion.bash" ]; then
-    source /usr/local/etc/bash_completion.d/git-completion.bash
 fi
 
 if [ -e "$HOME/settings/.ssh_aliases" ]; then
