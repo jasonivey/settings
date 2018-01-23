@@ -25,6 +25,11 @@ if [ "$(uname)" == "Darwin" ]; then
             . $(brew --prefix)/etc/bash_completion
         fi
     fi
+   
+    # add git-completion to the environment
+    if [ -f $HOME/settings/git-completion.bash ]; then
+        . $HOME/settings/git-completion.bash
+    fi
 
 elif [ "$(uname -s)" == "Linux" ]; then
 
@@ -111,7 +116,7 @@ alias cpwp='rsync -aP'
 alias mvwp='rsync -aP --remove-source-files'
 alias update-path='export PATH=$PATH:`pwd`'
 alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
-alias waf-clean='rm -rf .waf-* build pyenv .lock-* *.deb `find pysrc -name *.pyc`'
+#alias waf-clean='rm -rf .waf-* build pyenv .lock-* *.deb `find pysrc -name *.pyc`'
 alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
 alias set-cscope=set_cscope
 alias setup-intel='source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux'
@@ -119,8 +124,8 @@ alias update='sudo apt-get update'
 alias upgrade='sudo apt-get dist-upgrade'
 alias dev=move_into_dev
 alias set-tab-color=set_tab_color
-alias integrate='$HOME/settings/integrate.sh'
-alias build='$HOME/settings/build.sh'
+#alias integrate='$HOME/settings/integrate.sh'
+#alias build='$HOME/settings/build.sh'
 alias matrix='cmatrix -bs -C red'
 alias ..='cd ..'
 alias ...='cd ../..'

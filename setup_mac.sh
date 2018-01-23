@@ -18,6 +18,9 @@ for f in $files
 do
     ln -fsn $DIR/$f $HOME/$f
 done
+        
+# add the latest git_completion even though git probably isn't on the system yet
+curl -o $HOME/settings/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > /dev/null 2>&1
 
 sudo apt-get install python-software-properties
 
