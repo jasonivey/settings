@@ -1,33 +1,13 @@
 #!/usr/bin/env bash
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
-PWD=`dirname $0`
-cd $PWD
-DIR=`pwd`
-
-#allow sudoless password
-SUDOSTR=
-if ! sudo grep -q "$USER.*NOPASSWD:ALL" /etc/sudoers
-then
-    sudo echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
-fi
-
-files=".bash_aliases .dircolors .gdbinit .gitconfig .i2csshrc .tmux.conf .vimrc"
-
-for f in $files
-do
-    ln -fsn $DIR/$f $HOME/$f
-done
-        
-# add the latest git_completion even though git probably isn't on the system yet
-curl -o $HOME/settings/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > /dev/null 2>&1
-
 sudo apt-get install python-software-properties
 
 if [ "$(lsb_release -sc)" == "precise" ]; then
     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 fi
 
+# Add the LLVM repo gpg key
 wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add -
 
 # GCC Adding GCC-6
@@ -111,15 +91,5 @@ sudo apt-get install \
     zlib1g-dev \
     zlibc \
 
-mkdir -p $HOME/.config/htop
-ln -fsn $DIR/htoprc $HOME/.config/htop/htoprc
-
-mkdir -p $HOME/.vim/bundle
-cd $HOME/.vim/bundle
-
-if [ ! -d "vundle" ]; then
-    git clone https://github.com/gmarik/Vundle.vim.git vundle
-fi
-
-source $HOME/settings/setup_ubuntu_vim.sh
+#source $HOME/settings/setup_ubuntu_vim.sh
 
