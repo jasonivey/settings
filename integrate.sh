@@ -4,48 +4,47 @@
 set -e
 
 function clean-build() {
-    rm -rf build
+    git clean -xdf 
 }
 
 clean-build
 
-if [ "$(uname)" == "Darwin" ]; then
-    COMPILER=clang 
-elif [ "$(uname -s)" == "Linux" ]; then
-    COMPILER=clang-3.8
-fi
+#if [ "$(uname)" == "Darwin" ]; then
+#    COMPILER=clang 
+#elif [ "$(uname -s)" == "Linux" ]; then
+#    COMPILER=clang-3.8
+#fi
 
 echo
-echo "Building/Testing libqmx clang debug"
-./waf configure --clang=$COMPILER "$@"
-./waf clean build install check "$@"
+echo "Building/Testing Datawarehouse Debug"
+buildrunner
 
-clean-build
+#clean-build
+
+#echo
+#echo "Building/Testing libqmx clang release"
+#./waf configure --clang=$COMPILER --release-build "$@"
+#./waf clean build install check "$@"
+
+#clean-build
+
+#if [ "$(uname)" == "Darwin" ]; then
+#    COMPILER=gcc
+#elif [ "$(uname -s)" == "Linux" ]; then
+#    COMPILER=gcc-4.8
+#fi
+
+#echo
+#echo "Building/Testing libqmx gcc debug"
+#./waf configure --gcc=$COMPILER "$@"
+#./waf clean build install check "$@"
+
+#clean-build
+
+#echo
+#echo "Building/Testing libqmx gcc release"
+#./waf configure --gcc=$COMPILER --release-build "$@"
+#./waf clean build install check "$@"
 
 echo
-echo "Building/Testing libqmx clang release"
-./waf configure --clang=$COMPILER --release-build "$@"
-./waf clean build install check "$@"
-
-clean-build
-
-if [ "$(uname)" == "Darwin" ]; then
-    COMPILER=gcc
-elif [ "$(uname -s)" == "Linux" ]; then
-    COMPILER=gcc-4.8
-fi
-
-echo
-echo "Building/Testing libqmx gcc debug"
-./waf configure --gcc=$COMPILER "$@"
-./waf clean build install check "$@"
-
-clean-build
-
-echo
-echo "Building/Testing libqmx gcc release"
-./waf configure --gcc=$COMPILER --release-build "$@"
-./waf clean build install check "$@"
-
-echo
-echo "Successfully built and tested libqmx"
+echo "Successfully built and tested Datawarehouse"

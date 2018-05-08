@@ -22,6 +22,7 @@ done
 # add the latest git_completion even though git probably isn't on the system yet
 curl -o $HOME/settings/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > /dev/null 2>&1
 
+mkdir -p $HOME/.config/powerline
 mkdir -p $HOME/.config/htop
 ln -fsn $DIR/htoprc $HOME/.config/htop/htoprc
 

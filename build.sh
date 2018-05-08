@@ -3,17 +3,18 @@
 
 set -e
 
-if [ "$(uname)" == "Darwin" ]; then
-    COMPILER=clang 
-elif [ "$(uname -s)" == "Linux" ]; then
-    COMPILER=clang-3.8
-fi
+#if [ "$(uname)" == "Darwin" ]; then
+#    COMPILER=clang 
+#elif [ "$(uname -s)" == "Linux" ]; then
+#    COMPILER=clang-3.8
+#fi
 
 echo
-echo "Building/Testing libqmx clang debug"
-./waf configure --clang=$COMPILER "$@"
-./waf build install check "$@"
+echo "Building/Testing Datawarehouse Debug"
+dvm run BUILD_TYPE=Debug ./cmake-init.sh
+dvm run make -j8
+dvm run GTEST_COLOR=1 make test ARGS="-V"
 
 echo
-echo "Successfully built and tested libqmx"
+echo "Successfully built and tested Datawarehouse"
 

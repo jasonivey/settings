@@ -630,7 +630,7 @@ def svn(options):
 if __name__ == '__main__':
     prompt = main()
     if prompt:
-        svn_str = ' ({})'.format(prompt).replace('[]', '')
+        svn_str = (' (%s)' % prompt).replace('[]', '')
         sys.stdout.write(svn_str)
     else:
         sys.exit(1)

@@ -1,23 +1,39 @@
 " vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 set nocompatible
 filetype off
+
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+" Plugin 'vim-airline/vim-airline'
+" Plugin 'vim-airline/vim-airline-themes'
 Plugin 'gmarik/vundle'
-"Plugin 'Rip-Rip/clang_complete.git'
+Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'Valloric/YouCompleteMe.git'
+Plugin 'jeaye/color_coded'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'scrooloose/nerdcommenter.git'
 Plugin 'wincent/command-t.git'
 Plugin 'rhysd/vim-clang-format.git'
 Plugin 'tpope/vim-fugitive.git'
-Plugin 'davidhalter/jedi-vim.git'
 Plugin 'rbgrouleff/bclose.vim.git'
-Plugin 'rking/ag.vim'
+Plugin 'jremmen/vim-ripgrep'
 Plugin 'a.vim'
+call vundle#end()
+
+" Powerline
+set guifont=Inconsolata\ for\ Powerline:h15
+let g:Powerline_symbols='fancy'
+set encoding=utf-8
+set t_Co=256
+set fillchars+=stl:\ ,stlnc:\
+set term=xterm-256color
+set termencoding=utf-8
+if has("gui_running")
+   let s:uname = system("uname")
+   if s:uname == "Darwin\n"
+      set guifont=Inconsolata\ for\ Powerline:h15
+   endif
+endif
 
 " Enable code file customization with modelines
 set modeline
@@ -39,6 +55,11 @@ set autoindent
 
 " Tab settings
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+"set list
+
+" Allows you to press <Shift><Tab> to insert a real <tab> character
+:inoremap <S-Tab> <C-V><Tab>
 
 set completeopt=longest
 
@@ -78,6 +99,9 @@ set noerrorbells
 " Fix the backspace key
 set backspace=2
 
+" set the ctags location
+set tags=./tags,./TAGS,tags;~,TAGS;~
+
 " Map <ctrl-l> to turn off highlighting the search terms
 noremap <silent> <c-l> :nohls<cr><c-l>
 
@@ -95,32 +119,36 @@ let g:clang_format#command ='clang-format'
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
-" The location of the libclang depending on linux (specify fullpath) or mac (specify directory)
-if has("macunix")
-  if !empty(glob('/usr/lib/libclang.dylib'))
-    " This works on OS X Lion - 10.7
-    let g:clang_library_path='/usr/lib/'
-  elseif !empty(glob('/Library/Developer/CommandLineTools/usr/lib/libclang.dylib'))
-    " This works on OS X Yosemite - 10.10
-    let g:clang_library_path='/Library/Developer/CommandLineTools/usr/lib/'
-  else
-    " This works on OS X El Capitan - 10.11
-    let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
-  endif
-else
-  if !empty(glob('/usr/lib/x86_64-linux-gnu/libclang.so.1'))
-    " Post clang-3.5 libclang.so is now libclang.so.1
-    let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang.so.1'
-  else
-    " The standard linux x64 location
-    let g:clang_library_path='/usr/lib/x86_64-linux-gnu/libclang.so'
-  endif
-endif
-
-" Adjust clang auto-complete options
-let g:clang_close_preview=1
-let g:clang_user_options='-std=c++11'
-let g:clang_use_library=1
+" Adjust YouCompleteMe options
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_autoclose_preview_window_after_insertion=1
+let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_error_symbol='E>'
+let g:ycm_warning_symbol='W>'
+let g:ycm_enable_diagnostic_highlighting=1
+let g:ycm_complete_in_comments=0
+let g:ycm_complete_in_strings=1
+let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_goto_buffer_command='vertical-split'
+let g:ycm_key_list_select_completion=['<TAB>', '<Down>']
+let g:ycm_confirm_extra_conf=0
+let g:ycm_global_ycm_extra_conf='$HOME/settings/.doesnotexist.py'
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \             're!\[.*\]\s'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,objcpp' : ['->', '.', '::'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'ruby' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
+nnoremap <leader>gt :YcmCompleter GoTo<CR>
+nnoremap <F12> :YcmCompleter GoToDefinition<CR>
+nnoremap <S-F12> :YcmCompleter GoToDeclaration<CR>
 
 " Adjust NERDTree to always show hidden files
 let g:NERDChristmasTree       = 1
@@ -148,9 +176,18 @@ map <Leader>u <plug>NERDCommenterUncomment
 
 filetype plugin on
 
+" color_coded options
+" Disable color_coded in diff mode
+if &diff
+  let g:color_coded_enabled = 0
+else
+  let g:color_coded_enabled = 1
+endif
+let g:color_coded_filetypes = ['c', 'cc', 'cpp', 'h', 'hh', 'hpp', 'objc']
+
 " Set up the auto tab and indent settings for the following types
 autocmd FileType make set noexpandtab
-autocmd Filetype c,cpp,cs,java,objc set cindent tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+autocmd Filetype c,cpp,cs,java,objc,php,py set cindent tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 "autocmd Filetype c,cpp,cs,java,objc set cst csto=0
 
 "let g:CommandTMaxFiles=1000000
@@ -163,10 +200,4 @@ set wildignore+=*.o,*.d,*.git
 
 " SuperTab options
 let g:SuperTabDefaultCompletionType='<c-n>'
-
-" YouCompleteMe settings
-let g:ycm_confirm_extra_conf=0
-nnoremap <leader>gt :YcmCompleter GoTo<CR>
-nnoremap <F12> :YcmCompleter GoToDefinition<CR>
-nnoremap <S-F12> :YcmCompleter GoToDeclaration<CR>
 
