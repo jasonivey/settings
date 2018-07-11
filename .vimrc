@@ -2,8 +2,13 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" Temporary because Python 3.7 is causing powerline to puke!
+if has('python3')
+  silent! python3 1
+endif
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 " Plugin 'vim-airline/vim-airline'
 " Plugin 'vim-airline/vim-airline-themes'
 Plugin 'gmarik/vundle'
@@ -34,6 +39,10 @@ if has("gui_running")
       set guifont=Inconsolata\ for\ Powerline:h15
    endif
 endif
+
+" Remap F3 <previous> and F4 <next> to step through the quickfind results
+map <F3> :cp<CR>
+map <F4> :cn<CR>
 
 " Enable code file customization with modelines
 set modeline
@@ -118,6 +127,11 @@ syntax on
 let g:clang_format#command ='clang-format'
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
+" ripgrep options
+let g:rg_highlight=1
+let g:rg_derive_root=1
+let g:rg_root_types=['.git','.hg','.svn','.bzr']
 
 " Adjust YouCompleteMe options
 let g:ycm_autoclose_preview_window_after_completion=1
