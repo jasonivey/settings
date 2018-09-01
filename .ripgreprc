@@ -1,0 +1,31 @@
+# Don't let ripgrep vomit really long lines to my terminal.
+--max-columns=150
+
+# Using glob patterns to include/exclude files or folders
+--glob=!git/*
+--glob=!external/*
+
+# Set the colors which highlights the matches with a blue background and bolded white text
+--colors=match:none
+--colors=match:bg:0x33,0x66,0xFF
+--colors=match:fg:white
+--colors=match:style:bold
+
+# Set the colors matching Silver Searcher.
+#--colors=line:none
+#--colors=line:fg:yellow
+#--colors=line:style:bold
+#--colors=path:none
+#--colors=path:fg:green
+#--colors=path:style:bold
+#--colors=match:none
+#--colors=match:fg:black
+#--colors=match:bg:yellow
+#--colors=match:style:nobold
+
+# Because who cares about case!?
+--smart-case
+
+# Update the PHP type to include *.inc files
+--type-add
+php:*.inc

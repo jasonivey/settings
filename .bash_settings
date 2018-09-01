@@ -39,6 +39,9 @@ elif [ "$(uname -s)" == "Linux" ]; then
 
 fi
 
+# RipGrep needs to know where its configuration file is located
+export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+
 # setting the PS1 environment variable will set the prompt to a specific color and the working directory
 function set_prompt {
     local BLACK="\[\033[0;30m\]"
@@ -108,7 +111,7 @@ alias mv='mv -i'
 alias ide='vim -O3'
 alias edit='vim'
 alias view='vim'
-alias mvim='open -a /usr/local/opt/macvim/MacVim.app'
+alias macvim='function __macvim() { `/usr/local/Cellar/macvim/8.1-151/MacVim.app/Contents/bin/mvim -O $*`; unset -f __macvim; }; __macvim'
 alias cpwp='rsync -aP'
 alias mvwp='rsync -aP --remove-source-files'
 alias update-path='export PATH=$PATH:`pwd`'
@@ -128,6 +131,7 @@ alias isetup='dvm run BUILD_TYPE=Debug ./cmake-init.sh; ctags --fields=+l -R --e
 alias ibuild='dvm run make -j8'
 alias itest='dvm run GTEST_COLOR=1 make test ARGS="-V"'
 alias matrix='cmatrix -bs -C red'
+alias gitls="bash $HOME/settings/gitls//gitls"
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'

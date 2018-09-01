@@ -210,7 +210,7 @@ let g:CommandTTraverseSCM='file'
 let g:CommandTMatchWindowReverse=0
 let g:CommandTMaxHeight=50
 "let g:CommandTAlwaysShowDotFiles=1
-set wildignore+=*.o,*.d,*.git
+set wildignore+=*.o,*.d,*.git,CMakeFiles
 
 " SuperTab options
 let g:SuperTabDefaultCompletionType='<c-n>'
