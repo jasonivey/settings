@@ -30,7 +30,7 @@ mkdir -p $HOME/.vim/bundle
 cd $HOME/.vim/bundle
 
 if [ ! -d "vundle" ]; then
-    git clone https://github.com/gmarik/Vundle.vim.git vundle
+    git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
 fi
 
 if [ "$(uname)" == "Darwin" ]; then

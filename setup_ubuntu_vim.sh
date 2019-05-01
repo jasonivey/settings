@@ -24,7 +24,7 @@ sudo apt-get -y install \
     perl \
     python-dev \
     python3-dev \
-    python-software-properties \
+    software-properties-common \
     ruby \
     ruby-dev \
     tk8.5 \
@@ -34,7 +34,7 @@ sudo apt-get -y install \
 
 mkdir -p /tmp/dev-tools/
 cd /tmp/dev-tools/
-git clone https://github.com/vim/vim.git
+git clone --depth 1 https://github.com/vim/vim.git vim
 cd vim
 if [ -n "$1" ]; then
     git co $1

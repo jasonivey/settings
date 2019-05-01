@@ -182,7 +182,7 @@ set_prompt
 
 # for each new bash shell print out the hostname and network information
 if [ -e "$HOME/scripts/network_info.py" ]; then
-    python $HOME/scripts/network_info.py
+    python3 $HOME/scripts/network_info.py
 else
     echo "TODO: add the scripts repositoy to $HOME/scripts"
 fi
