@@ -12,7 +12,7 @@ then
     sudo echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 fi
 
-files=".bash_aliases .dircolors .gdbinit .gitconfig .i2csshrc .tmux.conf .vimrc .ripgreprc"
+files=".bash_aliases .dircolors .gdbinit .gitconfig .i2csshrc .transmission-remote-cli.config .tmux.conf .screenrc .vimrc .ripgreprc"
 
 for f in $files
 do
