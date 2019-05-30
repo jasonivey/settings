@@ -175,7 +175,7 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 
 "Airline settings
 let g:airline#extensions#tabline#enabled=1
-set laststatus=2
+let g:laststatus=2
 let g:airline_theme='kalisi'
 
 " Close the auto-complete tip window after selection

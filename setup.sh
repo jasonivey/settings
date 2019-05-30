@@ -12,7 +12,7 @@ then
     sudo echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 fi
 
-files=".bash_aliases .dircolors .gdbinit .gitconfig .i2csshrc .tmux.conf .vimrc .ripgreprc"
+files=".bash_aliases .dircolors .gdbinit .gitconfig .i2csshrc .transmission-remote-cli.config .tmux.conf .screenrc .vimrc .ripgreprc"
 
 for f in $files
 do
@@ -30,7 +30,7 @@ mkdir -p $HOME/.vim/bundle
 cd $HOME/.vim/bundle
 
 if [ ! -d "vundle" ]; then
-    git clone https://github.com/gmarik/Vundle.vim.git vundle
+    git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
 fi
 
 if [ "$(uname)" == "Darwin" ]; then

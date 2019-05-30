@@ -1,28 +1,26 @@
-#!/usr/bin/env bash
+!/usr/bin/env bash
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
-sudo apt-get install python-software-properties
+#sudo apt-get install python-software-properties
 
-if [ "$(lsb_release -sc)" == "precise" ]; then
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-fi
+#if [ "$(lsb_release -sc)" == "precise" ]; then
+#    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+#fi
 
 # Add the LLVM repo gpg key
-wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add -
+#wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add -
 
 # GCC Adding GCC-6
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+#sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 
 # Repo for clang-4.0
-sudo apt-add-repository "deb http://apt.llvm.org/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-4.0 main"
+# sudo apt-add-repository "deb http://apt.llvm.org/"$(lsb_release -sc)"/ llvm-toolchain-"$(lsb_release -sc)"-7.0 main"
 
-sudo apt-get update
+# sudo apt-get update
 
 sudo apt-get install \
     bash-completion \
     build-essential \
-    clang-3.7 \
-    clang-format-3.7 \
     cmake \
     cowsay \
     cscope \
@@ -30,13 +28,6 @@ sudo apt-get install \
     dos2unix \
     exuberant-ctags \
     filters \
-    fortune \
-    fortunes \
-    fortunes-off \
-    gcc-6 \
-    g++-6 \
-    git \
-    git-core \
     golang-go \
     htop \
     libatk1.0-dev \
@@ -47,8 +38,6 @@ sudo apt-get install \
     libcppunit-dev \
     libcurl4-openssl-dev \
     libffi-dev \
-    libgnome2-dev \
-    libgnomeui-dev \
     libgtest-dev \
     libgtk2.0-dev \
     libjsoncpp-dev \
@@ -58,8 +47,6 @@ sudo apt-get install \
     liblua5.2-dev \
     libncurses5-dev \
     libperl-dev \
-    libreadline6 \
-    libreadline6-dev \
     libsqlite3-dev \
     libssl-dev \
     libssl-doc \
@@ -79,7 +66,6 @@ sudo apt-get install \
     python-dev \
     python3-dev \
     python-pip \
-    python-software-properties \
     ruby \
     ruby-dev \
     silversearcher-ag \
