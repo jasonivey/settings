@@ -13,6 +13,16 @@ export PATH="$HOME/settings:$HOME/scripts:$PATH"
 
 if [ "$(uname)" == "Darwin" ]; then
 
+    # if using MacOS Catalina then the command prompt will issue a message about switching to zsh -- silence this!
+    MACOS_CATALINA_MINOR_VER=15
+    macos_minor_ver=$(sw_vers -productVersion | awk -F. '{print $2}')
+    if [[ "$macos_minor_ver" -ge "$MACOS_CATALINA_MINOR_VER" ]]; then
+        export BASH_SILENCE_DEPRECATION_WARNING=1
+        #echo "In macos Catalina and silencing the deprication warning"
+    #else
+        #echo "In macos before Catalina and not deprecating the warning"
+    fi
+
     export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
 
     # add bash_completion when in Mac using the $(brew --prefix) path
@@ -26,6 +36,10 @@ if [ "$(uname)" == "Darwin" ]; then
     if [ -f $HOME/settings/git-completion.bash ]; then
         . $HOME/settings/git-completion.bash
     fi
+
+    # add gem home location so sudo access isn't required
+    #export GEM_HOME=$HOME/.gem
+    #export PATH="$GEM_HOME/bin:$PATH"
 
 elif [ "$(uname -s)" == "Linux" ]; then
 
