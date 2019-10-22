@@ -1,3 +1,6 @@
+# For Mac GDB problems
+set startup-with-shell off
+
 #                                                                                                        
 #   STL GDB evaluators/views/utilities - 1.03
 #
