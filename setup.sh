@@ -12,13 +12,16 @@ then
     sudo echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 fi
 
-files=".bash_aliases .dircolors .gdbinit .gitconfig .i2csshrc .transmission-remote-cli.config .tmux.conf .screenrc .vimrc .ripgreprc"
+files=".bash_aliases .dircolors .gdbinit .gitconfig .i2csshrc .msmtprc .transmission-remote-cli.config .tmux.conf .screenrc .vimrc .ripgreprc"
 
 for f in $files
 do
     ln -fsn $DIR/$f $HOME/$f
 done
-        
+
+# make neovim and vim have the current same settings
+ln -fsn $DIR/.vimrc $HOME/.config/nvim/init.vim
+
 # add the latest git_completion even though git probably isn't on the system yet
 curl -o $HOME/settings/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > /dev/null 2>&1
 

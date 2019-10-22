@@ -102,6 +102,9 @@ function does_binary_exist {
 }
 
 # User specific aliases and functions
+if type nvim > /dev/null 2>&1; then
+    alias vim='nvim'
+fi
 alias settings='vim $HOME/settings/.bash_settings'
 alias setting='cd $HOME/settings'
 alias x='exit'
@@ -132,7 +135,11 @@ alias isetup-old='dvm run BUILD_TYPE=Debug ./cmake-init.sh; ctags --fields=+l -R
 alias ibuild='dvm run make -j8'
 alias itest='dvm run GTEST_COLOR=1 make test ARGS="-V"'
 alias matrix='cmatrix -bs -C red'
-alias gitls="bash $HOME/settings/gitls//gitls"
+alias gitls="bash $HOME/settings/gitls/gitls"
+alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
+alias 7ztest='7z l -slt'
+alias 7zdec='7z x'
+alias transmission-cli='transmission-remote-cli --config=$HOME/.transmission-remote-cli.config'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -144,8 +151,8 @@ alias .........='cd ../../../../../../../..'
 alias ..........='cd ../../../../../../../../..'
 
 if [ "$(uname)" == "Darwin" ]; then
-    alias ls='ls -laG'
-    alias dir='ls -laG'
+    alias ls='exa --all --long --header --group --sort=.Name --time-style=long-iso --git'
+    alias dir='exa --all --long --header --group --sort=.Name --time-style=long-iso --git'
     #if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
     #    alias rm='rm -i'
     #else
@@ -153,8 +160,8 @@ if [ "$(uname)" == "Darwin" ]; then
     #    alias del='rm -i'
     #fi
 elif [ "$(uname -s)" == "Linux" ]; then
-    alias ls='ls -la --color=auto'
-    alias dir='ls -la --color=auto'
+    alias ls='exa --all --long --header --group --sort=.Name --time-style=long-iso --git'
+    alias dir='exa --all --long --header --group --sort=.Name --time-style=long-iso --git'
     alias rm='rm -i'
 fi
 
