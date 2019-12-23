@@ -31,7 +31,6 @@ sudo apt-get install \
     golang-go \
     htop \
     libatk1.0-dev \
-    libbonoboui2-dev \
     libboost-all-dev \
     libbz2-dev \
     libcairo2-dev \

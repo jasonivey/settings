@@ -116,9 +116,6 @@ function does_binary_exist {
 }
 
 # User specific aliases and functions
-if type nvim > /dev/null 2>&1; then
-    alias vim='nvim'
-fi
 alias settings='vim $HOME/settings/.bash_settings'
 alias setting='cd $HOME/settings'
 alias x='exit'
