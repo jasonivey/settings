@@ -50,7 +50,10 @@ set modelines=5
 
 set noautochdir
 
-"set cursorline
+" set yank to update the clipboard
+set clipboard=unnamed
+
+" set cursorline
 set colorcolumn=120
 
 " Remap the leader key from \ to ,
