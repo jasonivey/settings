@@ -1,30 +1,52 @@
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
+export PATH=$PATH:.
+export PAth=$PATH:$HOME/settings
+export PATH=$PATH:$HOME/dev/scripts
+
+if [[ "$(uname)" == "Darwin" ]] then
+    export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/Current"
+    export PATH=$PATH:$JAVA_HOME/Commands
+elif [[ "$(uname -s)" == "Linux" ]] then
+    export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+    export PATH=$PATH:$JAVA_HOME/bin
+    export LD_LIBRARY_PATH=/usr/local/clang_9.0.0/lib:$LD_LIBRARY_PATH
+fi
+
+export LC_CTYPE=C
+# export LANG=C
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+
 # If you come from bash you might have to change your $PATH.
-export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
-export PATH=.:$HOME/settings:$HOME/dev/scripts:$JAVA_HOME/bin:$PATH
-#export PATH=$HOME/settings:$HOME/dev/scripts:$JAVA_HOME/bin:/usr/local/clang_9.0.0/bin:$PATH
-#export LD_LIBRARY_PATH=/usr/local/clang_9.0.0/lib:$LD_LIBRARY_PATH
+#export PATH=$PATH:$HOME/settings
+#export PATH=$PATH:$HOME/dev/scripts
+#export PATH=$PATH:/usr/local/clang_9.0.0/bin
+#export PATH=$PATH:
+#export PATH=$PATH:
+#::$JAVA_HOME/bin::$PATH
 
 export BAT_THEME="zenburn"
 
 # If you don't remember to use batman
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT="-c"
-man 2 select
 
 # RipGrep needs to know where its configuration file is located
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/jasoni/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
+
+#export PATH=/Applications/MacVim.app/Contents/bin:$HOME/settings:$HOME/scripts:/usr/local/sbin:$PATH
+export GOPATH=$HOME/go
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
-# Ensure you modify $HOME//.oh-my-zsh/themes/agnoster.zsh-theme by commenting out the call to this method: #prompt_context
+# Ensure you modify $HOME/.oh-my-zsh/themes/agnoster.zsh-theme by commenting out the call to this method: #prompt_context
 # This will ensure there isn't the hostname and username printed on every line
 
 # Set list of themes to pick from when loading at random
@@ -122,9 +144,10 @@ autoload -Uz compinit && compinit
 # load bashcompinit for some old bash completions
 autoload bashcompinit && bashcompinit
 
-# load the nix package installer
-source $HOME/.nix-profile/etc/profile.d/nix.sh
-
+if [[ -d "/nix" ]] then
+    # load the nix package installer
+    source $HOME/.nix-profile/etc/profile.d/nix.sh
+fi
 
 #### ALIASES ####
 
@@ -159,8 +182,24 @@ set-tab-color() {
     fi
 }
 
-alias zshconfig="ssh ~/.zshrc"
-alias ohmyzsh="ssh ~/.oh-my-zsh"
+get-weather-info() {
+    if [[ -e "$HOME/scripts/get_location_and_ip.py" ]] then
+        location=$(python3 $HOME/scripts/get_location_and_ip.py --location)
+        curl "http://wttr.in/$location?format=%l:+%t+%c+%C+%w+%m&lang=en"
+    fi
+}
+
+get-full-weather-info() {
+    if [[ -e "$HOME/scripts/get_location_and_ip.py" ]] then
+        location=$(python3 $HOME/scripts/get_location_and_ip.py --location)
+        curl "http://wttr.in/$location?lang=en"
+    fi
+}
+
+
+
+alias zshconfig="vim $HOME/.zshrc"
+alias ohmyzsh="vim $HOME/.oh-my-zsh"
 
 # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
 alias ls="exa --all --long --header --group --sort=.Name --time-style=long-iso --git"
@@ -177,6 +216,7 @@ alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
 alias 7ztest='7z l -slt'
 alias 7zdec='7z x'
 alias matrix='cmatrix -bs -C red'
+alias weather=get-full-weather-info
 alias cls='clear && echo -en "\e[3J"'
 alias x="exit"
 
@@ -187,8 +227,9 @@ alias view='vim'
 set-tab-color
 
 # for each new shell print out the hostname and network information
-if [ -e "$HOME/scripts/network_info.py" ]; then
+if [[ -e "$HOME/scripts/network_info.py" ]] then
     python3 $HOME/scripts/network_info.py
+    get-weather-info
 else
     echo "TODO: add the scripts repositoy to $HOME/scripts"
 fi
