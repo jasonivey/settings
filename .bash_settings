@@ -132,7 +132,7 @@ function set_tab_color {
 }
 
 get_network_info() {
-    if [ -e "$HOME/scripts/network_info.py" ] then
+    if [ -e "$HOME/scripts/network_info.py" ]; then
         python3 $HOME/scripts/network_info.py
     fi
 }
