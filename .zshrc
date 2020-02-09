@@ -112,7 +112,7 @@ plugins=(
     brew
     chucknorris  # fortune/cowsay
     command-not-found # install in linux
-    common-aliases
+    #common-aliases
     debian # apt
     dircycle
     encode64 # base64
