@@ -1,5 +1,10 @@
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
+# You may need to manually set your language environment
+export LC_CTYPE=C
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block, everything else may go below.
@@ -7,7 +12,6 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
 
 export DEFAULT_USER="jasoni"
 export PATH=$PATH:.
@@ -17,13 +21,14 @@ export PATH=$PATH:$HOME/dev/scripts
 if [[ "$(uname)" == "Darwin" ]] then
     export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/Current"
     export PATH=$PATH:$JAVA_HOME/Commands
+    export LD_LIBRARY_PATH=/usr/local/clang_9.0.0/lib:$LD_LIBRARY_PATH
 elif [[ "$(uname -s)" == "Linux" ]] then
     export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
     export PATH=$PATH:$JAVA_HOME/bin
-    export LD_LIBRARY_PATH=/usr/local/clang_9.0.0/lib:$LD_LIBRARY_PATH
 fi
 
 export BAT_THEME="zenburn"
+export BAT_CONFIG_PATH="$HOME/settings/bat.conf"
 
 # If you don't remember to use batman
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -143,18 +148,14 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-# You may need to manually set your language environment
-export LC_CTYPE=C
-# export LANG=C
-export LC_ALL="en_US.UTF-8"
-export LANG="en_US.UTF-8"
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]] then
-    export EDITOR='vim'
-else
-    export EDITOR='mvim'
-fi
+#if [[ -n $SSH_CONNECTION ]] then
+#    export EDITOR='vim'
+#else
+#    export EDITOR='mvim'
+#fi
+export EDITOR='vim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -228,12 +229,21 @@ get-full-weather-info() {
 alias zshconfig="vim $HOME/.zshrc"
 alias ohmyzsh="vim $HOME/.oh-my-zsh"
 
-# The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-alias ls="exa --all --long --header --group --sort=.Name --time-style=long-iso --git"
-# List all the files sorting by modified date, reversing the order, to show the newest on top
-alias lst="exa --all --long --header --group --sort=oldest --time-style=long-iso --git"
-# The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-alias dir="exa --all --long --header --group --sort=CName --time-style=long-iso --git"
+if [[ $(command -v exa) ]] then
+    # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
+    alias ls="exa --all --long --header --group --sort=.Name --time-style=long-iso --git --icons"
+    # List all the files sorting by modified date, reversing the order, to show the newest on top
+    alias lst="exa --all --long --header --group --sort=oldest --time-style=long-iso --git --icons"
+    # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
+    alias dir="exa --all --long --header --group --sort=CName --time-style=long-iso --git --icons"
+else
+    # The default 'ls -l -a'
+    alias ls="ls -l --all --color=always --time-style=long-iso --classify --human-readable"
+    # List all the files sorting by modified date to show the newest on top
+    alias lst="ls -l --all --color=always --time-style=long-iso --classify --human-readable -t"
+    # The default 'ls -l -a'
+    alias dir="ls -l --all --color=always --time-style=long-iso --classify --human-readable"
+fi
 
 alias df='df -h'
 alias cp='cp -i'
