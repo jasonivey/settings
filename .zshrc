@@ -1,5 +1,15 @@
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block, everything else may go below.
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+
+export DEFAULT_USER="jasoni"
 export PATH=$PATH:.
 export PAth=$PATH:$HOME/settings
 export PATH=$PATH:$HOME/dev/scripts
@@ -12,19 +22,6 @@ elif [[ "$(uname -s)" == "Linux" ]] then
     export PATH=$PATH:$JAVA_HOME/bin
     export LD_LIBRARY_PATH=/usr/local/clang_9.0.0/lib:$LD_LIBRARY_PATH
 fi
-
-export LC_CTYPE=C
-# export LANG=C
-export LC_ALL="en_US.UTF-8"
-export LANG="en_US.UTF-8"
-
-# If you come from bash you might have to change your $PATH.
-#export PATH=$PATH:$HOME/settings
-#export PATH=$PATH:$HOME/dev/scripts
-#export PATH=$PATH:/usr/local/clang_9.0.0/bin
-#export PATH=$PATH:
-#export PATH=$PATH:
-#::$JAVA_HOME/bin::$PATH
 
 export BAT_THEME="zenburn"
 
@@ -45,7 +42,10 @@ export GOPATH=$HOME/go
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+#ZSH_THEME="agnoster"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+POWERLEVEL9K_MODE="nerdfont-complete"
+
 # Ensure you modify $HOME/.oh-my-zsh/themes/agnoster.zsh-theme by commenting out the call to this method: #prompt_context
 # This will ensure there isn't the hostname and username printed on every line
 
@@ -107,12 +107,35 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git
-         extract
-	 z
-	 zsh-syntax-highlighting
-	 zsh-autosuggestions
+plugins=(
+    autojump # install in mac/linux
+    brew
+    chucknorris  # fortune/cowsay
+    command-not-found # install in linux
+    common-aliases
+    debian # apt
+    dircycle
+    encode64 # base64
+    extract
+    git
+    git-extras
+    git-flow
+    httpie
+    history
+    jsontools
+    osx # brew install shpotify
+    pyenv
+    pylint
+    python
+    rand-quote
+    screen
+    sudo
+    urltools
+    z
+    zsh-syntax-highlighting
+    zsh-autosuggestions
 )
+#vi-mode
 
 source $ZSH/oh-my-zsh.sh
 
@@ -121,14 +144,17 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LC_CTYPE=C
+# export LANG=C
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]] then
+    export EDITOR='vim'
+else
+    export EDITOR='mvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -142,7 +168,7 @@ source $ZSH/oh-my-zsh.sh
 autoload -Uz compinit && compinit
 
 # load bashcompinit for some old bash completions
-autoload bashcompinit && bashcompinit
+#autoload bashcompinit && bashcompinit
 
 if [[ -d "/nix" ]] then
     # load the nix package installer
@@ -182,21 +208,22 @@ set-tab-color() {
     fi
 }
 
+get-network-info() {
+    if [[ -e "$HOME/scripts/network_info.py" ]] then
+        python3 $HOME/scripts/network_info.py
+    fi
+}
 get-weather-info() {
-    if [[ -e "$HOME/scripts/get_location_and_ip.py" ]] then
-        location=$(python3 $HOME/scripts/get_location_and_ip.py --location)
-        curl "http://wttr.in/$location?format=%l:+%t+%c+%C+%w+%m&lang=en"
+    if [[ -e "$HOME/scripts/weather_info.py" ]] then
+        python3 $HOME/scripts/weather_info.py
     fi
 }
 
 get-full-weather-info() {
-    if [[ -e "$HOME/scripts/get_location_and_ip.py" ]] then
-        location=$(python3 $HOME/scripts/get_location_and_ip.py --location)
-        curl "http://wttr.in/$location?lang=en"
+    if [[ -e "$HOME/scripts/weather_info.py" ]] then
+        python3 $HOME/scripts/weather_info.py --full-report
     fi
 }
-
-
 
 alias zshconfig="vim $HOME/.zshrc"
 alias ohmyzsh="vim $HOME/.oh-my-zsh"
@@ -217,6 +244,7 @@ alias 7ztest='7z l -slt'
 alias 7zdec='7z x'
 alias matrix='cmatrix -bs -C red'
 alias weather=get-full-weather-info
+alias netinfo=get-network-info
 alias cls='clear && echo -en "\e[3J"'
 alias x="exit"
 
@@ -226,10 +254,11 @@ alias view='vim'
 
 set-tab-color
 
-# for each new shell print out the hostname and network information
-if [[ -e "$HOME/scripts/network_info.py" ]] then
-    python3 $HOME/scripts/network_info.py
-    get-weather-info
-else
-    echo "TODO: add the scripts repositoy to $HOME/scripts"
-fi
+# for each new shell print out the hostname, network information and weather
+get-network-info
+get-weather-info
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
