@@ -2,10 +2,10 @@
 
 # In some OS's (Mac OS) it may be necessary to manually set your language environment
 #  but on others (Linux) they are already defined in /etc/default/locale
-if [[ -z "$LC_ALL" ]] then
+if [[ -z "$LC_ALL" && "$(uname)" == "Darwin" ]] then
     export LC_ALL='en_US.UTF-8'
 fi
-if [[ -z "$LANG" ]] then
+if [[ -z "$LANG" && "$(uname)" == "Darwin" ]] then
     export LANG='en_US.UTF-8'
 fi
 
@@ -25,7 +25,7 @@ export PATH=$PATH:$HOME/dev/scripts
 if [[ "$(uname)" == "Darwin" ]] then
     export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/Current"
     export PATH=$PATH:$JAVA_HOME/Commands
-    export LD_LIBRARY_PATH=/usr/local/clang_9.0.0/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/clang_9.0.0/lib
     export PATH=$PATH:/usr/local/Cellar/llvm/9.0.1/bin
     export PATH=$PATH:$HOME/Library/Python/3.7/bin
 elif [[ "$(uname -s)" == "Linux" ]] then
