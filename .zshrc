@@ -26,6 +26,8 @@ if [[ "$(uname)" == "Darwin" ]] then
     export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/Current"
     export PATH=$PATH:$JAVA_HOME/Commands
     export LD_LIBRARY_PATH=/usr/local/clang_9.0.0/lib:$LD_LIBRARY_PATH
+    export PATH=$PATH:/usr/local/Cellar/llvm/9.0.1/bin
+    export PATH=$PATH:$HOME/Library/Python/3.7/bin
 elif [[ "$(uname -s)" == "Linux" ]] then
     export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
     export PATH=$PATH:$JAVA_HOME/bin
@@ -33,11 +35,13 @@ elif [[ "$(uname -s)" == "Linux" ]] then
 fi
 
 export BAT_THEME="zenburn"
+export PAGER="less -RFX"
+export BAT_PAGER="less -RFX"
 export BAT_CONFIG_PATH="$HOME/settings/bat.conf"
 
 # If you don't remember to use batman
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export MANROFFOPT="-c"
+#export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+#export MANROFFOPT="-c"
 
 # RipGrep needs to know where its configuration file is located
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
@@ -236,11 +240,11 @@ alias ohmyzsh="vim $HOME/.oh-my-zsh"
 
 if [[ $(command -v exa) ]] then
     # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-    alias ls="exa --all --long --header --group --sort=.Name --time-style=long-iso --git --icons"
+    alias ls="unbuffer exa --all --long --header --group --sort=.Name --time-style=long-iso --git --icons"
     # List all the files sorting by modified date, reversing the order, to show the newest on top
-    alias lst="exa --all --long --header --group --sort=oldest --time-style=long-iso --git --icons"
+    alias lst="unbuffer exa --all --long --header --group --sort=oldest --time-style=long-iso --git --icons"
     # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-    alias dir="exa --all --long --header --group --sort=CName --time-style=long-iso --git --icons"
+    alias dir="unbuffer exa --all --long --header --group --sort=CName --time-style=long-iso --git --icons"
 else
     # The default 'ls -l -a'
     alias ls="ls -l --all --color=always --time-style=long-iso --classify --human-readable"
