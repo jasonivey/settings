@@ -1,9 +1,13 @@
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
-# You may need to manually set your language environment
-export LC_CTYPE=C
-export LC_ALL="en_US.UTF-8"
-export LANG="en_US.UTF-8"
+# In some OS's (Mac OS) it may be necessary to manually set your language environment
+#  but on others (Linux) they are already defined in /etc/default/locale
+if [[ -z "$LC_ALL" ]] then
+    export LC_ALL='en_US.UTF-8'
+fi
+if [[ -z "$LANG" ]] then
+    export LANG='en_US.UTF-8'
+fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -25,6 +29,7 @@ if [[ "$(uname)" == "Darwin" ]] then
 elif [[ "$(uname -s)" == "Linux" ]] then
     export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
     export PATH=$PATH:$JAVA_HOME/bin
+    export PATH=$PATH:$HOME/.nix-profile/bin
 fi
 
 export BAT_THEME="zenburn"
