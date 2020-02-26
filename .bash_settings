@@ -1,6 +1,29 @@
 #!/bin/bash
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
+# Pulled manually out of .bashrc after doing conda setup
+if [ -d $HOME/anaconda3 ]; then
+    # >>> conda initialize >>>
+    # !! Contents within this block are managed by 'conda init' !!
+    __conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+            . "$HOME/anaconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="$HOME/anaconda3/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+    # <<< conda initialize <<<
+fi
+
+if [[ -v "TERM" && ( "$(TERM)" == "linux" || "$(TERM)" == "xterm" ) ]] ; then
+    # Its either not defined or its defined to xterm or linux
+    export TERM=xterm-256color
+fi
+
 # In some OS's (Mac OS) it may be necessary to manually set your language environment
 #  but on others (Linux) they are already defined in /etc/default/locale
 
@@ -49,6 +72,7 @@ export BAT_CONFIG_PATH="$HOME/settings/bat.conf"
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
 
 export EDITOR='vim'
 
