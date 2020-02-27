@@ -19,7 +19,7 @@ if [ -d $HOME/anaconda3 ]; then
     # <<< conda initialize <<<
 fi
 
-if [[ -v "TERM" && ( "$(TERM)" == "linux" || "$(TERM)" == "xterm" ) ]] ; then
+if [[ -v "TERM" && ( "$TERM" == "linux" || "$TERM" == "xterm" ) ]] ; then
     # Its either not defined or its defined to xterm or linux
     export TERM=xterm-256color
 fi
