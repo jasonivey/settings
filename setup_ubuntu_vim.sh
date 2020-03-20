@@ -7,6 +7,7 @@ cd $PWD
 DIR=`pwd`
 
 sudo apt-get update
+
 sudo apt-get -y install \
     build-essential \
     cmake \
@@ -20,20 +21,31 @@ sudo apt-get -y install \
     libpcre3 \
     libpcre3-dev \
     libperl-dev \
-    lua5.2 \
+    lua5.3 \
     perl \
-    python-dev \
-    python3-dev \
+    python2.7
+    python2.7-dev \
+    python2.7-doc \
+    python3.7
+    python3.7-dev \
+    python3.7-doc \
     software-properties-common \
     ruby \
     ruby-dev \
-    tk8.5 \
-    tcl8.5 \
-    tcl8.5-dev \
+    tk8.6 \
+    tcl8.6 \
+    tcl8.6-dev \
     yasm
 
+# Create the install destination and change the ownership to this user
+sudo mkdir -p /opt/vim/
+sudo chown $USER:$USER /opt/vim/
+
+# Create the build location to somewhere where it will be deleted
 mkdir -p /tmp/dev-tools/
 cd /tmp/dev-tools/
+
+# Clone only one level deep -- for vim this usually includes 1 release tag
 git clone --depth 1 https://github.com/vim/vim.git vim
 cd vim
 if [ -n "$1" ]; then
@@ -41,6 +53,8 @@ if [ -n "$1" ]; then
 fi
 
 ./configure --with-features=huge \
+    --prefix=/opt/vim/bin \
+    --mandir=/opt/vim/share/man \
     --with-compiledby="Jason Ivey" \
     --enable-luainterp \
     --enable-perlinterp \
@@ -52,5 +66,4 @@ fi
     --enable-cscope
 
 make
-
-# sudo make install
+make install
