@@ -17,7 +17,7 @@
     ui = true
 [core]
     whitespace = cr-at-eol
-    excludesfile = /Users/jasoni/.gitignore_global
+    excludesfile = ~/.gitignore_global
     pager = delta --dark --plus-color="#012800" --minus-color="#340001" --theme="zenburn"
 [pager]
     difftool = true
@@ -35,4 +35,4 @@
     process = git-lfs filter-process
     required = true
 [commit]
-    template = /Users/jasoni/.git_commit_template.txt
+    template = ~/.git_commit_template.txt
