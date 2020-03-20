@@ -21,6 +21,7 @@ export DEFAULT_USER="jasoni"
 export PATH=$PATH:.
 export PAth=$PATH:$HOME/settings
 export PATH=$PATH:$HOME/dev/scripts
+export PATH=$PATH:$HOME/.cargo/bin
 
 if [[ "$(uname)" == "Darwin" ]] then
     export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/Current"
