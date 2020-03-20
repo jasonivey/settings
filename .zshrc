@@ -272,6 +272,8 @@ alias ide='vim -O3'
 alias edit='vim'
 alias view='vim'
 
+alias gd="PAGER='less -RF' git difftool"
+
 set-tab-color
 
 # for each new shell print out the hostname, network information and weather

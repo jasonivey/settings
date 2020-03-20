@@ -44,6 +44,13 @@ endif
 map <F3> :cp<CR>
 map <F4> :cn<CR>
 
+" Disable backups and move swp files to a dedicated location
+set nobackup       "no backup files
+set nowritebackup  "only in case you don't want a backup file while editing
+set noswapfile     "no swap files
+set swapfile
+set dir=~/.cache/vim/
+
 " Enable code file customization with modelines
 set modeline
 set modelines=5
