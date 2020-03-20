@@ -24,16 +24,6 @@ if [[ -v "TERM" && ( "$TERM" == "linux" || "$TERM" == "xterm" ) ]] ; then
     export TERM=xterm-256color
 fi
 
-# In some OS's (Mac OS) it may be necessary to manually set your language environment
-#  but on others (Linux) they are already defined in /etc/default/locale
-
-#if [[ -z "$LC_ALL" && "$(uname)" == "Darwin" ]]; then
-#    export LC_ALL='en_US.UTF-8'
-#fi
-#if [[ -z "$LANG" && "$(uname)" == "Darwin" ]]; then
-#    export LANG='en_US.UTF-8'
-#fi
-
 # history settings
 export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
@@ -46,35 +36,47 @@ export PATH=$PATH:.
 export PATH=$PATH:$HOME/settings
 export PATH=$PATH:$HOME/scripts
 export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.cargo/bin
 
 if [ "$(uname)" == "Darwin" ]; then
+    # Setup JAVA environment variables
     export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/Current"
     export PATH=$PATH:$JAVA_HOME/Commands
+    # Setup C++ environment variables
     export PATH=$PATH:/usr/local/Cellar/llvm/9.0.1/bin
+    export LD_LIBRARY_PATH=/usr/local/Cellar/llvm/9.0.1/lib:$LD_LIBRARY_PATH
+    # Setup Python-3.7 environment variables
     export PATH=$PATH:$HOME/Library/Python/3.7/bin
-    export LD_LIBRARY_PATH=/usr/local/clang_9.0.0/lib:$LD_LIBRARY_PATH
+    # Setup MacVim environment variables
+    export PATH=/Applications/MacVim.app/Contents/bin:$PATH
+    # Setup MacVim as the editor of choice
+    if [[ -n $SSH_CONNECTION ]] then
+        export EDITOR='vim'
+    else
+        export EDITOR='mvim -f --nomru -c "au VimLeave * !open -a Terminal"'
+    fi
 elif [ "$(uname -s)" == "Linux" ]; then
+    # Setup JAVA environment variables
     export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
     export PATH=$PATH:$JAVA_HOME/bin
+    # Setup nix-env environment variables
     export PATH=$PATH:$HOME/.nix-profile/bin
+    # Setup vim as the editor of choice
+    export EDITOR='vim'
 fi
 
+# Setup the bat (replacement for cat) settings
+export BAT_CONFIG_PATH=$HOME/.config/bat/bat.conf
 export BAT_THEME="zenburn"
-export PAGER="less -RFX"
 export BAT_PAGER="less -RFX"
-export BAT_CONFIG_PATH="$HOME/settings/bat.conf"
-
-# If you don't remember to use batman
-#export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-#export MANROFFOPT="-c"
-
+export PAGER="less -RFX"
+
 # RipGrep needs to know where its configuration file is located
-export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/.ripgreprc
 
+# Setup golang environment variables
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
-
-export EDITOR='vim'
 
 if [ "$(uname)" == "Darwin" ]; then
 
@@ -118,6 +120,21 @@ elif [ "$(uname -s)" == "Linux" ]; then
 
 fi
 
+# functions to set the color of the tab in iTerm2
+function tab-blank() { echo -n -e "\033]6;1;bg;*;default\a" ; }
+function tab-lime() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;green;brightness;255\a" ; }
+function tab-red() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a" ; }
+function tab-blue() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;blue;brightness;255\a" ; }
+function tab-yellow() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a\033]6;1;bg;green;brightness;255\a\033]6;1;bg;blue;brightness;0\a" ; }
+function tab-purple() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;255\a" ; }
+function tab-orange() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;0\a" ; }
+function tab-aqua() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;255\a\033]6;1;bg;blue;brightness;255\a" ; }
+function tab-redder() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;128\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;0\a" ; }
+function tab-olive() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;128\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;0\a" ; }
+function tab-green() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;0\a" ; }
+function tab-teal() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;128\a" ; }
+function tab-navy() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;128\a" ; }
+
 # setting the PS1 environment variable will set the prompt to a specific color and the working directory
 function set_prompt {
     local BLACK="\[\033[0;30m\]"
@@ -145,13 +162,8 @@ if [ "$(uname -s)" == "Linux" ]; then
     test -r $HOME/.dircolors && eval "$(dircolors $HOME/.dircolors)"
 fi
 
-# utility function to generate cscope output
 function set_cscope {
-    local CWD=`pwd`
-    pushd $CWD > /dev/null
-    cd /
-    eval `find $CWD -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > $CWD/cscope.files`
-    popd > /dev/null
+    eval `find . -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > ./cscope.files`
     eval `cscope -b`
 }
 
@@ -170,6 +182,7 @@ get_network_info() {
         python3 $HOME/scripts/network_info.py
     fi
 }
+
 get_weather_info() {
     if [ -e "$HOME/scripts/weather_info.py" ]; then
         python3 $HOME/scripts/weather_info.py
@@ -183,92 +196,68 @@ get_full_weather_info() {
 }
 
 # User specific aliases and functions
-alias settings='vim $HOME/settings/.bash_settings'
-alias setting='cd $HOME/settings'
-alias x='exit'
-alias df='df -h'
-alias cp='cp -i'
-alias mv='mv -i'
-alias ide='vim -O3'
-alias edit='vim'
-alias view='vim'
-alias macvim='function __macvim() { `/usr/local/Cellar/macvim/8.1-151/MacVim.app/Contents/bin/mvim -O $*`; unset -f __macvim; }; __macvim'
-alias cpwp='rsync -aP'
-alias mvwp='rsync -aP --remove-source-files'
-alias update-path='export PATH=$PATH:`pwd`'
-alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
-alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
+alias settings="vim $HOME/settings/.bash_settings"
+alias zsettings="vim $HOME/settings/.zshrc"
+alias setting-dir="cd $HOME/settings"
+alias x="exit"
+alias df="df -h"
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -i"
+alias ide="vim -O3"
+alias cpwp="rsync -aP"
+alias mvwp="rsync -aP --remove-source-files"
+alias update-path="export PATH=$PATH:`pwd`"
+alias brewup="brew update; brew upgrade; brew prune; brew cleanup; brew doctor"
+alias pylint="pylint -r n --rcfile=~/settings/pylintrc"
 alias set-cscope=set_cscope
-alias setup-intel='source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux'
-alias update='sudo apt-get update'
-alias upgrade='sudo apt-get dist-upgrade'
+alias setup-intel="source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux"
+alias update="sudo apt-get update"
+alias upgrade="sudo apt-get dist-upgrade"
 alias dev=move_into_dev
-alias devprep='ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1'
+alias devprep="ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1"
 alias set-tab-color=set_tab_color
-alias integrate='$HOME/settings/integrate.sh'
-alias build='$HOME/settings/build.sh'
-alias iclean='$HOME/settings/clean.sh'
-alias isetup='dvm run BUILD_TYPE=Debug ./cmake-init.sh; ctags --fields=+l -R --exclude=.git --exclude=external --exclude=common/zdw/googletest-release-1.8.0 --exclude=*.inc --exclude=*.php; python $HOME/dev/scripts/update_compile_commands.py'
-alias isetup-old='dvm run BUILD_TYPE=Debug ./cmake-init.sh; ctags --fields=+l -R --exclude=.git --exclude=external/fmt-4.1.0/doc; python $HOME/dev/scripts/update_compile_commands.py'
-alias ibuild='dvm run make -j8'
-alias itest='dvm run GTEST_COLOR=1 make test ARGS="-V"'
-alias matrix='cmatrix -bs -C red'
+alias matrix="cmatrix -bs -C red"
 alias weather=get_full_weather_info
 alias netinfo=get_network_info
 alias gitls="bash $HOME/settings/gitls/gitls"
-alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
-alias 7ztest='7z l -slt'
-alias 7zdec='7z x'
-alias transmission-cli='transmission-remote-cli --config=$HOME/.transmission-remote-cli.config'
-alias cls='clear && echo -en "\e[3J"'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias ......='cd ../../../../..'
-alias .......='cd ../../../../../..'
-alias ........='cd ../../../../../../..'
-alias .........='cd ../../../../../../../..'
-alias ..........='cd ../../../../../../../../..'
+alias 7zenc="7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p"
+alias 7ztest="7z l -slt"
+alias 7zdec="7z x"
+alias transmission-cli="transmission-remote-cli --config=$HOME/.transmission-remote-cli.config"
+alias cls="clear && echo -en "\e[3J""
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+alias .......="cd ../../../../../.."
+alias ........="cd ../../../../../../.."
+alias .........="cd ../../../../../../../.."
+alias ..........="cd ../../../../../../../../.."
 
-if [ "$(uname -s)" == "Linux" ]; then
-    alias rm='rm -i'
-fi
+# special git diff alias to use my custom difftool
+alias gd="PAGER='less -RF' git difftool"
 
 if [ $(command -v exa) ]; then
     # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-    alias ls='unbuffer exa --all --long --header --group --sort=.Name --time-style=long-iso --git --icons'
+    alias ls="unbuffer exa --all --long --header --group --sort=.Name --time-style=long-iso --git --icons"
     # List all the files sorting by modified date, reversing the order, to show the newest on top
-    alias lst='unbuffer exa --all --long --header --group --sort=oldest --time-style=long-iso --git --icons'
+    alias lst="unbuffer exa --all --long --header --group --sort=oldest --time-style=long-iso --git --icons"
     # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-    alias dir='unbuffer exa --all --long --header --group --sort=CName --time-style=long-iso --git --icons'
+    alias dir="unbuffer exa --all --long --header --group --sort=CName --time-style=long-iso --git --icons"
 else
     # The default 'ls -l -a'
-    alias ls='ls -l --all --color=always --time-style=long-iso --classify --human-readable'
+    alias ls="ls -l --all --color=always --time-style=long-iso --classify --human-readable"
     # List all the files sorting by modified date to show the newest on top
-    alias lst='ls -l --all --color=always --time-style=long-iso --classify --human-readable -t'
+    alias lst="ls -l --all --color=always --time-style=long-iso --classify --human-readable -t"
     # The default 'ls -l -a'
-    alias dir='ls -l --all --color=always --time-style=long-iso --classify --human-readable'
+    alias dir="ls -l --all --color=always --time-style=long-iso --classify --human-readable"
 fi
 
 if [ -e "$HOME/settings/.ssh_aliases" ]; then
     source $HOME/settings/.ssh_aliases
 fi
-
-# functions to set the color of the tab in iTerm2
-function tab-blank() { echo -n -e "\033]6;1;bg;*;default\a" ; }
-function tab-lime() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;green;brightness;255\a" ; }
-function tab-red() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a" ; }
-function tab-blue() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;blue;brightness;255\a" ; }
-function tab-yellow() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a\033]6;1;bg;green;brightness;255\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-purple() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;255\a" ; }
-function tab-orange() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-aqua() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;255\a\033]6;1;bg;blue;brightness;255\a" ; }
-function tab-redder() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;128\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-olive() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;128\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-green() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-teal() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;128\a" ; }
-function tab-navy() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;128\a" ; }
 
 set_tab_color
 set_prompt

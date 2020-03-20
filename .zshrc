@@ -1,14 +1,5 @@
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
-# In some OS's (Mac OS) it may be necessary to manually set your language environment
-#  but on others (Linux) they are already defined in /etc/default/locale
-if [[ -z "$LC_ALL" && "$(uname)" == "Darwin" ]] then
-    export LC_ALL='en_US.UTF-8'
-fi
-if [[ -z "$LANG" && "$(uname)" == "Darwin" ]] then
-    export LANG='en_US.UTF-8'
-fi
-
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block, everything else may go below.
@@ -20,44 +11,57 @@ fi
 export DEFAULT_USER="jasoni"
 export PATH=$PATH:.
 export PAth=$PATH:$HOME/settings
-export PATH=$PATH:$HOME/dev/scripts
+export PATH=$PATH:$HOME/scripts
+export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.cargo/bin
 
 if [[ "$(uname)" == "Darwin" ]] then
+    # Setup JAVA environment variables
     export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/Current"
     export PATH=$PATH:$JAVA_HOME/Commands
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/clang_9.0.0/lib
+    # Setup C++ environment variables
     export PATH=$PATH:/usr/local/Cellar/llvm/9.0.1/bin
+    export LD_LIBRARY_PATH=/usr/local/Cellar/llvm/9.0.1/lib:$LD_LIBRARY_PATH
+    # Setup Python-3.7 environment variables
     export PATH=$PATH:$HOME/Library/Python/3.7/bin
+    # Setup MacVim environment variables
+    export PATH=/Applications/MacVim.app/Contents/bin:$PATH
+    # Setup MacVim as the editor of choice unless we are remote
+    if [[ -n $SSH_CONNECTION ]] then
+        export EDITOR='vim'
+    else
+        export EDITOR='mvim -f --nomru -c "au VimLeave * !open -a Terminal"'
+    fi
 elif [[ "$(uname -s)" == "Linux" ]] then
+    # Setup JAVA environment variables
     export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
     export PATH=$PATH:$JAVA_HOME/bin
+    # Setup nix-env environment variables
     export PATH=$PATH:$HOME/.nix-profile/bin
+    # Setup vim as the editor of choice
+    export EDITOR='vim'
 fi
 
+# Setup the bat (replacement for cat) settings
+export BAT_CONFIG_PATH=$HOME/.config/bat/bat.conf
 export BAT_THEME="zenburn"
-export PAGER="less -RFX"
 export BAT_PAGER="less -RFX"
-export BAT_CONFIG_PATH="$HOME/settings/bat.conf"
-
-# If you don't remember to use batman
-#export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-#export MANROFFOPT="-c"
+export PAGER="less -RFX"
 
 # RipGrep needs to know where its configuration file is located
-export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/.ripgreprc
+
+# Setup golang environment variables
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
-#export PATH=/Applications/MacVim.app/Contents/bin:$HOME/settings:$HOME/scripts:/usr/local/sbin:$PATH
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="agnoster"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_MODE="nerdfont-complete"
 
@@ -158,15 +162,6 @@ source $ZSH/oh-my-zsh.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-
-# Preferred editor for local and remote sessions
-#if [[ -n $SSH_CONNECTION ]] then
-#    export EDITOR='vim'
-#else
-#    export EDITOR='mvim'
-#fi
-export EDITOR='vim'
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -224,6 +219,7 @@ get-network-info() {
         python3 $HOME/scripts/network_info.py
     fi
 }
+
 get-weather-info() {
     if [[ -e "$HOME/scripts/weather_info.py" ]] then
         python3 $HOME/scripts/weather_info.py
@@ -236,45 +232,56 @@ get-full-weather-info() {
     fi
 }
 
-alias zshconfig="vim $HOME/.zshrc"
-alias ohmyzsh="vim $HOME/.oh-my-zsh"
-
-if [[ $(command -v exa) ]] then
-    # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-    alias ls="unbuffer exa --all --long --header --group --sort=.Name --time-style=long-iso --git --icons"
-    # List all the files sorting by modified date, reversing the order, to show the newest on top
-    alias lst="unbuffer exa --all --long --header --group --sort=oldest --time-style=long-iso --git --icons"
-    # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-    alias dir="unbuffer exa --all --long --header --group --sort=CName --time-style=long-iso --git --icons"
-else
-    # The default 'ls -l -a'
-    alias ls="ls -l --all --color=always --time-style=long-iso --classify --human-readable"
-    # List all the files sorting by modified date to show the newest on top
-    alias lst="ls -l --all --color=always --time-style=long-iso --classify --human-readable -t"
-    # The default 'ls -l -a'
-    alias dir="ls -l --all --color=always --time-style=long-iso --classify --human-readable"
-fi
-
+alias zshconfig='vim $HOME/.zshrc'
+alias ohmyzsh='vim $HOME/.oh-my-zsh'
+alias settings='vim $HOME/settings/.bash_settings'
+alias zsettings='vim $HOME/settings/.zshrc'
+alias setting-dir='cd $HOME/settings'
+alias x='exit'
 alias df='df -h'
 alias cp='cp -i'
 alias mv='mv -i'
-alias rm="rm -i"
-alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
-alias 7ztest='7z l -slt'
-alias 7zdec='7z x'
+alias rm='rm -i'
+alias ide='vim -O3'
+alias cpwp='rsync -aP'
+alias mvwp='rsync -aP --remove-source-files'
+alias update-path='export PATH=$PATH:`pwd`'
+alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
+alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
+alias setup-intel='source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux'
+alias update='sudo apt update'
+alias upgrade='sudo apt dist-upgrade'
+alias devprep='ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1'
 alias matrix='cmatrix -bs -C red'
 alias weather=get-full-weather-info
 alias netinfo=get-network-info
+alias gitls='bash $HOME/settings/gitls/gitls'
+alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
+alias 7ztest='7z l -slt'
+alias 7zdec='7z x'
+alias transmission-cli='transmission-remote-cli --config=$HOME/.transmission-remote-cli.config'
 alias cls='clear && echo -en "\e[3J"'
-alias x="exit"
 
-alias ide='vim -O3'
-alias edit='vim'
-alias view='vim'
+# special git diff alias which overrides the one in the zsh git package to use my custom difftool
+alias gd='PAGER="less -RF" git difftool'
+
+if [[ $(command -v exa) ]] then
+    # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
+    alias ls='unbuffer exa --all --long --header --group --sort=.Name --time-style=long-iso --git --icons'
+    # List all the files sorting by modified date, reversing the order, to show the newest on top
+    alias lst='unbuffer exa --all --long --header --group --sort=oldest --time-style=long-iso --git --icons'
+    # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
+    alias dir='unbuffer exa --all --long --header --group --sort=CName --time-style=long-iso --git --icons'
+else
+    # The default 'ls -l -a'
+    alias ls='ls -l --all --color=always --time-style=long-iso --classify --human-readable'
+    # List all the files sorting by modified date to show the newest on top
+    alias lst='ls -l --all --color=always --time-style=long-iso --classify --human-readable -t'
+    # The default 'ls -l -a'
+    alias dir='ls -l --all --color=always --time-style=long-iso --classify --human-readable'
+fi
 
 set-tab-color
-
-# for each new shell print out the hostname, network information and weather
 get-network-info
 get-weather-info
 
