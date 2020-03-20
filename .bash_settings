@@ -50,7 +50,7 @@ if [ "$(uname)" == "Darwin" ]; then
     # Setup MacVim environment variables
     export PATH=/Applications/MacVim.app/Contents/bin:$PATH
     # Setup MacVim as the editor of choice
-    if [[ -n $SSH_CONNECTION ]] then
+    if [ -n $SSH_CONNECTION ]; then
         export EDITOR='vim'
     else
         export EDITOR='mvim -f --nomru -c "au VimLeave * !open -a Terminal"'
@@ -70,7 +70,7 @@ export BAT_CONFIG_PATH=$HOME/.config/bat/bat.conf
 export BAT_THEME="zenburn"
 export BAT_PAGER="less -RFX"
 export PAGER="less -RFX"
-
+
 # RipGrep needs to know where its configuration file is located
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/.ripgreprc
 
