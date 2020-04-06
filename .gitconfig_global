@@ -27,7 +27,7 @@
     prompt = false
 [difftool "icdiff"]
     prompt = false
-    cmd = icdiff --highlight --line-numbers -L \"$BASE\" -L \"$REMOTE\" \"$LOCAL\" \"$REMOTE\"
+    cmd = PAGER='less -RF' icdiff --highlight --line-numbers -L \"$BASE\" -L \"$REMOTE\" \"$LOCAL\" \"$REMOTE\"
     trustExitCode = true
 [filter "lfs"]
     clean = git-lfs clean -- %f
