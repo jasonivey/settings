@@ -1,55 +1,98 @@
-" vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
+" vim: softtabstop=4:tabstop=4:shiftwidth=4:expandtab:cindent:foldmethod=manual:textwidth=120:filetype=vim
 set nocompatible
 filetype off
 
-" Temporary because Python 3.7 is causing powerline to puke!
-if has('python3')
-  silent! python3 1
-endif
-
-set rtp+=~/.vim/bundle/Vundle.vim
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/vundle
 call vundle#begin()
-" Plugin 'vim-airline/vim-airline'
-" Plugin 'vim-airline/vim-airline-themes'
 Plugin 'gmarik/vundle'
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plugin 'bling/vim-bufferline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'challenger-deep-theme/vim', {'name': 'challenger-deep-theme'}
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'Valloric/YouCompleteMe.git'
 Plugin 'jeaye/color_coded'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'scrooloose/nerdcommenter.git'
-Plugin 'wincent/command-t.git'
 Plugin 'rhysd/vim-clang-format.git'
+" Git plugin to add extensions into vim
 Plugin 'tpope/vim-fugitive.git'
-Plugin 'rbgrouleff/bclose.vim.git'
 Plugin 'jremmen/vim-ripgrep'
+" Plugin for go-lang
+Plugin 'fatih/vim-go'
+" Syntax Checker for Python, Rust, go... see below
+Plugin 'vim-syntastic/syntastic'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'nvie/vim-flake8'
+" Plugin to ensure modeline does not contain anything invalid
+Plugin 'ciaranm/securemodelines'
+" Command :Bclose will close and destroy buffer
+Plugin 'rbgrouleff/bclose.vim.git'
+" Open header of the source file you are in
 Plugin 'a.vim'
 call vundle#end()
 
-" Powerline
-set guifont=Inconsolata\ for\ Powerline:h15
-let g:Powerline_symbols='fancy'
+" Always set encoding to utf-8
 set encoding=utf-8
-set t_Co=256
-set fillchars+=stl:\ ,stlnc:\
+let &t_Co=256
+"set fillchars+=stl:\ ,stlnc:\
 set term=xterm-256color
 set termencoding=utf-8
-if has("gui_running")
-   let s:uname = system("uname")
-   if s:uname == "Darwin\n"
-      set guifont=Inconsolata\ for\ Powerline:h15
-   endif
+
+colorscheme challenger_deep
+set transparency=5
+
+if has("gui_running") && has("gui_macvim")
+  set guifont=MesloLGS-NF-Regular:h11
+endif
+
+"Airline settings
+let g:Powerline_symbols='unicode'
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled=1
+let g:laststatus=2
+let g:airline_theme='murmur'
+
+" Syntastic Plugin Modifications
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_python_checkers=['pylint', 'flake8']
+let g:syntastic_aggregate_errors=1
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wq=0
+let python_highlight_all=1
+
+if has('mac')
+    vnoremap <C-C> :w !pbcopy<CR><CR>
+    inoremap <C-V> <Esc>:set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
+elseif has('unix')
+    vnoremap <C-c> :w !xclip -i -sel c<CR><CR>
+    inoremap <C-V> <Esc>:set paste<CR>:r !xclip -o<CR>:set nopaste<CR>
+endif
+
+if has('mouse')
+    set mouse=a
 endif
 
 " Remap F3 <previous> and F4 <next> to step through the quickfind results
-map <F3> :cp<CR>
-map <F4> :cn<CR>
+nnoremap <S-F4> :cp<CR>
+nnoremap <F4> :cn<CR>
 
-" Disable backups and move swp files to a dedicated location
-set nobackup       "no backup files
-set nowritebackup  "only in case you don't want a backup file while editing
-set noswapfile     "no swap files
+" Move backups and swp files to a dedicated location
+if !isdirectory($HOME . "/.vim/backups")
+    call mkdir($HOME . "/.vim/backups", "p")
+endif
+if !isdirectory($HOME . "/.vim/swapfiles")
+    call mkdir($HOME . "/.vim/swapfiles", "p")
+endif
+set backupdir=$HOME/.vim/backups//
+set directory=$HOME/.vim/swapfiles//
 set swapfile
-set dir=~/.cache/vim/
+set writebackup
 
 " Enable code file customization with modelines
 set modeline
@@ -57,11 +100,10 @@ set modelines=5
 
 set noautochdir
 
+" Note: with this set all vi copy and paste in visual mode get put into system
+"  buffer. This is a little overwhelming as someone not used to this behavior.
 " set yank to update the clipboard
-set clipboard=unnamed
-
-" set cursorline
-set colorcolumn=120
+"set clipboard=unnamed
 
 " Remap the leader key from \ to ,
 let mapleader=","
@@ -72,21 +114,21 @@ set nowrap
 " Auto indent
 set autoindent
 
+" Highlight trailing whitespace by default
+highlight ws ctermbg=red guibg=red
+match ws /\s\+$/
+autocmd BufWinEnter * match ws / \+$/
+
 " Tab settings
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
-"set list
+"set listchars=eol:¬,tab:>,trail:~,extends:>,precedes:<,space:␣
+set listchars=trail:~
+set list
 
 " Allows you to press <Shift><Tab> to insert a real <tab> character
-:inoremap <S-Tab> <C-V><Tab>
+"inoremap <S-Tab> <C-V><Tab>
 
 set completeopt=longest
-
-" Highlight current line
-" set cursorline
-
-" Adjust color
-" hi CursorLine term=none cterm=none ctermbg=red
 
 " Set case insensitivity
 set ignorecase
@@ -100,17 +142,11 @@ set hlsearch
 " Highlight as we search however
 set incsearch
 
-" Activate syntax highlighting
-" syntax on
-
 " Blink matching chars for .x seconds
 set matchtime=5
 
 " Turn on the line and offset markers in the bottom right corner
 set ruler
-
-" Show line numbers
-set number
 
 " No error bells please
 set noerrorbells
@@ -124,14 +160,23 @@ set tags=./tags,./TAGS,tags;~,TAGS;~
 " Map <ctrl-l> to turn off highlighting the search terms
 noremap <silent> <c-l> :nohls<cr><c-l>
 
-" Enable golang plugin modules
-if exists("g:did_load_filetypes")
-  filetype off
-  filetype plugin indent off
-endif
-set runtimepath+=$GOROOT/misc/vim " replace $GOROOT with the output of: go env GOROOT
 filetype plugin indent on
+
+" Activate syntax highlighting
 syntax on
+
+" Not sure why, but these theme/color customizations must after the above two lines
+highlight ColorColumn ctermbg=cyan guibg=lightcyan
+highlight LineNr term=bold cterm=bold ctermbg=black ctermfg=green guibg=black guifg=lightgreen
+highlight clear CursorLine
+highlight CursorLine term=underline cterm=underline gui=underline ctermbg=NONE guibg=NONE
+
+" Highlight current line
+set cursorline
+" Create a virtical column to makr a 120 characters 
+set colorcolumn=120
+" Show line numbers
+set number
 
 " Add bindings for clang-format
 let g:clang_format#command ='clang-format'
@@ -183,11 +228,6 @@ let g:NERDTreeMapQuit         = 'q'
 let g:NERDTreeMapToggleZoom   = 'z'
 nnoremap <Leader>n :NERDTreeToggle<CR>
 
-"Airline settings
-let g:airline#extensions#tabline#enabled=1
-let g:laststatus=2
-let g:airline_theme='kalisi'
-
 " Close the auto-complete tip window after selection
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
@@ -212,16 +252,9 @@ let g:color_coded_filetypes = ['c', 'cc', 'cpp', 'h', 'hh', 'hpp', 'objc']
 " Set up the auto tab and indent settings for the following types
 autocmd FileType make set noexpandtab
 autocmd Filetype c,cpp,cs,java,objc,php,py set cindent tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-"autocmd Filetype c,cpp,cs,java,objc set cst csto=0
 
-"let g:CommandTMaxFiles=1000000
-let g:CommandTMaxFiles=200000
-let g:CommandTTraverseSCM='file'
-let g:CommandTMatchWindowReverse=0
-let g:CommandTMaxHeight=50
-"let g:CommandTAlwaysShowDotFiles=1
+" CTRL-P Settings
+let g:ctrlp_map='<Leader>t'
+let g:ctrlp_max_files=200000
+let g:ctrlp_show_hidden=1
 set wildignore+=*.o,*.d,*.git,CMakeFiles
-
-" SuperTab options
-let g:SuperTabDefaultCompletionType='<c-n>'
-

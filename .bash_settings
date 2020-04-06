@@ -160,6 +160,9 @@ function set_prompt {
 
 if [ "$(uname -s)" == "Linux" ]; then
     test -r $HOME/.dircolors && eval "$(dircolors $HOME/.dircolors)"
+elif [ "$(uname -s)" == "Darwin" ]; then
+    # If we are in Mac OSX see if the brew package coreutils has been installed
+    test -r $HOME/.dircolors && $(command -v gdircolors > /dev/null 2>&1) && eval "$(gdircolors $HOME/.dircolors> /dev/null 2>&1)"
 fi
 
 function set_cscope {
@@ -235,24 +238,56 @@ alias .......="cd ../../../../../.."
 alias ........="cd ../../../../../../.."
 alias .........="cd ../../../../../../../.."
 alias ..........="cd ../../../../../../../../.."
+alias twopanes="itermocil --here two_panes"
 
 # special git diff alias to use my custom difftool
 alias gd="PAGER='less -RF' git difftool"
 
 if [ $(command -v exa) ]; then
-    # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-    alias ls="unbuffer exa --all --long --header --group --sort=.Name --time-style=long-iso --git --icons"
-    # List all the files sorting by modified date, reversing the order, to show the newest on top
-    alias lst="unbuffer exa --all --long --header --group --sort=oldest --time-style=long-iso --git --icons"
-    # The default 'ls -l -a' but also adding the header, showing the date nicely and showing git status
-    alias dir="unbuffer exa --all --long --header --group --sort=CName --time-style=long-iso --git --icons"
+    alias  ls="unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons"
+    alias  la="unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons"
+    alias   l="unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons"
+    alias  ll="unbuffer exa --long --header --group --links --sort=Name --time-style=default --git --icons"
+    alias lsa="unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons"
+    alias dir="unbuffer exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons"
+    alias lst="unbuffer exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons"
+elif [ $(command -v lsd) ]; then
+    alias  ls="unbuffer lsd --almost-all --long"
+    alias  la="unbuffer lsd --almost-all --long"
+    alias   l="unbuffer lsd --all --long"
+    alias  ll="unbuffer exa --long"
+    alias lsa="unbuffer exa --all --long"
+    alias dir="unbuffer lsd --almost-all --long"
+    alias lst="unbuffer lsd --almost-all --long --timesort"
+elif [ $(command -v gls) ]; then
+    # On Mac OSX our last chance of getting into the else loop is if the coreutils brew package has been installed
+    #  and we can use the gnu-ls binary.
+    alias  ls="gls --almost-all -l --human-readable --color=always"
+    alias  la="gls --almost-all -l --human-readable --color=always"
+    alias   l="gls --all -l --human-readable --color=always"
+    alias  ll="gls -l --human-readable --color=always"
+    alias lsa="gls --all -l --human-readable --color=always"
+    alias dir="gls --almost-all -l --human-readable --color=always"
+    alias lst="gls --almost-all -l --human-readable --color=always -t"
 else
-    # The default 'ls -l -a'
-    alias ls="ls -l --all --color=always --time-style=long-iso --classify --human-readable"
-    # List all the files sorting by modified date to show the newest on top
-    alias lst="ls -l --all --color=always --time-style=long-iso --classify --human-readable -t"
-    # The default 'ls -l -a'
-    alias dir="ls -l --all --color=always --time-style=long-iso --classify --human-readable"
+    if [ "$(uname)" == "Darwin" && ! $(/bin/ls --help > /dev/null 2>&1) ]; then
+        # On Mac OSX the ls included only takes short options and will not allow help -- pile of garbage
+        alias  ls="/bin/ls -AlGh"
+        alias  la="/bin/ls -AlGh"
+        alias   l="/bin/ls -alGh"
+        alias  ll="/bin/ls -lGh"
+        alias lsa="/bin/ls -alGh"
+        alias dir="/bin/ls -AlGh"
+        alias lst="/bin/ls -AlGht"
+    else
+        alias  ls="/bin/ls --almost-all -l --human-readable --color=always"
+        alias  la="/bin/ls --almost-all -l --human-readable --color=always"
+        alias   l="/bin/ls --all -l --human-readable --color=always"
+        alias  ll="/bin/ls -l --human-readable --color=always"
+        alias lsa="/bin/ls --all -l --human-readable --color=always"
+        alias dir="/bin/ls --almost-all -l --human-readable --color=always"
+        alias lst="/bin/ls --almost-all -l --human-readable --color=always -t"
+    fi
 fi
 
 if [ -e "$HOME/settings/.ssh_aliases" ]; then
