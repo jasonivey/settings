@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
 # Pulled manually out of .bashrc after doing conda setup
@@ -31,7 +31,7 @@ export HISTSIZE=4096                     # custom history size
 export HISTFILESIZE=100000               # custom history file size
 shopt -s histappend                      # append to history, don't overwrite it
 
-# Global Unix type paths 
+# Global Unix type paths
 export PATH=$PATH:.
 export PATH=$PATH:$HOME/settings
 export PATH=$PATH:$HOME/scripts
@@ -98,7 +98,7 @@ if [ "$(uname)" == "Darwin" ]; then
             . $(brew --prefix)/etc/bash_completion
         fi
     fi
-   
+
     # add git-completion to the environment
     if [ -f $HOME/settings/git-completion.bash ]; then
         . $HOME/settings/git-completion.bash
@@ -164,6 +164,14 @@ elif [ "$(uname -s)" == "Darwin" ]; then
     # If we are in Mac OSX see if the brew package coreutils has been installed
     test -r $HOME/.dircolors && $(command -v gdircolors > /dev/null 2>&1) && eval "$(gdircolors $HOME/.dircolors> /dev/null 2>&1)"
 fi
+
+function get_date_time {
+    if [ "$(uname -s)" == "Linux" ]; then
+        echo $(date +"%A, %d %b %Y : %I:%M:%S %P (%Z)")
+    elif [ "$(uname -s)" == "Darwin" ]; then
+        echo $(date +"%A, %d %b %Y : %I:%M:%S %P (%Z)")
+    fi
+}
 
 function set_cscope {
     eval `find . -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > ./cscope.files`
@@ -296,5 +304,6 @@ fi
 
 set_tab_color
 set_prompt
+get_date_time
 get_network_info
 get_weather_info

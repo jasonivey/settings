@@ -40,8 +40,8 @@ let &t_Co=256
 set term=xterm-256color
 set termencoding=utf-8
 
-colorscheme challenger_deep
-set transparency=5
+"colorscheme challenger_deep
+"set transparency=5
 
 if has("gui_running") && has("gui_macvim")
   set guifont=MesloLGS-NF-Regular:h11
