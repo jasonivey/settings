@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 # vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
 
 # Pulled manually out of .bashrc after doing conda setup
@@ -32,21 +32,21 @@ export HISTFILESIZE=100000               # custom history file size
 shopt -s histappend                      # append to history, don't overwrite it
 
 # Global Unix type paths
-export PATH=$PATH:.
-export PATH=$PATH:$HOME/settings
-export PATH=$PATH:$HOME/scripts
-export PATH=$PATH:$HOME/.local/bin
-export PATH=$PATH:$HOME/.cargo/bin
+export PATH=.:$PATH
+export PATH=$HOME/settings:$PATH
+export PATH=$HOME/scripts:$PATH
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
 
 if [ "$(uname)" == "Darwin" ]; then
     # Setup JAVA environment variables
     export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/Current"
-    export PATH=$PATH:$JAVA_HOME/Commands
+    export PATH=$JAVA_HOME/Commands:$PATH
     # Setup C++ environment variables
-    export PATH=$PATH:/usr/local/Cellar/llvm/9.0.1/bin
+    export PATH=/usr/local/Cellar/llvm/9.0.1/bin:$PATH
     export LD_LIBRARY_PATH=/usr/local/Cellar/llvm/9.0.1/lib:$LD_LIBRARY_PATH
     # Setup Python-3.7 environment variables
-    export PATH=$PATH:$HOME/Library/Python/3.7/bin
+    export PATH=$HOME/Library/Python/3.7/bin:$PATH
     # Setup MacVim environment variables
     export PATH=/Applications/MacVim.app/Contents/bin:$PATH
     # Setup MacVim as the editor of choice
@@ -58,9 +58,9 @@ if [ "$(uname)" == "Darwin" ]; then
 elif [ "$(uname -s)" == "Linux" ]; then
     # Setup JAVA environment variables
     export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
-    export PATH=$PATH:$JAVA_HOME/bin
+    export PATH=$JAVA_HOME/bin:$PATH
     # Setup nix-env environment variables
-    export PATH=$PATH:$HOME/.nix-profile/bin
+    export PATH=$HOME/.nix-profile/bin:$PATH
     # Setup vim as the editor of choice
     export EDITOR='vim'
 fi
@@ -76,7 +76,7 @@ export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/.ripgreprc
 
 # Setup golang environment variables
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+export PATH=$GOPATH/bin:$PATH
 
 if [ "$(uname)" == "Darwin" ]; then
 
@@ -207,9 +207,15 @@ get_full_weather_info() {
 }
 
 # User specific aliases and functions
-alias settings="vim $HOME/settings/.bash_settings"
-alias zsettings="vim $HOME/settings/.zshrc"
-alias setting-dir="cd $HOME/settings"
+if [ "$(uname)" == "Darwin" ]; then
+    alias settings="vim \"$HOME/settings/.bash_settings\""
+else
+    alias update="sudo apt-get update"
+    alias upgrade="sudo apt-get dist-upgrade"
+    alias setup-intel="source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux"
+fi
+
+alias setting-dir="cd \"$HOME/settings\""
 alias x="exit"
 alias df="df -h"
 alias cp="cp -i"
@@ -218,24 +224,21 @@ alias rm="rm -i"
 alias ide="vim -O3"
 alias cpwp="rsync -aP"
 alias mvwp="rsync -aP --remove-source-files"
-alias update-path="export PATH=$PATH:`pwd`"
+alias update-path="export PATH=\"`pwd`:$PATH\""
 alias brewup="brew update; brew upgrade; brew prune; brew cleanup; brew doctor"
-alias pylint="pylint -r n --rcfile=~/settings/pylintrc"
+alias pylint="pylint -r n --rcfile=$HOME/pylintrc"
 alias set-cscope=set_cscope
-alias setup-intel="source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux"
-alias update="sudo apt-get update"
-alias upgrade="sudo apt-get dist-upgrade"
 alias dev=move_into_dev
 alias devprep="ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1"
+alias transmission-cli="transmission-remote-cli --config=$HOME/.transmission-remote-cli.config"
 alias set-tab-color=set_tab_color
 alias matrix="cmatrix -bs -C red"
 alias weather=get_full_weather_info
 alias netinfo=get_network_info
-alias gitls="bash $HOME/settings/gitls/gitls"
+alias gitls="/usr/bin/env bash $HOME/settings/gitls/gitls"
 alias 7zenc="7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p"
 alias 7ztest="7z l -slt"
 alias 7zdec="7z x"
-alias transmission-cli="transmission-remote-cli --config=$HOME/.transmission-remote-cli.config"
 alias cls="clear && echo -en \"\e[3J\""
 alias ..="cd .."
 alias ...="cd ../.."
@@ -301,6 +304,19 @@ fi
 if [ -e "$HOME/settings/.ssh_aliases" ]; then
     source $HOME/settings/.ssh_aliases
 fi
+
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob
+
+# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
+
+# Add bash completions and all other completions which are location in BASH_COMPLETION_COMPAT_DIR
+export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+
+# The following needs defined if we going to process AsciiDoc files through an XML stage (like a2x to create manpage)
+export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
 
 set_tab_color
 set_prompt
