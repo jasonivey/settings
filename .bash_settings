@@ -31,7 +31,7 @@ export HISTSIZE=4096                     # custom history size
 export HISTFILESIZE=100000               # custom history file size
 shopt -s histappend                      # append to history, don't overwrite it
 
-# Global Unix type paths
+# Global Unix type paths 
 export PATH=.:$PATH
 export PATH=$HOME/settings:$PATH
 export PATH=$HOME/scripts:$PATH
