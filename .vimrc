@@ -1,4 +1,5 @@
-" vim: softtabstop=4:tabstop=4:shiftwidth=4:expandtab:cindent:foldmethod=manual:textwidth=120:filetype=vim
+" vim: aw=on:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=vim
+" autowrite, softtabstop, tabstop, shiftwidth, expandtab, cindent, foldmethod, textwidth, filetype
 set nocompatible
 filetype off
 
@@ -33,6 +34,9 @@ Plugin 'rbgrouleff/bclose.vim.git'
 Plugin 'a.vim'
 call vundle#end()
 
+" default is set to 200
+set history=1000
+
 " Always set encoding to utf-8
 set encoding=utf-8
 let &t_Co=256
@@ -66,13 +70,13 @@ let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
 let python_highlight_all=1
 
-if has('mac')
-    vnoremap <C-C> :w !pbcopy<CR><CR>
-    inoremap <C-V> <Esc>:set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
-elseif has('unix')
-    vnoremap <C-c> :w !xclip -i -sel c<CR><CR>
-    inoremap <C-V> <Esc>:set paste<CR>:r !xclip -o<CR>:set nopaste<CR>
-endif
+"if has('mac')
+"    vnoremap <C-C> :w !pbcopy<CR><CR>
+"    inoremap <C-V> <Esc>:set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
+"elseif has('unix')
+"    vnoremap <C-c> :w !xclip -i -sel c<CR><CR>
+"    inoremap <C-V> <Esc>:set paste<CR>:r !xclip -o<CR>:set nopaste<CR>
+"endif
 
 if has('mouse')
     set mouse=a
