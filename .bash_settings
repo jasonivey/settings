@@ -31,7 +31,7 @@ export HISTSIZE=4096                     # custom history size
 export HISTFILESIZE=100000               # custom history file size
 shopt -s histappend                      # append to history, don't overwrite it
 
-# Global Unix type paths 
+# Global Unix type paths
 export PATH=.:$PATH
 export PATH=$HOME/settings:$PATH
 export PATH=$HOME/scripts:$PATH
@@ -167,9 +167,9 @@ fi
 
 function get_date_time {
     if [ "$(uname -s)" == "Linux" ]; then
-        echo $(date +"%A, %d %b %Y : %I:%M:%S %P (%Z)")
+        echo $(date +"%A, %d %b %Y → %I:%M:%S %P (%Z)")
     elif [ "$(uname -s)" == "Darwin" ]; then
-        echo $(date +"%A, %d %b %Y : %I:%M:%S %P (%Z)")
+        echo $(date +"%A, %d %b %Y → %I:%M:%S %P (%Z)")
     fi
 }
 
@@ -185,6 +185,12 @@ function move_into_dev {
 function set_tab_color {
     if [ -e "$HOME/settings/.bash_color" ]; then
         tab-$(head -n 1 $HOME/settings/.bash_color)
+    fi
+}
+
+get_login_info() {
+    if [ -e "$HOME/scripts/login_info.py" ]; then
+        python3 $HOME/scripts/login_info.py
     fi
 }
 
@@ -320,6 +326,5 @@ export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
 
 set_tab_color
 set_prompt
-get_date_time
-get_network_info
-get_weather_info
+
+get_login_info
