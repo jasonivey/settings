@@ -222,6 +222,50 @@ get_full_weather_info() {
     fi
 }
 
+get_confirmation() {
+    read -r -p "$1 [Y/n]? " RESPONSE
+    RESPONSE=${RESPONSE,,}
+    if [[ $RESPONSE =~ ^(yes|y| ) ]] || [[ -z $RESPONSE ]]; then
+        echo 1;
+    else
+        echo 0;
+    fi
+}
+
+restart_now() {
+    confirmation=$(expr $(get_confirmation "Reboot now") + 0)
+    if (( $confirmation == 1 )); then
+        echo "Rebooting now ...1..2..3..."
+        if [ "$(uname)" == "Darwin" ]; then
+            # Shows no confirmation dialog
+            osascript -e 'tell app "System Events" to restart'
+            # Shows a confirmation dialog
+            #osascript -e 'tell app "loginwindow" to «event aevtrrst»'
+        else
+            systemctl reboot
+        fi
+    else
+        echo "Not rebooting now..."
+    fi
+}
+
+shutoff_now() {
+    confirmation=$(expr $(get_confirmation "Shutdown now") + 0)
+    if (( $confirmation == 1 )); then
+        echo "Shutting down now ...1..2..3..."
+        if [ "$(uname)" == "Darwin" ]; then
+            # Shows no confirmation dialog
+            osascript -e 'tell app "System Events" to shut down'
+            # Shows a confirmation dialog
+            #osascript -e 'tell app "loginwindow" to «event aevtrsdn»'
+        else
+            systemctl halt
+        fi
+    else
+        echo "Not shutting down now..."
+    fi
+}
+
 # User specific aliases and functions
 if [ "$(uname)" == "Darwin" ]; then
     alias settings="vim \"$HOME/settings/.bash_settings\""
@@ -267,6 +311,14 @@ alias ........="cd ../../../../../../.."
 alias .........="cd ../../../../../../../.."
 alias ..........="cd ../../../../../../../../.."
 alias twopanes="itermocil --here two_panes"
+
+alias service-start="sudo systemctl stop"
+alias service-stop="sudo systemctl start"
+alias service-resstart="sudo systemctl restart"
+alias service-is-active="sudo systemctl is-active"
+alias service-status="sudo systemctl status"
+alias restart=restart_now
+alias shutoff=shutoff_now
 
 # special git diff alias to use my custom difftool
 alias gd="PAGER='less -RF' git difftool"
