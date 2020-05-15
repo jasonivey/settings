@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120
+# vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=bash
 
 PWD=`dirname $0`
 cd $PWD
@@ -9,7 +9,7 @@ DIR=`pwd`
 SUDOSTR=
 if ! sudo grep -q "$USER.*NOPASSWD:ALL" /etc/sudoers
 then
-    sudo echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
+    echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 fi
 
 files=".bash_aliases .dircolors .gdbinit .gitconfig .i2csshrc .msmtprc .transmission-remote-cli.config .tmux.conf .screenrc .vimrc .ripgreprc"
