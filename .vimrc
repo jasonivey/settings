@@ -1,5 +1,5 @@
-" vim: aw=on:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=vim
-" autowrite, softtabstop, tabstop, shiftwidth, expandtab, cindent, foldmethod, textwidth, filetype
+" vim: awa=on:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=vim
+" autowriteall, softtabstop, tabstop, shiftwidth, expandtab, cindent, foldmethod, textwidth, filetype
 set nocompatible
 filetype off
 
@@ -17,6 +17,8 @@ Plugin 'jeaye/color_coded'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'scrooloose/nerdcommenter.git'
 Plugin 'rhysd/vim-clang-format.git'
+" Indent line plugin where indent marks are shown throughout the source file
+ Plugin 'Yggdroot/indentLine'
 " Git plugin to add extensions into vim
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'jremmen/vim-ripgrep'
@@ -30,6 +32,8 @@ Plugin 'nvie/vim-flake8'
 Plugin 'ciaranm/securemodelines'
 " Command :Bclose will close and destroy buffer
 Plugin 'rbgrouleff/bclose.vim.git'
+" Open the tldr abbreviated man page for a command
+Plugin 'wlemuel/vim-tldr'
 " Open header of the source file you are in
 Plugin 'a.vim'
 call vundle#end()
@@ -69,6 +73,9 @@ let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
 let python_highlight_all=1
+
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_color_term = 239
 
 "if has('mac')
 "    vnoremap <C-C> :w !pbcopy<CR><CR>
@@ -125,8 +132,9 @@ autocmd BufWinEnter * match ws / \+$/
 
 " Tab settings
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-"set listchars=eol:¬,tab:>,trail:~,extends:>,precedes:<,space:␣
-set listchars=trail:~
+set listchars=eol:⏎,tab:␉·,trail:␠,nbsp:␣
+" set listchars=eol:¬,tab:>,trail:~,extends:>,precedes:<,space:␣
+" set listchars=trail:~
 set list
 
 " Allows you to press <Shift><Tab> to insert a real <tab> character
@@ -177,7 +185,7 @@ highlight CursorLine term=underline cterm=underline gui=underline ctermbg=NONE g
 
 " Highlight current line
 set cursorline
-" Create a virtical column to makr a 120 characters 
+" Create a virtical column to makr a 120 characters
 set colorcolumn=120
 " Show line numbers
 set number
