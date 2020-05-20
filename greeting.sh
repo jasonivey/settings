@@ -2,21 +2,31 @@
 # vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=bash
 # encoding: utf-8
 
-MORNING='\U1F319'
-AFTERNOON='\U2600'
-EVENING='\U1F316'
-NIGHT='\U1F319'
+MORNING_EMOJI='\U1F319'
+AFTERNOON_EMOJI='\U2600'
+EVENING_EMOJI='\U1F316'
+NIGHT_EMOJI='\U1F319'
 
-time_of_day="morning $MORNING"
-hour=`date | cut -c 12-13`
-if [ $hour -gt 11 ]; then
-   time_of_day="afternoon $AFTERNOON"
+# Morning from 5am - 12pm
+MORNING_HOUR=5
+# Afternoon from 12pm - 6pm
+AFTERNOON_HOUR=12
+# Evening from 6pm - 11pm
+EVENING_HOUR=18
+# Night from 11pm - 4am
+NIGHT_HOUR=23
+
+hour=`date +"%H"`
+
+time_of_day="morning $MORNING_EMOJI"
+if [ $hour -ge $AFTERNOON_HOUR ]; then
+    time_of_day="afternoon $AFTERNOON_EMOJI"
 fi
-if [ $hour -gt 17 ]; then
-   time_of_day="evening $EVENING"
+if [ $hour -ge $EVENING_HOUR ]; then
+    time_of_day="evening $EVENING_EMOJI"
 fi
-if [[ $hour -gt 21 || $hour -lt 5 ]]; then
-   time_of_day="night $NIGHT"
+if [[ $hour -ge $NIGHT_HOUR || $hour -lt $MORNING_HOUR ]]; then
+    time_of_day="night $NIGHT_EMOJI"
 fi
 
 if [[ $(uname) == "Darwin" ]]; then
@@ -31,9 +41,9 @@ if [[ $(uname) == "Darwin" ]]; then
     fi
     os_name="$mac_name $mac_version ($mac_arch)"
 else
-    linux_name=`cat /etc/os-release | pcregrep -o1 "^NAME=\"([^\"]+)"`
-    linux_version=`cat /etc/os-release | pcregrep -o1 "VERSION=\"([^\"]+)"`
-    linux_arch=`hostnamectl | pcregrep -o0 "Architecture:\s*(.*)"`
+    linux_name=`cat /etc/os-release | pcregrep -o1 "PRETTY_NAME=\"([^\"]+)"`
+    linux_version=`cat /etc/os-release | pcregrep -o1 "UBUNTU_CODENAME=([^\\s]+)"`
+    linux_arch=`hostnamectl | pcregrep -o1 "Architecture:\s*(.*)"`
     os_name="$linux_name $linux_version ($linux_arch)"
 fi
 
