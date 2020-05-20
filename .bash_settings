@@ -130,21 +130,6 @@ elif [ "$(uname -s)" == "Linux" ]; then
 
 fi
 
-# functions to set the color of the tab in iTerm2
-function tab-blank() { echo -n -e "\033]6;1;bg;*;default\a" ; }
-function tab-lime() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;green;brightness;255\a" ; }
-function tab-red() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a" ; }
-function tab-blue() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;blue;brightness;255\a" ; }
-function tab-yellow() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a\033]6;1;bg;green;brightness;255\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-purple() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;255\a" ; }
-function tab-orange() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;255\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-aqua() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;255\a\033]6;1;bg;blue;brightness;255\a" ; }
-function tab-redder() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;128\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-olive() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;128\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-green() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;0\a" ; }
-function tab-teal() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;128\a\033]6;1;bg;blue;brightness;128\a" ; }
-function tab-navy() { echo -n -e "\033]6;1;bg;*;default\a\033]6;1;bg;red;brightness;0\a\033]6;1;bg;green;brightness;0\a\033]6;1;bg;blue;brightness;128\a" ; }
-
 # setting the PS1 environment variable will set the prompt to a specific color and the working directory
 function set_prompt {
     local BLACK="\[\033[0;30m\]"
@@ -190,12 +175,6 @@ function set_cscope {
 
 function move_into_dev {
     cd $HOME/dev/$@
-}
-
-function set_tab_color {
-    if [ -e "$HOME/settings/.bash_color" ]; then
-        tab-$(head -n 1 $HOME/settings/.bash_color)
-    fi
 }
 
 get_login_info() {
@@ -291,7 +270,7 @@ alias set-cscope=set_cscope
 alias dev=move_into_dev
 alias devprep="ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1"
 alias transmission-cli="transmission-remote-cli --config=$HOME/.transmission-remote-cli.config"
-alias set-tab-color=set_tab_color
+alias set-tab-color="$HOME/settings/set-tab-color.sh"
 alias matrix="cmatrix -bs -C red"
 alias weather=get_full_weather_info
 alias netinfo=get_network_info
@@ -387,7 +366,8 @@ export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
 # The following needs defined if we going to process AsciiDoc files through an XML stage (like a2x to create manpage)
 export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
 
-set_tab_color
+set-tab-color
 set_prompt
 
 get_login_info
+source $HOME/settings/greeting.sh
