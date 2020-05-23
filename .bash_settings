@@ -271,7 +271,7 @@ alias dev=move_into_dev
 alias devprep="ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1"
 alias transmission-cli="transmission-remote-cli --config=$HOME/.transmission-remote-cli.config"
 alias set-tab-color="$HOME/settings/set-tab-color.sh"
-alias matrix="cmatrix -bs -C red"
+alias matrix="cmatrix -Bsr -u 9"
 alias weather=get_full_weather_info
 alias netinfo=get_network_info
 alias gitls="/usr/bin/env bash $HOME/settings/gitls/gitls"
