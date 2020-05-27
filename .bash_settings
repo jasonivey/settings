@@ -293,11 +293,11 @@ alias .........="cd ../../../../../../../.."
 alias ..........="cd ../../../../../../../../.."
 alias twopanes="itermocil --here two_panes"
 
-alias service-start="sudo systemctl stop"
-alias service-stop="sudo systemctl start"
-alias service-resstart="sudo systemctl restart"
-alias service-is-active="sudo systemctl is-active"
-alias service-status="sudo systemctl status"
+alias system-start="sudo systemctl start"
+alias system-stop="sudo systemctl stop"
+alias system-resstart="sudo systemctl restart"
+alias system-is-active="sudo systemctl is-active"
+alias system-status="sudo systemctl status"
 alias restart=restart_now
 alias shutoff=shutoff_now
 
