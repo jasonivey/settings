@@ -372,4 +372,3 @@ set-tab-color
 set_prompt
 
 get_login_info
-source $HOME/settings/greeting.sh
