@@ -44,12 +44,8 @@ set history=1000
 " Always set encoding to utf-8
 set encoding=utf-8
 let &t_Co=256
-"set fillchars+=stl:\ ,stlnc:\
 set term=xterm-256color
 set termencoding=utf-8
-
-"colorscheme challenger_deep
-"set transparency=5
 
 if has("gui_running") && has("gui_macvim")
   set guifont=MesloLGS-NF-Regular:h11
@@ -77,19 +73,11 @@ let python_highlight_all=1
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_color_term = 239
 
-"if has('mac')
-"    vnoremap <C-C> :w !pbcopy<CR><CR>
-"    inoremap <C-V> <Esc>:set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
-"elseif has('unix')
-"    vnoremap <C-c> :w !xclip -i -sel c<CR><CR>
-"    inoremap <C-V> <Esc>:set paste<CR>:r !xclip -o<CR>:set nopaste<CR>
+"if has('mouse')
+"    set mouse=a
 "endif
 
-if has('mouse')
-    set mouse=a
-endif
-
-" Remap F3 <previous> and F4 <next> to step through the quickfind results
+" Remap F4 <next> and Shift-F4 <previous> to step through the quickfind results
 nnoremap <S-F4> :cp<CR>
 nnoremap <F4> :cn<CR>
 
@@ -111,11 +99,6 @@ set modelines=5
 
 set noautochdir
 
-" Note: with this set all vi copy and paste in visual mode get put into system
-"  buffer. This is a little overwhelming as someone not used to this behavior.
-" set yank to update the clipboard
-"set clipboard=unnamed
-
 " Remap the leader key from \ to ,
 let mapleader=","
 
@@ -136,9 +119,6 @@ set listchars=eol:⏎,tab:␉·,trail:␠,nbsp:␣
 " set listchars=eol:¬,tab:>,trail:~,extends:>,precedes:<,space:␣
 " set listchars=trail:~
 set list
-
-" Allows you to press <Shift><Tab> to insert a real <tab> character
-"inoremap <S-Tab> <C-V><Tab>
 
 set completeopt=longest
 

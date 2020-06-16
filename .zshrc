@@ -232,6 +232,12 @@ get-full-weather-info() {
     fi
 }
 
+get-login-info() {
+    if [[ -e "$HOME/scripts/login_info.py" ]] then
+        python3 $HOME/scripts/login_info.py
+    fi
+}
+
 alias zshconfig='vim $HOME/.zshrc'
 alias ohmyzsh='vim $HOME/.oh-my-zsh'
 alias settings='vim $HOME/settings/.bash_settings'
@@ -255,6 +261,7 @@ alias devprep='ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf
 alias matrix='cmatrix -bs -C red'
 alias weather=get-full-weather-info
 alias netinfo=get-network-info
+alias login-info=get-login-info
 alias gitls='bash $HOME/settings/gitls/gitls'
 alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
 alias 7ztest='7z l -slt'
@@ -282,10 +289,12 @@ else
 fi
 
 set-tab-color
-get-network-info
-get-weather-info
+get-login-info
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
+
+# This is only valid on mac OS X but the conditional will allow for that
+[ -f $HOME/perl5/perlbrew/etc/bashrc ] && source $HOME/perl5/perlbrew/etc/bashrc
