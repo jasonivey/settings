@@ -1,0 +1,259 @@
+#!/usr/bin/env zsh
+# vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
+
+if [[ "$(uname -s)" == "Linux" ]] then
+    test -r $HOME/.dircolors && eval "$(dircolors $HOME/.dircolors)"
+elif [[ "$(uname -s)" == "Darwin" ]] then
+    # If we are in Mac OSX see if the brew package coreutils has been installed
+    test -r $HOME/.dircolors && $(command -v gdircolors > /dev/null 2>&1) && eval "$(gdircolors $HOME/.dircolors > /dev/null 2>&1)"
+fi
+
+set-cscope() {
+    eval `find . -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > ./cscope.files`
+    eval `cscope -b`
+}
+
+dev() {
+    cd $HOME/dev/$1
+}
+
+get-login-info() {
+    if [[ -e "$HOME/scripts/login_info.py" ]] then
+        python3 $HOME/scripts/login_info.py
+    fi
+}
+
+get-network-info() {
+    if [[ -e "$HOME/scripts/network_info.py" ]] then
+        python3 $HOME/scripts/network_info.py
+    fi
+}
+
+get-weather-info() {
+    if [[ -e "$HOME/scripts/weather_info.py" ]] then
+        python3 $HOME/scripts/weather_info.py
+    fi
+}
+
+get-full-weather-info() {
+    if [[ -e "$HOME/scripts/weather_info.py" ]] then
+        python3 $HOME/scripts/weather_info.py --full-report
+    fi
+}
+
+uuid-generator() {
+    if [[ ! $(uuidgen --verbose > /dev/null 2>&1) ]] then
+        echo `uuidgen | tr -d '-' | tr '[:upper:]' '[:lower:]'`
+    else
+        echo `uuidgen --random | sed 's/-//g'`
+    fi
+}
+
+get-confirmation() {
+    read "RESPONSE?$1. Continue [Y/n]? "
+    if [[ ( -z $RESPONSE || $RESPONSE =~ ^[Yy].*$ ) ]] then
+        echo 1;
+    else
+        echo 0;
+    fi
+}
+
+restart() {
+    let confirmation=$(get-confirmation "Reboot now")
+    if (( $confirmation == 1 )); then
+        echo "Rebooting now ...1..2..3..."
+        if [[ "$(uname -s)" == "Darwin" ]] then
+            # Shows no confirmation dialog
+            #osascript -e 'tell app "System Events" to restart'
+            # Shows a confirmation dialog
+            osascript -e 'tell app "loginwindow" to «event aevtrrst»'
+        else
+            systemctl reboot
+        fi
+    else
+        echo "Not rebooting now..."
+    fi
+}
+
+shutoff() {
+    let confirmation=$(get-confirmation "Shutdown now")
+    if (( $confirmation == 1 )); then
+        echo "Shutting down now ...1..2..3..."
+        if [[ "$(uname -s)" == "Darwin" ]] then
+            # Shows no confirmation dialog
+            #osascript -e 'tell app "System Events" to shut down'
+            # Shows a confirmation dialog
+            osascript -e 'tell app "loginwindow" to «event aevtrsdn»'
+        else
+            systemctl halt
+        fi
+    else
+        echo "Not shutting down now..."
+    fi
+}
+
+alias zshconfig='vim $HOME/.zshrc'
+alias ohmyzsh='vim $HOME/.oh-my-zsh'
+alias settings='vim $HOME/settings/.bash_settings'
+alias zsettings='vim $HOME/settings/.zshrc'
+alias setting-dir='cd $HOME/settings'
+alias x='exit'
+alias df='df -h'
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias ide='vim -O3'
+alias cpwp='rsync -aP'
+alias mvwp='rsync -aP --remove-source-files'
+alias update-path='export PATH=`pwd`:$PATH'
+alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
+alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
+alias setup-intel='source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux'
+alias update='sudo apt update'
+alias upgrade='sudo apt dist-upgrade'
+alias devprep='ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1'
+alias matrix='cmatrix -bs -C red'
+alias weather=get-full-weather-info
+alias netinfo=get-network-info
+alias set-tab-color='$HOME/settings/set-tab-color.sh'
+alias gitls='bash $HOME/settings/gitls/gitls'
+alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
+alias 7ztest='7z l -slt'
+alias 7zdec='7z x'
+alias transmission-cli='transmission-remote-cli --config=$HOME/.transmission-remote-cli.config'
+alias cls='clear && echo -en "\e[3J"'
+alias rickquote='fortune softwareengineering | cowsay -f rick-and-morty | lolcat'
+alias twopanes='itermocil --here two_panes'
+alias top='glances'
+alias hex='hexdump -v -C'
+alias service-start='sudo systemctl stop'
+alias service-stop='sudo systemctl start'
+alias service-resstart='sudo systemctl restart'
+alias service-is-active='sudo systemctl is-active'
+alias service-status='sudo systemctl status'
+alias -g MD='mdless -c -I'
+alias -g XML='tidy -xml -q -i - | bat'
+alias -g UUID=uuid-generator
+
+# special git diff alias which overrides the one in the zsh git package to use my custom difftool
+alias gd='PAGER="less -RF" git difftool'
+
+
+if [[ $(command -v exa) ]] then
+    alias  ls='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias  la='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias   l='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias  ll='unbuffer exa --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias lsa='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias dir='unbuffer exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons'
+    alias lst='unbuffer exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons'
+elif [[ $(command -v lsd) ]] then
+    alias  ls='unbuffer lsd --almost-all --long'
+    alias  la='unbuffer lsd --almost-all --long'
+    alias   l='unbuffer lsd --all --long'
+    alias  ll='unbuffer exa --long'
+    alias lsa='unbuffer exa --all --long'
+    alias dir='unbuffer lsd --almost-all --long'
+    alias lst='unbuffer lsd --almost-all --long --timesort'
+elif [[ $(command -v gls) ]] then
+    # On Mac OSX our last chance of getting into the else loop is if the coreutils brew package has been installed
+    #  and we can use the gnu-ls binary.
+    alias  ls='gls --almost-all -l --human-readable --color=always'
+    alias  la='gls --almost-all -l --human-readable --color=always'
+    alias   l='gls --all -l --human-readable --color=always'
+    alias  ll='gls -l --human-readable --color=always'
+    alias lsa='gls --all -l --human-readable --color=always'
+    alias dir='gls --almost-all -l --human-readable --color=always'
+    alias lst='gls --almost-all -l --human-readable --color=always -t'
+else
+    if [[ "$(uname)" == "Darwin" && ! $(/bin/ls --help > /dev/null 2>&1) ]] then
+        # On Mac OSX the ls included only takes short options and will not allow help -- pile of garbage
+        alias  ls='/bin/ls -AlGh'
+        alias  la='/bin/ls -AlGh'
+        alias   l='/bin/ls -alGh'
+        alias  ll='/bin/ls -lGh'
+        alias lsa='/bin/ls -alGh'
+        alias dir='/bin/ls -AlGh'
+        alias lst='/bin/ls -AlGht'
+    else
+        alias  ls='/bin/ls --almost-all -l --human-readable --color=always'
+        alias  la='/bin/ls --almost-all -l --human-readable --color=always'
+        alias   l='/bin/ls --all -l --human-readable --color=always'
+        alias  ll='/bin/ls -l --human-readable --color=always'
+        alias lsa='/bin/ls --all -l --human-readable --color=always'
+        alias dir='/bin/ls --almost-all -l --human-readable --color=always'
+        alias lst='/bin/ls --almost-all -l --human-readable --color=always -t'
+    fi
+fi
+
+# load the nix package manager
+if [[ -d "/nix" ]] then
+    # load the nix package installer and its bin to the path
+    source $HOME/.nix-profile/etc/profile.d/nix.sh
+fi
+
+# opam configuration
+[ -r "$HOME/.opam/opam-init/init.zsh" ] && source "$HOME/.opam/opam-init/init.zsh" &> /dev/null || true
+
+# setup autocompletion for iTermocil
+if [[ $(command -v itermocil &> /dev/null) ]] then
+    compctl -g '~/.itermocil/*(:t:r)' itermocil
+fi
+
+# setup autojump
+if [[ "$(uname)" == "Darwin" ]] then
+    [ -f "/usr/local/etc/profile.d/autojump.sh" ] && source "/usr/local/etc/profile.d/autojump.sh"
+else
+    [ -f "/usr/share/autojump/autojump.sh" ] && source "/usr/local/etc/profile.d/autojump.sh"
+fi
+
+# load nvm npm package manager
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+
+if [[ -d "$HOME/perl5" ]] then
+    # By default non-brewed cpan modules are installed to the Cellar. If you wish
+    #  for your modules to persist across updates we recommend using `local::lib`.
+    #PERL_MM_OPT="INSTALL_BASE=$HOME/perl5" cpan local::lib
+    eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
+fi
+
+# Add ruby path and compiler settings
+if [[ "$(uname)" == "Darwin" ]] then
+    export PATH="/usr/local/opt/ruby/bin:$PATH"
+    export LDFLAGS="-L/usr/local/opt/ruby/lib $LDFLAGS"
+    export CPPFLAGS="-I/usr/local/opt/ruby/include $CPPFLAGS"
+    export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
+else
+    export LDFLAGS="-L/usr/lib/x86_64-linux-gnu/ $LDFLAGS"
+    export CPPFLAGS="-I/usr/include/ruby-2.5.0 -I/usr/include/x86_64-linux-gnu/ruby-2.5.0 $CPPFLAGS"
+    export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH"
+fi
+
+# Add tcl/tk path and compiler settings
+if [[ $(command -v tkcon &> /dev/null) && $(command -v tclsh &> /dev/null) ]] then
+    export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
+    export LDFLAGS="-L/usr/local/opt/tcl-tk/lib $LDFLAGS"
+    export CPPFLAGS="-I/usr/local/opt/tcl-tk/include $CPPFLAGS"
+    export PKG_CONFIG_PATH="/usr/local/opt/tcl-tk/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+    # Ensure that the TCL interpretter can find the expect library
+    export TCLLIBPATH="/usr/local/lib/expect5.45.4"
+fi
+
+# If asciidoc has been installed on mac OS X then this environment variable needs to be defined
+if [[ -d "/usr/local/etc/xml/catalog" ]] then
+    # After installing asciidoc, this define is for if we are processing AsciiDoc files through an XML stage.
+    #  For example, like a2x to create a manpage.
+    export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
+fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
+
+# If its available install the iterm2 shell integrations
+[ -e "$HOME/.iterm2_shell_integration.zsh" ] && source "$HOME/.iterm2_shell_integration.zsh"
+
+set-tab-color
+get-login-info
+
