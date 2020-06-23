@@ -1,46 +1,53 @@
 #!/usr/bin/env zsh
 # vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
 
+add_dir_to_path() {
+    [ -d "$1" ] && export PATH="$1:$PATH"
+}
+
 export PATH=$PATH:.
-export PATH=/usr/local/sbin:$PATH
-export PATH=/usr/local/bin:$PATH
-export PAth=$HOME/settings:$PATH
-export PATH=$HOME/scripts:$PATH
-export PATH=$HOME/.local/bin:$PATH
-export PATH=$HOME/.cargo/bin:$PATH
+add_dir_to_path "/usr/local/sbin"
+add_dir_to_path "/usr/local/bin"
+add_dir_to_path "$HOME/settings"
+add_dir_to_path "$HOME/scripts"
+add_dir_to_path "$HOME/.local/bin"
+add_dir_to_path "$HOME/.cargo/bin"
 
 if [[ "$(uname)" == "Darwin" ]] then
     # Setup the perl environment
-    source $HOME/perl5/perlbrew/etc/bashrc
+    [ -e "$HOME/perl5/perlbrew/etc/bashrc" ] && source "$HOME/perl5/perlbrew/etc/bashrc"
 
     # Setup JAVA environment variables
-    export JAVA_HOME=$(/usr/libexec/java_home)
+    [ -x "/usr/libexec/java_home" ] && export JAVA_HOME=$(/usr/libexec/java_home)
 
     # Setup LLVM/clang C++ environment variables
-    export LDFLAGS="-L/usr/local/opt/llvm/lib"
-    export CPPFLAGS="-I/usr/local/opt/llvm/include"
-    export PATH=/usr/local/opt/llvm/bin:$PATH
+    if [[ -d "/usr/local/opt/llvm/lib" ]] then
+        export LDFLAGS="-L/usr/local/opt/llvm/lib"
+        export CPPFLAGS="-I/usr/local/opt/llvm/include"
+        add_dir_to_path "/usr/local/opt/llvm/bin"
+    fi
 
-    export PATH="/usr/local/opt/unzip/bin:$PATH"
-    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-    export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
-    export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-    export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
+    add_dir_to_path "/usr/local/opt/unzip/bin"
+    add_dir_to_path "/usr/local/opt/coreutils/libexec/gnubin"
+    add_dir_to_path "/usr/local/opt/make/libexec/gnubin"
+    add_dir_to_path "/usr/local/opt/grep/libexec/gnubin"
+    add_dir_to_path "/usr/local/opt/gnu-sed/libexec/gnubin"
+    add_dir_to_path "/usr/local/opt/gnu-getopt/bin"
 
     # Setup ruby binaries before system ruby
-    export PATH=/usr/local/opt/ruby/bin:$PATH
+    add_dir_to_path "/usr/local/opt/ruby/bin"
 
     # Setup Python-3.7 environment variables
-    export PATH=$HOME/Library/Python/3.7/bin:$PATH
+    add_dir_to_path "$HOME/Library/Python/3.7/bin"
 
     # Setup MacVim environment variables
-    export PATH=/Applications/MacVim.app/Contents/bin:$PATH
+    add_dir_to_path "/Applications/MacVim.app/Contents/bin"
 elif [[ "$(uname -s)" == "Linux" ]] then
-    # Setup JAVA environment variables
-    export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
-    export PATH=$JAVA_HOME/bin:$PATH
-
+    if [[ -d "/usr/lib/jvm/java-11-openjdk-amd64" ]] then
+        # Setup JAVA environment variables
+        export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+        add_dir_to_path "$JAVA_HOME/bin"
+    fi
 fi
 
 # Always use vim as the editor of choice
@@ -51,7 +58,5 @@ export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/.ripgreprc
 
 # Setup golang environment variables
 export GOROOT=/usr/local/go
-export GOPATH=$HOME/go
-export GOBIN=$GOPATH/bin
-export PATH=$GOBIN:$PATH
-
+add_dir_to_path "$HOME/go/bin"
+add_dir_to_path "$GOROOT/bin"
