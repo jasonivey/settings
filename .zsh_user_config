@@ -257,3 +257,6 @@ fi
 set-tab-color
 get-login-info
 
+# This ensures that duplicate paths are not persisted to the PATH environment
+#  variable regaurdless of how many times source .zshrc is executed
+typeset -U PATH
