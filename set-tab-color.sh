@@ -4,8 +4,10 @@
 #https://unix.stackexchange.com/questions/59360/what-is-the-zsh-equivalent-of-bashs-export-f
 
 set-tab-color() {
-    if [ -e "$HOME/settings/.bash_color" ]; then
-        echo $(head -n 1 $HOME/settings/.bash_color) | python3 $HOME/scripts/set_tab_color.py
+    if [ -e "$HOME/.zsh_color" ]; then
+        echo $(head -n 1 $HOME/.zsh_color) | python3 $HOME/scripts/set_tab_color.py
+    elif [ -e "$HOME/.bash_color" ]; then
+        echo $(head -n 1 $HOME/.bash_color) | python3 $HOME/scripts/set_tab_color.py
     fi
 }
 
