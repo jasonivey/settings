@@ -25,8 +25,16 @@ if [[ "$(uname)" == "Darwin" ]] then
 
     # Setup LLVM/clang C++ environment variables
     if [[ -d "/usr/local/opt/llvm/lib" ]] then
-        export LDFLAGS="-L/usr/local/opt/llvm/lib"
-        export CPPFLAGS="-I/usr/local/opt/llvm/include"
+        if [[ $LDFLAGS && ${LDFLAGS-x} ]] then
+            export LDFLAGS="$LDFLAGS -L/usr/local/opt/llvm/lib"
+        else
+            export LDFLAGS="-L/usr/local/opt/llvm/lib"
+        fi
+        if [[ $CPPFLAGS && ${CPPFLAGS-x} ]] then
+            export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/llvm/include"
+        else
+            export CPPFLAGS="-I/usr/local/opt/llvm/include"
+        fi
         add_dir_to_path "/usr/local/opt/llvm/bin"
     fi
 
@@ -42,6 +50,25 @@ if [[ "$(uname)" == "Darwin" ]] then
 
     # Setup Python-3.7 environment variables
     add_dir_to_path "$HOME/Library/Python/3.7/bin"
+
+    if [[ $PKG_CONFIG_PATH && ${PKG_CONFIG_PATH-x} ]] then
+        export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:"
+    fi
+    export PKG_CONFIG_PATH="$PKG_CONFIG_PATH$(brew --prefix python3)/Frameworks/Python.framework/Versions/Current/lib/pkgconfig:"
+    export PKG_CONFIG_PATH="$PKG_CONFIG_PATH$(brew --prefix qt5)/lib/pkgconfig:"
+    export PKG_CONFIG_PATH="$PKG_CONFIG_PATH$(brew --prefix oniguruma)/lib/pkgconfig"
+    if [[ -d "/usr/local/opt/qt" ]] then
+        if [[ $LDFLAGS && ${LDFLAGS-x} ]] then
+            export LDFLAGS="$LDFLAGS -L/usr/local/opt/qt/lib"
+        else
+            export LDFLAGS="-L/usr/local/opt/qt/lib"
+        fi
+        if [[ $CPPFLAGS && ${CPPFLAGS-x} ]] then
+            export CPPFLAGS="$CPPFLAGS -isystem /usr/local/opt/qt/include"
+        else
+            export CPPFLAGS="-isystem /usr/local/opt/qt/include"
+        fi
+    fi
 
     # Setup MacVim environment variables
     add_dir_to_path "/Applications/MacVim.app/Contents/bin"
@@ -62,6 +89,7 @@ export EDITOR='vim'
 # Setup golang environment variables
 if [[ -d "/usr/local/go" ]] then
     export GOROOT=/usr/local/go
+    export GOPATH="$HOME/go"
     add_dir_to_path "$HOME/go/bin"
     add_dir_to_path "$GOROOT/bin"
 fi
