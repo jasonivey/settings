@@ -69,16 +69,24 @@ if [[ "$(uname)" == "Darwin" ]] then
 
     # Setup ruby binaries before system ruby
     add_dir_to_path "/usr/local/opt/ruby/bin"
+    add_dir_to_include_path "/usr/local/opt/ruby/include"
+    add_dir_to_linker_path "/usr/local/opt/ruby/lib"
+    add_dir_to_pkg_config_path "/usr/local/opt/ruby/lib/pkgconfig"
+
+    add_dir_to_path "/usr/local/opt/tcl-tk/bin"
+    add_dir_to_linker_path "/usr/local/opt/tcl-tk/lib"
+    add_dir_to_include_path "/usr/local/opt/tcl-tk/include"
+    add_dir_to_pkg_config_path "/usr/local/opt/tcl-tk/lib/pkgconfig"
 
     # Setup Python-3.7 environment variables
     add_dir_to_path "$HOME/Library/Python/3.7/bin"
 
-    add_dir_to_pkg_config_path "$(brew --prefix python3)/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
-    add_dir_to_pkg_config_path "$(brew --prefix qt5)/lib/pkgconfig"
-    add_dir_to_pkg_config_path "$(brew --prefix oniguruma)/lib/pkgconfig"
+    add_dir_to_pkg_config_path "/usr/local/opt/python/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
+    add_dir_to_pkg_config_path "/usr/local/opt/oniguruma/lib/pkgconfig"
 
-    add_dir_to_include_path "/usr/local/opt/qt/include"
-    add_dir_to_linker_path "/usr/local/opt/qt/lib"
+    add_dir_to_include_path "/usr/local/opt/qt5/include"
+    add_dir_to_linker_path "/usr/local/opt/qt5/lib"
+    add_dir_to_pkg_config_path "/usr/local/opt/qt5/lib/pkgconfig"
 
     # Setup MacVim environment variables
     add_dir_to_path "/Applications/MacVim.app/Contents/bin"
@@ -88,6 +96,12 @@ elif [[ "$(uname -s)" == "Linux" ]] then
         export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
         add_dir_to_path "$JAVA_HOME/bin"
     fi
+
+    # Add ruby include, linker and pkg_config_path (I think there must be a better way)
+    add_dir_to_include_path "/usr/include/ruby-2.5.0"
+    add_dir_to_include_path "/usr/include/x86_64-linux-gnu/ruby-2.5.0"
+    add_dir_to_linker_path "/usr/lib/x86_64-linux-gnu"
+    add_dir_to_pkg_config_path "/usr/lib/x86_64-linux-gnu/pkgconfig"
 fi
 
 # Always use vim as the editor of choice -- the only thing we can depend on always being installed!
@@ -103,6 +117,12 @@ if [[ -d "/usr/local/go" ]] then
     mkdir -p "$GOPATH/bin"
     add_dir_to_path "$GOPATH/bin"
     add_dir_to_path "$GOROOT/bin"
+fi
+
+# Add tcl path and compiler settings
+if [[ $(command -v tclsh &> /dev/null) && -d "/usr/local/lib/expect5.45.4" ]] then
+    # Ensure that the TCL interpretter can find the expect library
+    export TCLLIBPATH="/usr/local/lib/expect5.45.4"
 fi
 
 unset add_dir_to_path

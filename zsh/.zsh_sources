@@ -1,0 +1,44 @@
+#!/usr/bin/env zsh
+# vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
+
+###
+# Source various other zsh/bash modules
+###
+
+# setup autocompletion for iTermocil
+if [[ $(command -v itermocil &> /dev/null) ]] then
+    compctl -g '~/.itermocil/*(:t:r)' itermocil
+fi
+
+# load the nix package manager
+if [[ -d "/nix" ]] then
+    # load the nix package installer and its bin to the path
+    source $HOME/.nix-profile/etc/profile.d/nix.sh
+fi
+
+# opam configuration
+[ -r "$HOME/.opam/opam-init/init.zsh" ] && source "$HOME/.opam/opam-init/init.zsh" &> /dev/null || true
+
+# setup autojump
+if [[ "$(uname)" == "Darwin" ]] then
+    [ -f "/usr/local/etc/profile.d/autojump.sh" ] && source "/usr/local/etc/profile.d/autojump.sh"
+else
+    [ -f "/usr/share/autojump/autojump.sh" ] && source "/usr/local/etc/profile.d/autojump.sh"
+fi
+
+# load nvm npm package manager
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+
+if [[ -d "$HOME/perl5" ]] then
+    # By default non-brewed cpan modules are installed to the Cellar. If you wish
+    #  for your modules to persist across updates we recommend using `local::lib`.
+    #PERL_MM_OPT="INSTALL_BASE=$HOME/perl5" cpan local::lib
+    eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
+fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
+
+# If its available install the iterm2 shell integrations
+[ -e "$HOME/.iterm2_shell_integration.zsh" ] && source "$HOME/.iterm2_shell_integration.zsh"
