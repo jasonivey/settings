@@ -8,6 +8,35 @@ elif [[ "$(uname -s)" == "Darwin" ]] then
     test -r $HOME/.dircolors && $(command -v gdircolors > /dev/null 2>&1) && eval "$(gdircolors $HOME/.dircolors > /dev/null 2>&1)"
 fi
 
+goclean() {
+    local pkg=$1
+    local ost
+    local cnt
+
+    # Clean removes object files from package source directories (ignore error)
+    echo "go clean -i $pkg &>/dev/null"
+    go clean -i $pkg &>/dev/null
+
+    # Set local variables
+    [[ "$(uname -m)" == "x86_64" ]] && ost="$(uname)";ost="${ost:l}_amd64" && cnt="${pkg//[^\/]}"
+    # bash lowercase: ost="${ost,,}_amd64", zsh lowercase: ost="${ost:l}_amd64"
+    #[[ "$(uname -m)" == "x86_64" ]] && ost="$(uname)";ost="${ost,,}_amd64" && cnt="${pkg//[^\/]}"
+    #echo "ost: $ost, cnt: $cnt"
+
+    # Delete the source directory and compiled package directory(ies)
+    if (( ${#cnt} == 2 )) then
+        echo "rm -rf \"${GOPATH%%:*}/src/${pkg%/*}\""
+        rm -rf "${GOPATH%%:*}/src/${pkg%/*}"
+        echo "rm -rf \"${GOPATH%%:*}/pkg/${ost}/${pkg%/*}\""
+        rm -rf "${GOPATH%%:*}/pkg/${ost}/${pkg%/*}"
+    elif (( ${#cnt} > 2 )) then
+        echo "rm -rf \"${GOPATH%%:*}/src/${pkg%/*/*}\""
+        rm -rf "${GOPATH%%:*}/src/${pkg%/*/*}"
+        echo "rm -rf \"${GOPATH%%:*}/pkg/${ost}/${pkg%/*/*}\""
+        rm -rf "${GOPATH%%:*}/pkg/${ost}/${pkg%/*/*}"
+    fi
+}
+
 set-cscope() {
     eval `find . -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > ./cscope.files`
     eval `cscope -b`

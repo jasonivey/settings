@@ -5,7 +5,37 @@ add_dir_to_path() {
     [ -d "$1" ] && export PATH="$1:$PATH"
 }
 
-export PATH=$PATH:.
+add_dir_to_pkg_config_path() {
+    if [[ -d "$1" ]] then
+        if [[ $PKG_CONFIG_PATH && ${PKG_CONFIG_PATH-x} ]] then
+            export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$1"
+        else
+            export PKG_CONFIG_PATH="$1"
+        fi
+    fi
+}
+
+add_dir_to_include_path() {
+    if [[ -d "$1" ]] then
+        if [[ $CPPFLAGS && ${CPPFLAGS-x} ]] then
+            export CPPFLAGS="$CPPFLAGS -isystem$1"
+        else
+            export CPPFLAGS="-isystem$1"
+        fi
+    fi
+}
+
+add_dir_to_linker_path() {
+    if [[ -d "$1" ]] then
+        if [[ $LDFLAGS && ${LDFLAGS-x} ]] then
+            export LDFLAGS="$LDFLAGS -L$1"
+        else
+            export LDFLAGS="-L$1"
+        fi
+    fi
+}
+
+export PATH="$PATH:."
 add_dir_to_path "/usr/local/sbin"
 add_dir_to_path "/usr/local/bin"
 add_dir_to_path "$HOME/settings"
@@ -24,21 +54,13 @@ if [[ "$(uname)" == "Darwin" ]] then
     [ -x "/usr/libexec/java_home" ] && export JAVA_HOME=$(/usr/libexec/java_home)
 
     # Setup LLVM/clang C++ environment variables
-    if [[ -d "/usr/local/opt/llvm/lib" ]] then
-        if [[ $LDFLAGS && ${LDFLAGS-x} ]] then
-            export LDFLAGS="$LDFLAGS -L/usr/local/opt/llvm/lib"
-        else
-            export LDFLAGS="-L/usr/local/opt/llvm/lib"
-        fi
-        if [[ $CPPFLAGS && ${CPPFLAGS-x} ]] then
-            export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/llvm/include"
-        else
-            export CPPFLAGS="-I/usr/local/opt/llvm/include"
-        fi
-        add_dir_to_path "/usr/local/opt/llvm/bin"
-    fi
+    add_dir_to_include_path "/usr/local/opt/llvm/include"
+    add_dir_to_linker_path "/usr/local/opt/llvm/lib"
+    add_dir_to_path "/usr/local/opt/llvm/bin"
 
+    # Add all of the gnu-variant duplicate (newer) versions of binaries
     add_dir_to_path "/usr/local/opt/unzip/bin"
+    add_dir_to_path "/usr/local/opt/curl/bin"
     add_dir_to_path "/usr/local/opt/coreutils/libexec/gnubin"
     add_dir_to_path "/usr/local/opt/make/libexec/gnubin"
     add_dir_to_path "/usr/local/opt/grep/libexec/gnubin"
@@ -51,24 +73,12 @@ if [[ "$(uname)" == "Darwin" ]] then
     # Setup Python-3.7 environment variables
     add_dir_to_path "$HOME/Library/Python/3.7/bin"
 
-    if [[ $PKG_CONFIG_PATH && ${PKG_CONFIG_PATH-x} ]] then
-        export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:"
-    fi
-    export PKG_CONFIG_PATH="$PKG_CONFIG_PATH$(brew --prefix python3)/Frameworks/Python.framework/Versions/Current/lib/pkgconfig:"
-    export PKG_CONFIG_PATH="$PKG_CONFIG_PATH$(brew --prefix qt5)/lib/pkgconfig:"
-    export PKG_CONFIG_PATH="$PKG_CONFIG_PATH$(brew --prefix oniguruma)/lib/pkgconfig"
-    if [[ -d "/usr/local/opt/qt" ]] then
-        if [[ $LDFLAGS && ${LDFLAGS-x} ]] then
-            export LDFLAGS="$LDFLAGS -L/usr/local/opt/qt/lib"
-        else
-            export LDFLAGS="-L/usr/local/opt/qt/lib"
-        fi
-        if [[ $CPPFLAGS && ${CPPFLAGS-x} ]] then
-            export CPPFLAGS="$CPPFLAGS -isystem /usr/local/opt/qt/include"
-        else
-            export CPPFLAGS="-isystem /usr/local/opt/qt/include"
-        fi
-    fi
+    add_dir_to_pkg_config_path "$(brew --prefix python3)/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
+    add_dir_to_pkg_config_path "$(brew --prefix qt5)/lib/pkgconfig"
+    add_dir_to_pkg_config_path "$(brew --prefix oniguruma)/lib/pkgconfig"
+
+    add_dir_to_include_path "/usr/local/opt/qt/include"
+    add_dir_to_linker_path "/usr/local/opt/qt/lib"
 
     # Setup MacVim environment variables
     add_dir_to_path "/Applications/MacVim.app/Contents/bin"
@@ -89,7 +99,14 @@ export EDITOR='vim'
 # Setup golang environment variables
 if [[ -d "/usr/local/go" ]] then
     export GOROOT=/usr/local/go
-    export GOPATH="$HOME/go"
-    add_dir_to_path "$HOME/go/bin"
+    [ -z "${GOPATH+x}" ] && export GOPATH="$HOME/go"
+    mkdir -p "$GOPATH/bin"
+    add_dir_to_path "$GOPATH/bin"
     add_dir_to_path "$GOROOT/bin"
 fi
+
+unset add_dir_to_path
+unset add_dir_to_pkg_config_path
+unset add_dir_to_include_path
+unset add_dir_to_linker_path
+
