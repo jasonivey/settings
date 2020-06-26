@@ -1,0 +1,112 @@
+#!/usr/bin/env zsh
+# vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
+
+###
+# Aliases for zsh
+###
+
+# start by sourcing the needed zsh functions
+[ -e "$HOME/.zsh_functions" ] && source "$HOME/.zsh_functions"
+
+alias zshconfig='vim $HOME/.zshrc'
+alias ohmyzsh='vim $HOME/.oh-my-zsh'
+alias settings='vim $HOME/settings/.bash_settings'
+alias zsettings='vim $HOME/settings/.zshrc'
+alias setting-dir='cd $HOME/settings'
+alias x='exit'
+alias df='df -h'
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias ide='vim -O3'
+alias cpwp='rsync -aP'
+alias mvwp='rsync -aP --remove-source-files'
+alias update-path='export PATH=`pwd`:$PATH'
+alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
+alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
+alias setup-intel='source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux'
+alias update='sudo apt update'
+alias upgrade='sudo apt dist-upgrade'
+alias devprep='ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1'
+alias matrix='cmatrix -bs -C red'
+alias weather=get-full-weather-info
+alias netinfo=get-network-info
+alias set-tab-color='$HOME/settings/set-tab-color.sh'
+alias gitls='bash $HOME/settings/gitls/gitls'
+alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
+alias 7ztest='7z l -slt'
+alias 7zdec='7z x'
+alias transmission-cli='transmission-remote-cli --config=$HOME/.transmission-remote-cli.config'
+alias cls='clear && echo -en "\e[3J"'
+alias rickquote='fortune softwareengineering | cowsay -f rick-and-morty | lolcat'
+alias twopanes='itermocil --here two_panes'
+alias top='glances'
+alias hex='hexdump -v -C'
+alias service-start='sudo systemctl stop'
+alias service-stop='sudo systemctl start'
+alias service-resstart='sudo systemctl restart'
+alias service-is-active='sudo systemctl is-active'
+alias service-status='sudo systemctl status'
+alias -g MD='mdless -c -I'
+alias -g XML='tidy -xml -q -i - | bat'
+alias -g UUID=uuid-generator
+
+# special git diff alias which overrides the one in the zsh git package to use my custom difftool
+alias gd='PAGER="less -RF" git difftool'
+
+if [[ $(command -v exa) ]] then
+    alias  ls='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias  la='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias   l='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias  ll='unbuffer exa --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias lsa='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias dir='unbuffer exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons'
+    alias lst='unbuffer exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons'
+elif [[ $(command -v lsd) ]] then
+    alias  ls='unbuffer lsd --almost-all --long'
+    alias  la='unbuffer lsd --almost-all --long'
+    alias   l='unbuffer lsd --all --long'
+    alias  ll='unbuffer exa --long'
+    alias lsa='unbuffer exa --all --long'
+    alias dir='unbuffer lsd --almost-all --long'
+    alias lst='unbuffer lsd --almost-all --long --timesort'
+elif [[ $(command -v gls) ]] then
+    # On Mac OSX our last chance of getting into the else loop is if the coreutils brew package has been installed
+    #  and we can use the gnu-ls binary.
+    alias  ls='gls --almost-all -l --human-readable --color=always'
+    alias  la='gls --almost-all -l --human-readable --color=always'
+    alias   l='gls --all -l --human-readable --color=always'
+    alias  ll='gls -l --human-readable --color=always'
+    alias lsa='gls --all -l --human-readable --color=always'
+    alias dir='gls --almost-all -l --human-readable --color=always'
+    alias lst='gls --almost-all -l --human-readable --color=always -t'
+else
+    if [[ "$(uname)" == "Darwin" && ! $(/bin/ls --help > /dev/null 2>&1) ]] then
+        # On Mac OSX the ls included only takes short options and will not allow help -- pile of garbage
+        alias  ls='/bin/ls -AlGh'
+        alias  la='/bin/ls -AlGh'
+        alias   l='/bin/ls -alGh'
+        alias  ll='/bin/ls -lGh'
+        alias lsa='/bin/ls -alGh'
+        alias dir='/bin/ls -AlGh'
+        alias lst='/bin/ls -AlGht'
+    else
+        alias  ls='/bin/ls --almost-all -l --human-readable --color=always'
+        alias  la='/bin/ls --almost-all -l --human-readable --color=always'
+        alias   l='/bin/ls --all -l --human-readable --color=always'
+        alias  ll='/bin/ls -l --human-readable --color=always'
+        alias lsa='/bin/ls --all -l --human-readable --color=always'
+        alias dir='/bin/ls --almost-all -l --human-readable --color=always'
+        alias lst='/bin/ls --almost-all -l --human-readable --color=always -t'
+    fi
+fi
+
+# lastly, source the zsh_sources which contains 3rd party module includes
+[ -e "$HOME/.zsh_sources" ] && source "$HOME/.zsh_sources"
+
+set-tab-color
+get-login-info
+
+# This ensures that duplicate paths are not persisted to the PATH environment
+#  variable regaurdless of how many times source .zshrc is executed
+typeset -U PATH

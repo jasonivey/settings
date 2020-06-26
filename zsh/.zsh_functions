@@ -1,0 +1,124 @@
+#!/usr/bin/env zsh
+# vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
+
+if [[ "$(uname -s)" == "Linux" ]] then
+    test -r $HOME/.dircolors && eval "$(dircolors $HOME/.dircolors)"
+elif [[ "$(uname -s)" == "Darwin" ]] then
+    # If we are in Mac OSX see if the brew package coreutils has been installed
+    test -r $HOME/.dircolors && $(command -v gdircolors > /dev/null 2>&1) && eval "$(gdircolors $HOME/.dircolors > /dev/null 2>&1)"
+fi
+
+goclean() {
+    local pkg=$1
+    local ost
+    local cnt
+
+    # Clean removes object files from package source directories (ignore error)
+    echo "go clean -i $pkg &>/dev/null"
+    go clean -i $pkg &>/dev/null
+
+    # Set local variables
+    [[ "$(uname -m)" == "x86_64" ]] && ost="$(uname)";ost="${ost:l}_amd64" && cnt="${pkg//[^\/]}"
+    # bash lowercase: ost="${ost,,}_amd64", zsh lowercase: ost="${ost:l}_amd64"
+    #[[ "$(uname -m)" == "x86_64" ]] && ost="$(uname)";ost="${ost,,}_amd64" && cnt="${pkg//[^\/]}"
+    #echo "ost: $ost, cnt: $cnt"
+
+    # Delete the source directory and compiled package directory(ies)
+    if (( ${#cnt} == 2 )) then
+        echo "rm -rf \"${GOPATH%%:*}/src/${pkg%/*}\""
+        rm -rf "${GOPATH%%:*}/src/${pkg%/*}"
+        echo "rm -rf \"${GOPATH%%:*}/pkg/${ost}/${pkg%/*}\""
+        rm -rf "${GOPATH%%:*}/pkg/${ost}/${pkg%/*}"
+    elif (( ${#cnt} > 2 )) then
+        echo "rm -rf \"${GOPATH%%:*}/src/${pkg%/*/*}\""
+        rm -rf "${GOPATH%%:*}/src/${pkg%/*/*}"
+        echo "rm -rf \"${GOPATH%%:*}/pkg/${ost}/${pkg%/*/*}\""
+        rm -rf "${GOPATH%%:*}/pkg/${ost}/${pkg%/*/*}"
+    fi
+    unset pkg, ost, cnt
+}
+
+set-cscope() {
+    eval `find . -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > ./cscope.files`
+    eval `cscope -b`
+}
+
+dev() {
+    cd $HOME/dev/$1
+}
+
+get-login-info() {
+    if [[ -e "$HOME/scripts/login_info.py" ]] then
+        python3 $HOME/scripts/login_info.py
+    fi
+}
+
+get-network-info() {
+    if [[ -e "$HOME/scripts/network_info.py" ]] then
+        python3 $HOME/scripts/network_info.py
+    fi
+}
+
+get-weather-info() {
+    if [[ -e "$HOME/scripts/weather_info.py" ]] then
+        python3 $HOME/scripts/weather_info.py
+    fi
+}
+
+get-full-weather-info() {
+    if [[ -e "$HOME/scripts/weather_info.py" ]] then
+        python3 $HOME/scripts/weather_info.py --full-report
+    fi
+}
+
+uuid-generator() {
+    if [[ ! $(uuidgen --verbose > /dev/null 2>&1) ]] then
+        echo `uuidgen | tr -d '-' | tr '[:upper:]' '[:lower:]'`
+    else
+        echo `uuidgen --random | sed 's/-//g'`
+    fi
+}
+
+get-confirmation() {
+    read "RESPONSE?$1. Continue [Y/n]? "
+    if [[ ( -z $RESPONSE || $RESPONSE =~ ^[Yy].*$ ) ]] then
+        echo 1;
+    else
+        echo 0;
+    fi
+}
+
+restart() {
+    let confirmation=$(get-confirmation "Reboot now")
+    if (( $confirmation == 1 )); then
+        echo "Rebooting now ...1..2..3..."
+        if [[ "$(uname -s)" == "Darwin" ]] then
+            # Shows no confirmation dialog
+            #osascript -e 'tell app "System Events" to restart'
+            # Shows a confirmation dialog
+            osascript -e 'tell app "loginwindow" to «event aevtrrst»'
+        else
+            systemctl reboot
+        fi
+    else
+        echo "Not rebooting now..."
+    fi
+}
+
+shutoff() {
+    let confirmation=$(get-confirmation "Shutdown now")
+    if (( $confirmation == 1 )); then
+        echo "Shutting down now ...1..2..3..."
+        if [[ "$(uname -s)" == "Darwin" ]] then
+            # Shows no confirmation dialog
+            #osascript -e 'tell app "System Events" to shut down'
+            # Shows a confirmation dialog
+            osascript -e 'tell app "loginwindow" to «event aevtrsdn»'
+        else
+            systemctl halt
+        fi
+    else
+        echo "Not shutting down now..."
+    fi
+}
+
