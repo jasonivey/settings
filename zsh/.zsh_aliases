@@ -55,13 +55,20 @@ alias -g UUID=uuid-generator
 alias gd='PAGER="less -RF" git difftool'
 
 if [[ $(command -v exa) ]] then
-    alias  ls='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias  la='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias   l='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias  ll='unbuffer exa --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias lsa='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias dir='unbuffer exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons'
-    alias lst='unbuffer exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons'
+    alias  ls='exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias  la='exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias   l='exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias  ll='exa --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias lsa='exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    alias dir='exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons'
+    alias lst='exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons'
+    #alias  ls='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    #alias  la='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    #alias   l='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    #alias  ll='unbuffer exa --long --header --group --links --sort=Name --time-style=default --git --icons'
+    #alias lsa='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
+    #alias dir='unbuffer exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons'
+    #alias lst='unbuffer exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons'
 elif [[ $(command -v lsd) ]] then
     alias  ls='unbuffer lsd --almost-all --long'
     alias  la='unbuffer lsd --almost-all --long'
@@ -70,6 +77,13 @@ elif [[ $(command -v lsd) ]] then
     alias lsa='unbuffer exa --all --long'
     alias dir='unbuffer lsd --almost-all --long'
     alias lst='unbuffer lsd --almost-all --long --timesort'
+    #alias  ls='unbuffer lsd --almost-all --long'
+    #alias  la='unbuffer lsd --almost-all --long'
+    #alias   l='unbuffer lsd --all --long'
+    #alias  ll='unbuffer exa --long'
+    #alias lsa='unbuffer exa --all --long'
+    #alias dir='unbuffer lsd --almost-all --long'
+    #alias lst='unbuffer lsd --almost-all --long --timesort'
 elif [[ $(command -v gls) ]] then
     # On Mac OSX our last chance of getting into the else loop is if the coreutils brew package has been installed
     #  and we can use the gnu-ls binary.
