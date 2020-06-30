@@ -69,6 +69,7 @@ if [[ "$(uname)" == "Darwin" ]] then
 
     # Setup ruby binaries before system ruby
     add_dir_to_path "/usr/local/opt/ruby/bin"
+    add_dir_to_path "/usr/local/lib/ruby/gems/2.7.0/bin"
     add_dir_to_include_path "/usr/local/opt/ruby/include"
     add_dir_to_linker_path "/usr/local/opt/ruby/lib"
     add_dir_to_pkg_config_path "/usr/local/opt/ruby/lib/pkgconfig"
