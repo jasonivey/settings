@@ -1,0 +1,13 @@
+{
+  "menu": [
+    {
+      "label": "Plugins",
+      "submenu": [
+        {
+          "label": "Copy note link",
+          "command": "core:copy-note-link"
+        }
+      ]
+    }
+  ]
+}
