@@ -1,6 +1,6 @@
 [user]
     name = Jason Ivey
-    email = jasonivey@gmail.com 
+    email = jasonivey@gmail.com
 [alias]
     st = status
     ci = commit
@@ -13,6 +13,15 @@
     latest = checkout
     save = stash save
     unsave = stash apply
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+[commit]
+    template = ~/.git_commit_template.txt
+[pull]
+    rebase = false
 [color]
     ui = true
 [core]
@@ -29,10 +38,3 @@
     prompt = false
     cmd = PAGER='less -RF' icdiff --highlight --line-numbers -L \"$BASE\" -L \"$REMOTE\" \"$LOCAL\" \"$REMOTE\"
     trustExitCode = true
-[filter "lfs"]
-    clean = git-lfs clean -- %f
-    smudge = git-lfs smudge -- %f
-    process = git-lfs filter-process
-    required = true
-[commit]
-    template = ~/.git_commit_template.txt
