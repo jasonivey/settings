@@ -28,6 +28,7 @@ alias setup-intel='source /opt/intel/bin/iccvars.sh -arch intel64 -platform linu
 alias update='sudo apt update'
 alias upgrade='sudo apt dist-upgrade'
 alias devprep='ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1'
+alias abs_path=abs-path
 alias matrix='cmatrix -bs -C red'
 alias weather=get-full-weather-info
 alias netinfo=get-network-info
@@ -124,3 +125,6 @@ get-login-info
 # This ensures that duplicate paths are not persisted to the PATH environment
 #  variable regaurdless of how many times source .zshrc is executed
 typeset -U PATH
+# Shouldn't have to keep track of NIX paths but... oh well!
+typeset -U NIX_PATH
+typeset -U NIX_PROFILES

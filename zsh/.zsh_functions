@@ -79,6 +79,12 @@ uuid-generator() {
     fi
 }
 
+abs-path() {
+    [ $# -gt 0 ] && local dir="$1" || local dir="`pwd`"
+    printf "\e[32m%s\e[0m\e[1m: %s\e[0m\n" "realpath" "$(realpath -LPe $dir)"
+    unset dir
+}
+
 get-confirmation() {
     read "RESPONSE?$1. Continue [Y/n]? "
     if [[ ( -z $RESPONSE || $RESPONSE =~ ^[Yy].*$ ) ]] then
