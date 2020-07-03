@@ -1,8 +1,0 @@
-{
-  "alfredsnippet" : {
-    "snippet" : "#!\/usr\/bin\/env python3\n# vim:softtabstop=4:ts=4:sw=4:expandtab:tw=120\n\nimport os\nimport sys\n\ndef main():\n    # Todo define and call a method fo parsing the arguments\n    try:\n        print('hello world especialy those who are sick from {}'.format('COVID-19'))\n    except:\n        exc_type, exc_value, exc_traceback = sys.exc_info()\n        traceback.print_exception(exc_type, exc_value, exc_traceback, file=sys.stderr)\n        return 1\n    return 0\n\nif __name__ == '__main__':\n    sys.exit(main())",
-    "uid" : "C3A53F2C-FA1E-462B-812B-E8A2888582F7",
-    "name" : "Add a Python main function",
-    "keyword" : "pyuthon, python3, programming, script, scripting"
-  }
-}
