@@ -5,6 +5,16 @@ add_dir_to_path() {
     [ -d "$1" ] && export PATH="$1:$PATH"
 }
 
+add_dir_to_fpath() {
+    if [[ -d "$1" ]] then
+        if [[ $FPATH && ${FAPATH-x} ]] then
+            FPATH="$FPATH:$1"
+        else
+            FPATH="$1"
+        fi
+    fi
+}
+
 add_dir_to_pkg_config_path() {
     if [[ -d "$1" ]] then
         if [[ $PKG_CONFIG_PATH && ${PKG_CONFIG_PATH-x} ]] then
@@ -43,6 +53,7 @@ add_dir_to_path "$HOME/scripts"
 add_dir_to_path "$HOME/.local/bin"
 add_dir_to_path "$HOME/.cargo/bin"
 
+
 # For using a2x for manpage generation
 [ -e "/usr/local/etc/xml/catalog" ] && export XML_CATALOG_FILES="/usr/local/etc/xml/catalog"
 
@@ -53,14 +64,29 @@ if [[ "$(uname)" == "Darwin" ]] then
     # Setup JAVA environment variables
     [ -x "/usr/libexec/java_home" ] && export JAVA_HOME=$(/usr/libexec/java_home)
 
-    # Setup LLVM/clang C++ environment variables
-    add_dir_to_include_path "/usr/local/opt/llvm/include"
-    add_dir_to_linker_path "/usr/local/opt/llvm/lib"
+    # Add various fpath directories for ZSH completions
+    add_dir_to_fpath "/usr/local/share/zsh/site-functions"           # brew ZSH site functions
+    add_dir_to_fpath "/usr/local/opt/curl/share/zsh/site-functions"  # curl ZSH site functions
+   
+    # Setup curl environment variables -- uncomment when needed
+    add_dir_to_path "/usr/local/opt/curl/bin"
+    #add_dir_to_include_path "/usr/local/opt/curl/include"
+    #add_dir_to_linker_path "/usr/local/opt/curl/lib"
+    #add_dir_to_pkg_config_path "/usr/local/opt/curl/lib/pkgconfig"
+
+    # Setup sqlite3 environment variables -- uncomment when needed
+    add_dir_to_path "/usr/local/opt/sqlite/bin"
+    #add_dir_to_include_path "/usr/local/opt/sqlite/include"
+    #add_dir_to_linker_path "/usr/local/opt/sqlite/lib"
+    #add_dir_to_pkg_config_path "/usr/local/opt/sqlite/lib/pkgconfig"
+
+    # Setup LLVM/clang C++ environment variables -- uncomment when needed
     add_dir_to_path "/usr/local/opt/llvm/bin"
+    #add_dir_to_include_path "/usr/local/opt/llvm/include"
+    #add_dir_to_linker_path "/usr/local/opt/llvm/lib"
 
     # Add all of the gnu-variant duplicate (newer) versions of binaries
     add_dir_to_path "/usr/local/opt/unzip/bin"
-    add_dir_to_path "/usr/local/opt/curl/bin"
     add_dir_to_path "/usr/local/opt/coreutils/libexec/gnubin"
     add_dir_to_path "/usr/local/opt/make/libexec/gnubin"
     add_dir_to_path "/usr/local/opt/grep/libexec/gnubin"
@@ -85,9 +111,10 @@ if [[ "$(uname)" == "Darwin" ]] then
     add_dir_to_pkg_config_path "/usr/local/opt/python/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
     add_dir_to_pkg_config_path "/usr/local/opt/oniguruma/lib/pkgconfig"
 
-    add_dir_to_include_path "/usr/local/opt/qt5/include"
-    add_dir_to_linker_path "/usr/local/opt/qt5/lib"
-    add_dir_to_pkg_config_path "/usr/local/opt/qt5/lib/pkgconfig"
+    # Setup the QT library environment variables -- uncomment when needed
+    #add_dir_to_include_path "/usr/local/opt/qt5/include"
+    #add_dir_to_linker_path "/usr/local/opt/qt5/lib"
+    #add_dir_to_pkg_config_path "/usr/local/opt/qt5/lib/pkgconfig"
 
     # Setup MacVim environment variables
     add_dir_to_path "/Applications/MacVim.app/Contents/bin"
@@ -130,13 +157,31 @@ fi
 
 # Make all the paths unique
 typeset -xTU PATH path ':'
+typeset -TU FPATH fpath ':'
 typeset -xTU PKG_CONFIG_PATH pkg_config_path ':'
 typeset -xTU CPPFLAGS cppflags ' '
 typeset -xTU LDFLAGS ldflags ' '
 typeset -xTU TCLLIBPATH tcllibpath ' '
 
-unset add_dir_to_path
-unset add_dir_to_pkg_config_path
-unset add_dir_to_include_path
-unset add_dir_to_linker_path
+# Initialize the ZSH completion system 
+autoload -Uz compinit && compinit
+
+# Case insensitive ZSH path-completion
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}{[:upper:][:lower:]}' \
+    'm:{[:lower:][:upper:]}={[:upper:][:lower:]}l:|=* r:|=*' \
+    'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' \
+    'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+
+# Partial ZSH completion suggestions
+zstyle ':completion:*' list-suffixes
+zstyle ':completion:*' expand prefix suffix
+
+# Load ZSH bashcompinit for some old bash completions
+autoload bashcompinit && bashcompinit
+
+unfunction add_dir_to_path
+unfunction add_dir_to_fpath
+unfunction add_dir_to_pkg_config_path
+unfunction add_dir_to_include_path
+unfunction add_dir_to_linker_path
 

@@ -51,6 +51,14 @@ alias service-status='sudo systemctl status'
 alias -g MD='mdless -c -I'
 alias -g XML='tidy -xml -q -i - | bat'
 alias -g UUID=uuid-generator
+alias -g lc='wc -l'
+
+# If on macOS the best markdown editor/viewer found is typora. Unfortunately they don't have any CLI support.
+#  This alias enables both a 'typora' command (which nobody will ever remember) and a 'markdown' command
+if [[ "$(uname)" == "Darwin" ]] then
+    alias typora='open -a typora'
+    alias markdown='open -a typora'
+fi
 
 # special git diff alias which overrides the one in the zsh git package to use my custom difftool
 alias gd='PAGER="less -RF" git difftool'
