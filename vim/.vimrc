@@ -13,7 +13,8 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'challenger-deep-theme/vim', {'name': 'challenger-deep-theme'}
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'Valloric/YouCompleteMe.git'
-Plugin 'jeaye/color_coded'
+" Unable to get it to compile
+" Plugin 'jeaye/color_coded'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'scrooloose/nerdcommenter.git'
 Plugin 'rhysd/vim-clang-format.git'
@@ -27,9 +28,9 @@ Plugin 'fatih/vim-go'
 " Syntax Checker for Python, Rust, go... see below
 Plugin 'vim-syntastic/syntastic'
 Plugin 'vim-scripts/indentpython.vim'
-Plugin 'nvie/vim-flake8'
 " Plugin to ensure modeline does not contain anything invalid
-Plugin 'ciaranm/securemodelines'
+" Need to branch the module and make some changes
+" Plugin 'ciaranm/securemodelines'
 " Command :Bclose will close and destroy buffer
 Plugin 'rbgrouleff/bclose.vim.git'
 " Open the tldr abbreviated man page for a command
@@ -234,12 +235,12 @@ filetype plugin on
 
 " color_coded options
 " Disable color_coded in diff mode
-if &diff
-  let g:color_coded_enabled = 0
-else
-  let g:color_coded_enabled = 1
-endif
-let g:color_coded_filetypes = ['c', 'cc', 'cpp', 'h', 'hh', 'hpp', 'objc']
+"if &diff
+"  let g:color_coded_enabled = 0
+"else
+"  let g:color_coded_enabled = 1
+"endif
+"let g:color_coded_filetypes = ['c', 'cc', 'cpp', 'h', 'hh', 'hpp', 'objc']
 
 " Set up the auto tab and indent settings for the following types
 autocmd FileType make set noexpandtab
