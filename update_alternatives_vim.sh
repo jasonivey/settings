@@ -3,6 +3,24 @@
 
 set -e
 
+#echo -e "\e[32mDeleting liks from pervious (wrong location) vim binaries\e[0m"
+
+#sudo update-alternatives --remove editor   /opt/vim/bin/vim
+#sudo update-alternatives --remove eview    /opt/vim/bin/eview
+#sudo update-alternatives --remove evim     /opt/vim/bin/evim
+#sudo update-alternatives --remove ex       /opt/vim/bin/ex
+#sudo update-alternatives --remove gview    /opt/vim/bin/gview
+#sudo update-alternatives --remove gvim     /opt/vim/bin/gvim
+#sudo update-alternatives --remove gvimdiff /opt/vim/bin/gvimdiff
+#sudo update-alternatives --remove rgview   /opt/vim/bin/rgview
+#sudo update-alternatives --remove rgvim    /opt/vim/bin/rgvim
+#sudo update-alternatives --remove rview    /opt/vim/bin/rview
+#sudo update-alternatives --remove rvim     /opt/vim/bin/rvim
+#sudo update-alternatives --remove vi       /opt/vim/bin/vim
+#sudo update-alternatives --remove view     /opt/vim/bin/view
+#sudo update-alternatives --remove vim      /opt/vim/bin/vim
+#sudo update-alternatives --remove vimdiff  /opt/vim/bin/vimdiff
+
 echo -e "\e[32mCreating links to the existing vim binaries\e[0m"
 
 [ -e "/usr/local/bin/vim" ]      && sudo update-alternatives --install /usr/bin/editor   editor   /usr/local/bin/vim      1500
