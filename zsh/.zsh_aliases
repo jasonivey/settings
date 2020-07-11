@@ -43,21 +43,21 @@ alias rickquote='fortune softwareengineering | cowsay -f rick-and-morty | lolcat
 alias twopanes='itermocil --here two_panes'
 alias top='glances'
 alias hex='hexdump -v -C'
+alias file-count='/bin/ls -1 | wc -l'
 alias service-start='sudo systemctl stop'
 alias service-stop='sudo systemctl start'
 alias service-resstart='sudo systemctl restart'
 alias service-is-active='sudo systemctl is-active'
 alias service-status='sudo systemctl status'
-alias -g MD='mdless -c -I'
 alias -g XML='tidy -xml -q -i - | bat'
 alias -g UUID=uuid-generator
-alias -g lc='wc -l'
 
 # If on macOS the best markdown editor/viewer found is typora. Unfortunately they don't have any CLI support.
 #  This alias enables both a 'typora' command (which nobody will ever remember) and a 'markdown' command
 if [[ "$(uname)" == "Darwin" ]] then
     alias typora='open -a typora'
-    alias markdown='open -a typora'
+    alias mark-down='open -a typora'
+    alias eject='diskutil unmountDisk force'
 fi
 
 # special git diff alias which overrides the one in the zsh git package to use my custom difftool

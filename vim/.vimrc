@@ -1,4 +1,4 @@
-" vim: awa=on:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=vim
+" vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=vim
 " autowriteall, softtabstop, tabstop, shiftwidth, expandtab, cindent, foldmethod, textwidth, filetype
 set nocompatible
 filetype off
@@ -10,28 +10,32 @@ Plugin 'gmarik/vundle'
 Plugin 'bling/vim-bufferline'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'challenger-deep-theme/vim', {'name': 'challenger-deep-theme'}
+Plugin 'arzg/vim-colors-xcode'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'Valloric/YouCompleteMe.git'
-" Unable to get it to compile
-" Plugin 'jeaye/color_coded'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'scrooloose/nerdcommenter.git'
 Plugin 'rhysd/vim-clang-format.git'
 " Indent line plugin where indent marks are shown throughout the source file
- Plugin 'Yggdroot/indentLine'
-" Git plugin to add extensions into vim
+Plugin 'Yggdroot/indentLine'
+" Better JSON for VIM -- distinct highlighting of keywords vs values. JSON-specific warnings and quote concealing.
+Plugin 'elzr/vim-json'
+" Add support for . repeat commands
+Plugin 'tpope/vim-repeat'
+" Add support for various shortcuts
+Plugin 'tpope/vim-unimpaired'
+" Add git support inside vim
 Plugin 'tpope/vim-fugitive.git'
+" Add ripgrep commands inside vim
 Plugin 'jremmen/vim-ripgrep'
 " Plugin for go-lang
 Plugin 'fatih/vim-go'
 " Syntax Checker for Python, Rust, go... see below
 Plugin 'vim-syntastic/syntastic'
 Plugin 'vim-scripts/indentpython.vim'
-" Plugin to ensure modeline does not contain anything invalid
-" Need to branch the module and make some changes
-" Plugin 'ciaranm/securemodelines'
-" Command :Bclose will close and destroy buffer
+" Highlights trailing whitespace in red -- call :FixWhitespace to strip
+Plugin 'bronson/vim-trailing-whitespace'
+" Add :Bclose will close and destroy buffer
 Plugin 'rbgrouleff/bclose.vim.git'
 " Open the tldr abbreviated man page for a command
 Plugin 'wlemuel/vim-tldr'
@@ -39,25 +43,47 @@ Plugin 'wlemuel/vim-tldr'
 Plugin 'a.vim'
 call vundle#end()
 
+" create a custom command SortLine which will take a line and sort the words
+command -nargs=0 -range SortLine <line1>,<line2>call setline('.',join(sort(split(getline('.'),' ')),' '))
+
 " default is set to 200
 set history=1000
 
 " Always set encoding to utf-8
 set encoding=utf-8
-let &t_Co=256
-set term=xterm-256color
 set termencoding=utf-8
+set t_Co=256
+
+" Set colorscheme (i.e. theme)
+colorscheme xcodelighthc
+
+" Enable true color 启用终端24位色
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+set term=xterm-256color
 
 if has("gui_running") && has("gui_macvim")
   set guifont=MesloLGS-NF-Regular:h11
 endif
 
-"Airline settings
+" xcode-light-hc theme settings
+let g:xcodelighthc_green_comments=1
+let g:xcodelighthc_emph_types=1
+let g:xcodelighthc_emph_funcs=1
+let g:xcodelighthc_emph_idents=1
+let g:xcodelighthc_match_paren_style=1
+let g:xcodelighthc_dim_punctuation=0
+
+" Airline settings
 let g:Powerline_symbols='unicode'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:laststatus=2
-let g:airline_theme='murmur'
+let g:airline_theme='molokai'
 
 " Syntastic Plugin Modifications
 set statusline+=%#warningmsg#
@@ -73,10 +99,7 @@ let python_highlight_all=1
 
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_color_term = 239
-
-"if has('mouse')
-"    set mouse=a
-"endif
+let g:indentLine_noConcealCursor=""
 
 " Remap F4 <next> and Shift-F4 <previous> to step through the quickfind results
 nnoremap <S-F4> :cp<CR>
@@ -109,16 +132,9 @@ set nowrap
 " Auto indent
 set autoindent
 
-" Highlight trailing whitespace by default
-highlight ws ctermbg=red guibg=red
-match ws /\s\+$/
-autocmd BufWinEnter * match ws / \+$/
-
 " Tab settings
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-set listchars=eol:⏎,tab:␉·,trail:␠,nbsp:␣
-" set listchars=eol:¬,tab:>,trail:~,extends:>,precedes:<,space:␣
-" set listchars=trail:~
+set listchars=tab:›·,trail:·,extends:›,precedes:‹
 set list
 
 set completeopt=longest
@@ -141,8 +157,21 @@ set matchtime=5
 " Turn on the line and offset markers in the bottom right corner
 set ruler
 
-" No error bells please
-set noerrorbells
+" No error bells
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
+
+" Automatically reload file when changed from outside
+set autoread
+
+" w!! to save file with sudo.
+cmap w!! w !sudo tee % > /dev/null
+
+" restore previous cursor position
+au BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype != "gitcommit" |
+        \ execute("normal `\"") |
+    \ endif
 
 " Fix the backspace key
 set backspace=2
@@ -159,8 +188,8 @@ filetype plugin indent on
 syntax on
 
 " Not sure why, but these theme/color customizations must after the above two lines
-highlight ColorColumn ctermbg=cyan guibg=lightcyan
-highlight LineNr term=bold cterm=bold ctermbg=black ctermfg=green guibg=black guifg=lightgreen
+highlight ColorColumn ctermbg=cyan guibg=cyan
+highlight LineNr term=NONE cterm=NONE ctermbg=NONE ctermfg=black guibg=NONE guifg=black
 highlight clear CursorLine
 highlight CursorLine term=underline cterm=underline gui=underline ctermbg=NONE guibg=NONE
 
@@ -232,15 +261,6 @@ map <Leader>c <plug>NERDCommenterAlignLeft
 map <Leader>u <plug>NERDCommenterUncomment
 
 filetype plugin on
-
-" color_coded options
-" Disable color_coded in diff mode
-"if &diff
-"  let g:color_coded_enabled = 0
-"else
-"  let g:color_coded_enabled = 1
-"endif
-"let g:color_coded_filetypes = ['c', 'cc', 'cpp', 'h', 'hh', 'hpp', 'objc']
 
 " Set up the auto tab and indent settings for the following types
 autocmd FileType make set noexpandtab

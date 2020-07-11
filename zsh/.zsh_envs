@@ -67,7 +67,13 @@ if [[ "$(uname)" == "Darwin" ]] then
     # Add various fpath directories for ZSH completions
     add_dir_to_fpath "/usr/local/share/zsh/site-functions"           # brew ZSH site functions
     add_dir_to_fpath "/usr/local/opt/curl/share/zsh/site-functions"  # curl ZSH site functions
-   
+
+    # Setup libressl environment variables -- uncomment when needed
+    add_dir_to_path "/usr/local/opt/libressl/bin"
+    #add_dir_to_include_path "/usr/local/opt/libressl/include"
+    #add_dir_to_linker_path "/usr/local/opt/libressl/lib"
+    #add_dir_to_pkg_config_path "/usr/local/opt/libressl/lib/pkgconfig"
+
     # Setup curl environment variables -- uncomment when needed
     add_dir_to_path "/usr/local/opt/curl/bin"
     #add_dir_to_include_path "/usr/local/opt/curl/include"
@@ -146,6 +152,11 @@ if [[ -d "/usr/local/go" ]] then
     mkdir -p "$GOPATH/bin"
     add_dir_to_path "$GOPATH/bin"
     add_dir_to_path "$GOROOT/bin"
+fi
+
+# Add the environment variable which speciifies where the cheat sheet configuration file is located
+if [[ -e "$HOME/.config/cht.sh/cht.sh.conf" ]] then
+    export CHTSH_CONF="$HOME/.config/cht.sh/cht.sh.conf"
 fi
 
 # Ensure that the TCL interpretter can find the expect library
