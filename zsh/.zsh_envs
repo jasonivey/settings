@@ -142,6 +142,27 @@ fi
 # Always use vim as the editor of choice -- the only thing we can depend on always being installed!
 export EDITOR='vim'
 
+#
+# Create the LS_COLORS environment variable using the 'vivid' applilcation
+# Oh Ubuntu `apt` will install filetypes.yml to /usr/share/vivid and themees (*.yml) to /usr/share/vivid/themes
+# If `cargo install vivid` was used instead these directories where not created
+# On Ubuntu: mkdir -p /usr/share/vivid/themes
+#            cp $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/config/filetypes.yml /usr/share/vivid
+#            cp $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/themes/*.yml /usr/share/vivid/themes
+# On macOS:  mkdir -p /usr/local/share/vivid/themes
+#            cp $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/config/filetypes.yml /usr/local/share/vivid
+#            cp $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/themes/*.yml /usr/local/share/vivid/themes
+# This enables Ubuntu to work without any configuration. But since macOS is using a different than expected directory,
+#  you have to use the `VIVID_DATABASE=/usr/local/share/vivid/filetypes.yml` environment variable. But that doesn't seem
+#  to fix every problem either.
+# The best solution, until there is clear support on all platforms, is to place the above files in `$HOME/.config/vivid`.
+#   The `vivid` code supports the $HOME/.config/vivid directory out-of-the-box, no extra ENV or switches needed.
+#   Then it's just a matter of keeping the files updated every time vivid is released.  On all platforms:
+#   cp -vi $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/config/filetypes.yml $HOME/.config/vivid
+#   cp -vi $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/themes/*.yml $HOME/.config/vivid/themes
+#
+command -v vivid &>/dev/null && { export LS_COLORS="$(vivid generate snazzy)"; }
+
 # RipGrep needs to know where its configuration file is located
 [ -e "$HOME/.config/ripgrep/.ripgreprc" ] && export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/.ripgreprc
 

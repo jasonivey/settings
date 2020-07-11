@@ -8,12 +8,12 @@ emphasis:
   italic: u i
   bold-italic: b u i
 h1:
-  color: b intense_black on_white
-  pad: d black on_white
+  color: b intense_yellow
+  pad: d yellow
   pad_char: "="
 h2:
-  color: b white on_intense_black
-  pad: d white on_intense_black
+  color: u intense_yellow
+  pad: d yellow
   pad_char: "-"
 h3:
   color: u b yellow
@@ -50,8 +50,8 @@ code_block:
   color: white on_black
   border: blue
   title: magenta
-  eol: intense_black on_black
-  pygments_theme: colorful
+  eol: intense_white on_black
+  pygments_theme: fruity
 dd:
   marker: d red
   color: b white
