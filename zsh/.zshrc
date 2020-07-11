@@ -13,22 +13,15 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 plugins=(
-    autojump # install in mac/linux
     brew
-    chucknorris  # fortune/cowsay
     command-not-found # install in linux
-    debian # apt
     dircycle
-    encode64 # base64
     extract
     git
     git-extras
     httpie # adds httpie completions
-    rand-quote
-    screen
     sudo
     tldr
-    urltools
     z
     zsh-syntax-highlighting
     zsh-autosuggestions

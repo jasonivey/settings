@@ -5,6 +5,7 @@
 # Source various other zsh/bash modules
 ###
 
+
 # setup autocompletion for iTermocil
 if [[ $(command -v itermocil &> /dev/null) ]] then
     compctl -g '~/.itermocil/*(:t:r)' itermocil
@@ -19,11 +20,10 @@ fi
 # opam configuration
 [ -r "$HOME/.opam/opam-init/init.zsh" ] && source "$HOME/.opam/opam-init/init.zsh" &> /dev/null || true
 
-# setup autojump
+# setup command-not-found
 if [[ "$(uname)" == "Darwin" ]] then
-    [ -f "/usr/local/etc/profile.d/autojump.sh" ] && source "/usr/local/etc/profile.d/autojump.sh"
-else
-    [ -f "/usr/share/autojump/autojump.sh" ] && source "/usr/share/autojump/autojump.sh"
+    HB_CNF_HANDLER="/usr/local/Homebrew/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+    [ -f "$HB_CNF_HANDLER" ] && source "$HB_CNF_HANDLER"
 fi
 
 # load nvm npm package manager
