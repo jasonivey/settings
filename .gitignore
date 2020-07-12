@@ -1,4 +1,6 @@
 .DS_Store
+mpv.conf
+.shpotify.cfg
 .bash_color
 .ssh_aliases
 .zsh_default_user
