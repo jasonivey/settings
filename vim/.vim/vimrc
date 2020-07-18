@@ -12,6 +12,16 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'arzg/vim-colors-xcode'
 Plugin 'ctrlpvim/ctrlp.vim'
+" awesome Python autocompletion
+Plugin 'davidhalter/jedi-vim'
+" activate and deactivate the pyenv Python
+Plugin 'lambdalisue/vim-pyenv'
+" Plugin for go-lang
+Plugin 'fatih/vim-go'
+" Syntax Checker for Python, Rust, go... see below
+Plugin 'vim-syntastic/syntastic'
+Plugin 'vim-scripts/indentpython.vim'
+" Code completion for C/C++
 Plugin 'Valloric/YouCompleteMe.git'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'scrooloose/nerdcommenter.git'
@@ -28,11 +38,6 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-fugitive.git'
 " Add ripgrep commands inside vim
 Plugin 'jremmen/vim-ripgrep'
-" Plugin for go-lang
-Plugin 'fatih/vim-go'
-" Syntax Checker for Python, Rust, go... see below
-Plugin 'vim-syntastic/syntastic'
-Plugin 'vim-scripts/indentpython.vim'
 " Highlights trailing whitespace in red -- call :FixWhitespace to strip
 Plugin 'bronson/vim-trailing-whitespace'
 " Add :Bclose will close and destroy buffer
@@ -45,6 +50,13 @@ call vundle#end()
 
 " create a custom command SortLine which will take a line and sort the words
 command -nargs=0 -range SortLine <line1>,<line2>call setline('.',join(sort(split(getline('.'),' ')),' '))
+
+let python3_path = system('command -v python3')
+if shell_error == 0
+  let g:ycm_python_binary_path = join([substitute(python3_path, "\n", "", "")[:-(len("python3") + 1)], "python"], "")
+else
+  let g:ycm_python_binary_path = 'python'
+endif
 
 " default is set to 200
 set history=1000
