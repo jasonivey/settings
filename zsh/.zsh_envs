@@ -113,16 +113,16 @@ if [[ "$(uname)" == "Darwin" ]] then
     add_dir_to_pkg_config_path "/usr/local/opt/python/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
     add_dir_to_pkg_config_path "/usr/local/opt/oniguruma/lib/pkgconfig"
 
-    " add_dir_to_path "$HOME/Library/Python/3.7/bin"
-    " The above command would be the place where the `macOS system`
-    "  `Python3` is added into the PATH environment variable.  But
-    "  since we want to allow installation of multiple versions of
-    "  Python3 at the same time with only one version active at a
-    "  time.  Pyenv has been installed and this module should install
-    "  without any issues. At that point python3, python, pip
-    "  and pip will all have been installed. The rest of the global
-    "  install packages can be installed by running the following:
-    " pip install -r $HOME/scripts/requirements.txt
+    # add_dir_to_path $HOME/Library/Python/3.7/bin
+    #  The above command would be the place where the `macOS system`
+    #  `Python3` is added into the PATH environment variable.  But
+    #  since we want to allow installation of multiple versions of
+    #  Python3 at the same time with only one version active at a
+    #  time.  Pyenv has been installed and this module should install
+    #  without any issues. At that point python3, python, pip
+    #  and pip will all have been installed. The rest of the global
+    #  install packages can be installed by running the following:
+    # pip install -r $HOME/scripts/requirements.txt
 
     # Setup the QT library environment variables -- uncomment when needed
     #add_dir_to_include_path "/usr/local/opt/qt5/include"
