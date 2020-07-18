@@ -53,7 +53,6 @@ add_dir_to_path "$HOME/scripts"
 add_dir_to_path "$HOME/.local/bin"
 add_dir_to_path "$HOME/.cargo/bin"
 
-
 # For using a2x for manpage generation
 [ -e "/usr/local/etc/xml/catalog" ] && export XML_CATALOG_FILES="/usr/local/etc/xml/catalog"
 
@@ -111,11 +110,19 @@ if [[ "$(uname)" == "Darwin" ]] then
     add_dir_to_include_path "/usr/local/opt/tcl-tk/include"
     add_dir_to_pkg_config_path "/usr/local/opt/tcl-tk/lib/pkgconfig"
 
-    # Setup Python-3.7 environment variables
-    add_dir_to_path "$HOME/Library/Python/3.7/bin"
-
-    add_dir_to_pkg_config_path "/usr/local/opt/python/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
     add_dir_to_pkg_config_path "/usr/local/opt/oniguruma/lib/pkgconfig"
+    add_dir_to_pkg_config_path "/usr/local/opt/python/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
+
+    " add_dir_to_path "$HOME/Library/Python/3.7/bin"
+    " The above command would be the place where the `macOS system`
+    "  `Python3` is added into the PATH environment variable.  But
+    "  since we want to allow installation of multiple versions of
+    "  Python3 at the same time with only one version active at a
+    "  time.  Pyenv has been installed and this module should install
+    "  without any issues. At that point python3, python, pip
+    "  and pip will all have been installed. The rest of the global
+    "  install packages can be installed by running the following:
+    " pip install -r $HOME/scripts/requirements.txt
 
     # Setup the QT library environment variables -- uncomment when needed
     #add_dir_to_include_path "/usr/local/opt/qt5/include"
@@ -130,6 +137,9 @@ elif [[ "$(uname -s)" == "Linux" ]] then
         export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
         add_dir_to_path "$JAVA_HOME/bin"
     fi
+
+    # Add snap bin directory in case zsh isn't picking it up via the standard /etc/profile.d/apps-bin-path.sh
+    add_dir_to_path "/snap/bin"
 
     # Add ruby include, linker and pkg_config_path (I think there must be a better way)
     add_dir_to_path "$HOME/.gem/ruby/2.7.0/bin"
@@ -163,6 +173,9 @@ export EDITOR='vim'
 #
 command -v vivid &>/dev/null && { export LS_COLORS="$(vivid generate snazzy)"; }
 
+# Set the location for the SCREENRC config file
+[ -e "$HOME/.config/screen/.screenrc" ] && export SCREENRC=$HOME/.config/screen/.screenrc
+
 # RipGrep needs to know where its configuration file is located
 [ -e "$HOME/.config/ripgrep/.ripgreprc" ] && export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/.ripgreprc
 
@@ -195,7 +208,7 @@ typeset -xTU CPPFLAGS cppflags ' '
 typeset -xTU LDFLAGS ldflags ' '
 typeset -xTU TCLLIBPATH tcllibpath ' '
 
-# Initialize the ZSH completion system 
+# Initialize the ZSH completion system
 autoload -Uz compinit && compinit
 
 # Case insensitive ZSH path-completion
