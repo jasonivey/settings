@@ -32,7 +32,6 @@ alias abs_path=abs-path
 alias matrix='cmatrix -bs -C red'
 alias weather=get-full-weather-info
 alias netinfo=get-network-info
-alias set-tab-color='$HOME/settings/set-tab-color.sh'
 alias gitls='bash $HOME/settings/gitls/gitls'
 alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
 alias 7ztest='7z l -slt'

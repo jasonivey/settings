@@ -1,13 +1,6 @@
 #!/usr/bin/env zsh
 # vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
 
-if [[ "$(uname -s)" == "Linux" ]] then
-    test -r $HOME/.dircolors && eval "$(dircolors $HOME/.dircolors)"
-elif [[ "$(uname -s)" == "Darwin" ]] then
-    # If we are in Mac OSX see if the brew package coreutils has been installed
-    test -r $HOME/.dircolors && $(command -v gdircolors > /dev/null 2>&1) && eval "$(gdircolors $HOME/.dircolors > /dev/null 2>&1)"
-fi
-
 goclean() {
     local pkg=$1
     local ost
@@ -91,6 +84,14 @@ get-confirmation() {
         echo 1;
     else
         echo 0;
+    fi
+}
+
+set-tab-color() {
+    if [ -e "$HOME/.zsh_color" ]; then
+        echo $(head -n 1 $HOME/.zsh_color) | python $HOME/scripts/set_tab_color.py
+    elif [ -e "$HOME/.bash_color" ]; then
+        echo $(head -n 1 $HOME/.bash_color) | python $HOME/scripts/set_tab_color.py
     fi
 }
 

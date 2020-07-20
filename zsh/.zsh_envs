@@ -57,9 +57,6 @@ add_dir_to_path "$HOME/.cargo/bin"
 [ -e "/usr/local/etc/xml/catalog" ] && export XML_CATALOG_FILES="/usr/local/etc/xml/catalog"
 
 if [[ "$(uname)" == "Darwin" ]] then
-    # Setup the perl environment
-    [ -e "$HOME/perl5/perlbrew/etc/bashrc" ] && source "$HOME/perl5/perlbrew/etc/bashrc"
-
     # Setup JAVA environment variables
     [ -x "/usr/libexec/java_home" ] && export JAVA_HOME=$(/usr/libexec/java_home)
 
@@ -91,6 +88,7 @@ if [[ "$(uname)" == "Darwin" ]] then
     #add_dir_to_linker_path "/usr/local/opt/llvm/lib"
 
     # Add all of the gnu-variant duplicate (newer) versions of binaries
+    add_dir_to_path "/usr/local/opt/coreutils/bin"
     add_dir_to_path "/usr/local/opt/unzip/bin"
     add_dir_to_path "/usr/local/opt/coreutils/libexec/gnubin"
     add_dir_to_path "/usr/local/opt/make/libexec/gnubin"
@@ -179,9 +177,6 @@ command -v vivid &>/dev/null && { export LS_COLORS="$(vivid generate snazzy)"; }
 # RipGrep needs to know where its configuration file is located
 [ -e "$HOME/.config/ripgrep/.ripgreprc" ] && export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/.ripgreprc
 
-# Setup pyenv environment
-command -v pyenv &>/dev/null && { eval "$(pyenv init -)"; }
-
 # Setup golang environment variables
 if [[ -d "/usr/local/go" ]] then
     export GOROOT=/usr/local/go
@@ -232,4 +227,3 @@ unfunction add_dir_to_fpath
 unfunction add_dir_to_pkg_config_path
 unfunction add_dir_to_include_path
 unfunction add_dir_to_linker_path
-
