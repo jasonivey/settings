@@ -1,4 +1,5 @@
-mpv.conf                          # this contained an out-dated ID to access my Audible account
-.shpotify.cfg                     # this contained an out-dated set of "Spotify App credentials
-config/.config/noip2/no-ip2.conf  # this contained credential to access my `Spotify` account.
-alfred
+mpv.conf
+.shpotify.cfg
+config/.config/noip2/no-ip2.conf
+alfred/
+settings_tree.txt

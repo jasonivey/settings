@@ -147,6 +147,9 @@ brew "grep"
 # Improved top (interactive process viewer)
 brew "htop"
 
+# CLI wrapper for basic network utilities on macOS - ip command
+brew "iproute2mac"
+
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 

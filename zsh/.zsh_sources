@@ -44,6 +44,9 @@ fi
 # Setup pyenv environment
 command -v pyenv &>/dev/null && { eval "$(pyenv init -)"; }
 
+# Setup the pyenv-virtualenv environment
+command -v pyenv-virtualenv-init &>/dev/null && { eval "$(pyenv virtualenv-init -)"; }
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
 

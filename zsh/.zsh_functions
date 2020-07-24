@@ -73,9 +73,17 @@ uuid-generator() {
 }
 
 abs-path() {
-    [ $# -gt 0 ] && local dir="$1" || local dir="`pwd`"
-    printf "\e[32m%s\e[0m\e[1m: %s\e[0m\n" "realpath" "$(realpath -LPe $dir)"
-    unset dir
+    [ $# -gt 0 ] && local dir_="$1" || local dir_="$(pwd -P)"
+    printf "\e[32m%s\e[0m\e[1m: %s\e[0m\n" "realpath" "$(realpath -LPe $dir_)"
+}
+
+get-dirsize() {
+    [ $# -gt 0 ] && local dir_="$1" || local dir_="$(pwd -P)"
+    du -hcs "$dir_" | sed -n '1p;$p' | awk -f $HOME/scripts/dirsize.awk
+}
+
+get-active-network-interface() {
+    ip route get 1.1.1.1 | awk '{ if (NR == 1) { print $5; } }'
 }
 
 get-confirmation() {
@@ -95,6 +103,10 @@ set-tab-color() {
     fi
 }
 
+ssh-vpn() {
+    ssh -F $HOME/tools/algo/configs/$1/ssh_config $1
+}
+
 restart() {
     let confirmation=$(get-confirmation "Reboot now")
     if (( $confirmation == 1 )); then
@@ -105,7 +117,7 @@ restart() {
             # Shows a confirmation dialog
             osascript -e 'tell app "loginwindow" to «event aevtrrst»'
         else
-            systemctl reboot
+            sudo systemctl reboot
         fi
     else
         echo "Not rebooting now..."
@@ -122,7 +134,7 @@ shutoff() {
             # Shows a confirmation dialog
             osascript -e 'tell app "loginwindow" to «event aevtrsdn»'
         else
-            systemctl halt
+            sudo systemctl halt
         fi
     else
         echo "Not shutting down now..."

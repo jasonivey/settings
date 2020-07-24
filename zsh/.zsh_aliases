@@ -8,48 +8,81 @@
 # start by sourcing the needed zsh functions
 [ -e "$HOME/.zsh_functions" ] && source "$HOME/.zsh_functions"
 
-alias zshconfig='vim $HOME/.zshrc'
-alias ohmyzsh='vim $HOME/.oh-my-zsh'
-alias settings='vim $HOME/settings/.bash_settings'
-alias zsettings='vim $HOME/settings/.zshrc'
+# Aliases to open configure files
+alias zshrc='$EDITOR $HOME/.zshrc'
+alias ohmyzsh='$EDITOR $HOME/.oh-my-zsh'
+alias settings='$EDITOR $HOME/settings/.bash_settings'
+alias zsettings='$EDITOR $HOME/settings/.zshrc'
 alias setting-dir='cd $HOME/settings'
-alias x='exit'
-alias df='df -h'
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-alias ide='vim -O3'
-alias cpwp='rsync -aP'
-alias mvwp='rsync -aP --remove-source-files'
-alias update-path='export PATH=`pwd`:$PATH'
-alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
-alias pylint='pylint -r n --rcfile=~/settings/pylintrc'
-alias setup-intel='source /opt/intel/bin/iccvars.sh -arch intel64 -platform linux'
-alias update='sudo apt update'
-alias upgrade='sudo apt dist-upgrade'
-alias devprep='ctags -R > /dev/null 2>&1; yes | cp -vf $HOME/dev/.ycm_extra_conf.py . > /dev/null 2>&1; yes | cp -vf $HOME/dev/.color_coded . > /dev/null 2>&1'
-alias abs_path=abs-path
-alias matrix='cmatrix -bs -C red'
+
+# Aliases for network/system/date/time information
+alias mount='mount | column -t'
+alias now='date +"%T"'
+alias nowtime=now
+alias nowdate='date +"%d-%m-%Y"'
+alias ping='ping -c 3'
+alias pingfast='ping -c 10 -i .1'
+alias netiface=get-active-network-interface
+
+if [[ "$(uname)" == "Darwin" ]] then
+    alias ports='lsof -nP +c 15 | egrep "IPv[46]"'
+else
+    alias ports='netstat -tulanp'
+fi
+alias disks='df --total --human-readable'
+alias dirsize=get-dirsize
+
+# Additional information
+alias hex='hexdump -v -C'
+alias file-count='/bin/ls -1 | wc -l'
 alias weather=get-full-weather-info
 alias netinfo=get-network-info
-alias gitls='bash $HOME/settings/gitls/gitls'
+alias -g XML='tidy -xml -q -i - | bat'
+alias -g UUID=uuid-generator
+
+
+# Aliases to make the standard commands a little more stupid proof
+alias rm='rm -Iv --preserve-root'
+# make sure you know what you are doing
+alias mv='mv -iv'
+alias cp='cp -iv'
+alias ln='ln -iv'
+# again, don't be stupid!
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+# make it easy to add a path to the $PATH
+alias update-path='export PATH=`pwd`:$PATH'
+# make it simple to find the full path of any file/symlink/dir/etc.
+alias abs_path=abs-path
+# these args are impossible to remember
 alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
 alias 7ztest='7z l -slt'
 alias 7zdec='7z x'
-alias transmission-cli='transmission-remote-cli --config=$HOME/.transmission-remote-cli.config'
+
+# Both of the following are keystroke savers...
 alias cls='clear && echo -en "\e[3J"'
-alias rickquote='fortune softwareengineering | cowsay -f rick-and-morty | lolcat'
-alias twopanes='itermocil --here two_panes'
-alias top='glances'
-alias hex='hexdump -v -C'
-alias file-count='/bin/ls -1 | wc -l'
-alias service-start='sudo systemctl stop'
-alias service-stop='sudo systemctl start'
-alias service-resstart='sudo systemctl restart'
-alias service-is-active='sudo systemctl is-active'
-alias service-status='sudo systemctl status'
-alias -g XML='tidy -xml -q -i - | bat'
-alias -g UUID=uuid-generator
+alias x='exit'
+
+# Package mantanaince applications and commands
+if [[ "$(uname)" == "Linux" ]] then
+    alias update='sudo apt update'
+    alias upgrade='sudo apt dist-upgrade'
+else
+    alias update='brew update && brew outdated && brew cask outdated'
+    alias upgrade='brew upgrade && brew cask reinstall $(brew cask outdated) && brew cleanup'
+fi
+
+# Aliases for various applications
+#alias ide='vim -O3'
+#alias cpwp='rsync -aP'
+#alias mvwp='rsync -aP --remove-source-files'
+#alias pylint='pylint -r n --rcfile=$HOME/pylintrc'
+#alias matrix='cmatrix -bs -C red'
+#alias transmission-cli='transmission-remote-cli --config=$HOME/.config/transmission-remote-cli/settings.cfg'
+#alias rickquote='fortune softwareengineering | cowsay -f rick-and-morty | lolcat'
+#alias twopanes='itermocil --here two_panes'
+
 
 # If on macOS the best markdown editor/viewer found is typora. Unfortunately they don't have any CLI support.
 #  This alias enables both a 'typora' command (which nobody will ever remember) and a 'markdown' command
@@ -70,13 +103,6 @@ if [[ $(command -v exa) ]] then
     alias lsa='exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
     alias dir='exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons'
     alias lst='exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons'
-    #alias  ls='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    #alias  la='unbuffer exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    #alias   l='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    #alias  ll='unbuffer exa --long --header --group --links --sort=Name --time-style=default --git --icons'
-    #alias lsa='unbuffer exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    #alias dir='unbuffer exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons'
-    #alias lst='unbuffer exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons'
 elif [[ $(command -v lsd) ]] then
     alias  ls='unbuffer lsd --almost-all --long'
     alias  la='unbuffer lsd --almost-all --long'
@@ -85,13 +111,6 @@ elif [[ $(command -v lsd) ]] then
     alias lsa='unbuffer exa --all --long'
     alias dir='unbuffer lsd --almost-all --long'
     alias lst='unbuffer lsd --almost-all --long --timesort'
-    #alias  ls='unbuffer lsd --almost-all --long'
-    #alias  la='unbuffer lsd --almost-all --long'
-    #alias   l='unbuffer lsd --all --long'
-    #alias  ll='unbuffer exa --long'
-    #alias lsa='unbuffer exa --all --long'
-    #alias dir='unbuffer lsd --almost-all --long'
-    #alias lst='unbuffer lsd --almost-all --long --timesort'
 elif [[ $(command -v gls) ]] then
     # On Mac OSX our last chance of getting into the else loop is if the coreutils brew package has been installed
     #  and we can use the gnu-ls binary.
