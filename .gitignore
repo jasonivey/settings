@@ -1,7 +1,9 @@
 mpv.conf
 .shpotify.cfg
 config/.config/noip2/no-ip2.conf
+vim/.vim/backups/
 vim/.vim/bundle/
+vim/.vim/swapfiles/
 vim/.vim/viminfo
 alfred/
 settings_tree.txt
