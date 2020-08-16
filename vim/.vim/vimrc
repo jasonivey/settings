@@ -1,6 +1,31 @@
 " vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=vim
 " autowriteall, softtabstop, tabstop, shiftwidth, expandtab, cindent, foldmethod, textwidth, filetype
 set nocompatible
+
+" default is set to 200
+set history=1000
+
+" Move .viminfo into the .vim directory
+if !isdirectory($HOME . "/.vim")
+    call mkdir($HOME . "/.vim", "p")
+endif
+set viminfo=%,'100,n~/.vim/viminfo
+"           | |    + viminfo file path
+"           | + files marks saved
+"           + save/restore buffer list
+
+" Move backups and swp files to a dedicated location
+if !isdirectory($HOME . "/.vim/backups")
+    call mkdir($HOME . "/.vim/backups", "p")
+endif
+if !isdirectory($HOME . "/.vim/swapfiles")
+    call mkdir($HOME . "/.vim/swapfiles", "p")
+endif
+set backupdir=$HOME/.vim/backups//
+set directory=$HOME/.vim/swapfiles//
+set swapfile
+set writebackup
+
 filetype off
 
 " set the runtime path to include Vundle and initialize
@@ -58,8 +83,6 @@ else
   let g:ycm_python_binary_path = 'python'
 endif
 
-" default is set to 200
-set history=1000
 
 " Always set encoding to utf-8
 set encoding=utf-8
@@ -117,17 +140,6 @@ let g:indentLine_noConcealCursor=""
 nnoremap <S-F4> :cp<CR>
 nnoremap <F4> :cn<CR>
 
-" Move backups and swp files to a dedicated location
-if !isdirectory($HOME . "/.vim/backups")
-    call mkdir($HOME . "/.vim/backups", "p")
-endif
-if !isdirectory($HOME . "/.vim/swapfiles")
-    call mkdir($HOME . "/.vim/swapfiles", "p")
-endif
-set backupdir=$HOME/.vim/backups//
-set directory=$HOME/.vim/swapfiles//
-set swapfile
-set writebackup
 
 " Enable code file customization with modelines
 set modeline

@@ -11,9 +11,9 @@ if [[ $(command -v itermocil &> /dev/null) ]] then
     compctl -g '~/.itermocil/*(:t:r)' itermocil
 fi
 
-# load the nix package manager
-if [[ -d "/nix" ]] then
-    # load the nix package installer and its bin to the path
+# load the nix package installer and its bin to the path
+#if [[ -d "/nix" ]] then
+if [[ -d "/nix" && -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]] then
     source $HOME/.nix-profile/etc/profile.d/nix.sh
 fi
 
@@ -24,18 +24,23 @@ fi
 if [[ "$(uname)" == "Darwin" ]] then
     HB_CNF_HANDLER="/usr/local/Homebrew/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
     [ -f "$HB_CNF_HANDLER" ] && source "$HB_CNF_HANDLER"
+    unset HB_CNF_HANDLER
 fi
+
+# load the perlbrew perl package manager
+[ -e "$HOME/perl5/perlbrew/etc/bashrc" ] && source "$HOME/perl5/perlbrew/etc/bashrc"
 
 # load nvm npm package manager
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-
-if [[ -d "$HOME/perl5" ]] then
-    # By default non-brewed cpan modules are installed to the Cellar. If you wish
-    #  for your modules to persist across updates we recommend using `local::lib`.
-    #PERL_MM_OPT="INSTALL_BASE=$HOME/perl5" cpan local::lib
-    eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
+if [[ -d "$HOME/.nvm" && -e "$HOME/.nvm/nvm.sh" ]] then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
 fi
+
+# Setup pyenv environment
+command -v pyenv &>/dev/null && { eval "$(pyenv init -)"; }
+
+# Setup the pyenv-virtualenv environment
+command -v pyenv-virtualenv-init &>/dev/null && { eval "$(pyenv virtualenv-init -)"; }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
