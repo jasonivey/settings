@@ -140,7 +140,9 @@ programming:
     ruby: [.rb]
     rust: [.rs]
     scala: [.scala, .sbt]
-    shell: [.sh, .bash, .zsh, .fish]
+    shell: [.sh, .bash, .bashrc, .bash_login, .bash_profile, .profile, .bash_logout,
+            .zprofile, .zsh_aliases, .zsh_color, .zsh_default_user, .zsh_envs,
+            .zsh_functions, .zsh_sources, .zshrc, .zsh, .fish]
     sql: [.sql]
     swift: [.swift]
     tablegen: [.td]

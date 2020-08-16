@@ -92,53 +92,51 @@ if [[ "$(uname)" == "Darwin" ]] then
     alias eject='diskutil unmountDisk force'
 fi
 
-# special git diff alias which overrides the one in the zsh git package to use my custom difftool
-alias gd='PAGER="less -RF" git difftool'
-
+# teletype is a function defined in .zsh_functions
 if [[ $(command -v exa) ]] then
-    alias  ls='exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias  la='exa --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias   l='exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias  ll='exa --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias lsa='exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons'
-    alias dir='exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons'
-    alias lst='exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons'
+    alias  ls='exa --all --long --header --group --links --sort=Name --time-style=default --git --icons --color=always'
+    alias  la='exa --all --long --header --group --links --sort=Name --time-style=default --git --icons --color=always'
+    alias   l='exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons --color=always'
+    alias  ll='exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons --color=always'
+    alias lsa='exa --all --all --long --header --group --links --sort=Name --time-style=default --git --icons --color=always'
+    alias dir='exa --all --long --header --group --links --sort=.Name --time-style=default --git --icons --color=always'
+    alias lst='exa --all --long --header --group --links --sort=oldest --time-style=default --git --icons --color=always'
 elif [[ $(command -v lsd) ]] then
-    alias  ls='unbuffer lsd --almost-all --long'
-    alias  la='unbuffer lsd --almost-all --long'
-    alias   l='unbuffer lsd --all --long'
-    alias  ll='unbuffer exa --long'
-    alias lsa='unbuffer exa --all --long'
-    alias dir='unbuffer lsd --almost-all --long'
-    alias lst='unbuffer lsd --almost-all --long --timesort'
+    alias  ls='lsd --almost-all --long --color always'
+    alias  la='lsd --almost-all --long --color always'
+    alias   l='lsd --all --long --color always'
+    alias  ll='lsd --all --long --color always'
+    alias lsa='lsd --all --long --color always'
+    alias dir='lsd --almost-all --long --color always'
+    alias lst='lsd --almost-all --long --timesort --color always'
 elif [[ $(command -v gls) ]] then
     # On Mac OSX our last chance of getting into the else loop is if the coreutils brew package has been installed
     #  and we can use the gnu-ls binary.
-    alias  ls='gls --almost-all -l --human-readable --color=always'
-    alias  la='gls --almost-all -l --human-readable --color=always'
-    alias   l='gls --all -l --human-readable --color=always'
-    alias  ll='gls -l --human-readable --color=always'
-    alias lsa='gls --all -l --human-readable --color=always'
-    alias dir='gls --almost-all -l --human-readable --color=always'
-    alias lst='gls --almost-all -l --human-readable --color=always -t'
+    alias  ls='gls --almost-all -l --classify --human-readable --color=always'
+    alias  la='gls --almost-all -l --classify --human-readable --color=always'
+    alias   l='gls --all -l --classify --human-readable --color=always'
+    alias  ll='gls --all -l --classify --human-readable --color=always'
+    alias lsa='gls --all -l --classify --human-readable --color=always'
+    alias dir='gls --almost-all -l --classify --human-readable --color=always'
+    alias lst='gls --almost-all -l --classify --human-readable --color=always -t'
 else
     if [[ "$(uname)" == "Darwin" && ! $(/bin/ls --help > /dev/null 2>&1) ]] then
         # On Mac OSX the ls included only takes short options and will not allow help -- pile of garbage
-        alias  ls='/bin/ls -AlGh'
-        alias  la='/bin/ls -AlGh'
-        alias   l='/bin/ls -alGh'
-        alias  ll='/bin/ls -lGh'
-        alias lsa='/bin/ls -alGh'
-        alias dir='/bin/ls -AlGh'
-        alias lst='/bin/ls -AlGht'
+        alias  ls='CLICOLOR_FORCE=1 CLICOLOR=1 /bin/ls -AliFGh'
+        alias  la='CLICOLOR_FORCE=1 CLICOLOR=1 /bin/ls -AlFGh'
+        alias   l='CLICOLOR_FORCE=1 CLICOLOR=1 /bin/ls -alFGh'
+        alias  ll='CLICOLOR_FORCE=1 CLICOLOR=1 /bin/ls -alFGh'
+        alias lsa='CLICOLOR_FORCE=1 CLICOLOR=1 /bin/ls -alFGh'
+        alias dir='CLICOLOR_FORCE=1 CLICOLOR=1 /bin/ls -AlFGh'
+        alias lst='CLICOLOR_FORCE=1 CLICOLOR=1 /bin/ls -AlFGht'
     else
-        alias  ls='/bin/ls --almost-all -l --human-readable --color=always'
-        alias  la='/bin/ls --almost-all -l --human-readable --color=always'
-        alias   l='/bin/ls --all -l --human-readable --color=always'
-        alias  ll='/bin/ls -l --human-readable --color=always'
-        alias lsa='/bin/ls --all -l --human-readable --color=always'
-        alias dir='/bin/ls --almost-all -l --human-readable --color=always'
-        alias lst='/bin/ls --almost-all -l --human-readable --color=always -t'
+        alias  ls='/bin/ls --almost-all -l --classify --human-readable --color=always'
+        alias  la='/bin/ls --almost-all -l --classify --human-readable --color=always'
+        alias   l='/bin/ls --all -l --classify --human-readable --color=always'
+        alias  ll='/bin/ls -l --classify --human-readable --color=always'
+        alias lsa='/bin/ls --all -l --classify --human-readable --color=always'
+        alias dir='/bin/ls --almost-all -l --classify --human-readable --color=always'
+        alias lst='/bin/ls --almost-all -l --classify --human-readable --color=always -t'
     fi
 fi
 

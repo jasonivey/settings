@@ -108,6 +108,9 @@ brew "figlet"
 # Infamous electronic fortune-cookie generator
 brew "fortune"
 
+# CLI program that accepts piped input and presents files for selection
+brew "fpp"
+
 # GNU compiler collection
 brew "gcc"
 
@@ -255,6 +258,9 @@ brew "ponysay"
 # Python version management
 brew "pyenv"
 
+# Pyenv plugin to manage virtualenv
+brew "pyenv-virtualenv"
+
 # State machine compiler
 brew "ragel"
 
@@ -317,6 +323,9 @@ brew "unrar"
 
 # Extraction utility for .zip compressed archives
 brew "unzip"
+
+# Executes a program periodically, showing output fullscreen
+brew "watch"
 
 # Internet file retriever
 brew "wget"

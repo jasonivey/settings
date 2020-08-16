@@ -45,6 +45,17 @@ add_dir_to_linker_path() {
     fi
 }
 
+add_app_to_editor_environment() {
+    editors=("$@")
+    for i in "${editors[@]}"; do
+        #echo "$i"
+        if command -v "$i" &>/dev/null; then
+            export EDITOR="$i"
+            break
+        fi
+    done
+}
+
 # setup history file, size and filesize
 export HISTFILE="$HOME/.zsh_history"
 export HISTFILESIZE=1000000000
@@ -53,6 +64,11 @@ export HIST_STAMPS="mm.dd.yyyy"
 
 # always have the current directory in the path
 export PATH="$PATH:."
+
+# set the various application pager varialbles
+export PAGER="less -RFX"
+export MAN_PAGER="less -RFX"
+export BAT_PAGER="less -RFX"
 
 # add a number of paths which are the same no matter what platform
 add_dir_to_path "/usr/local/bin"
@@ -67,7 +83,11 @@ add_dir_to_path "$HOME/.cargo/bin"
 
 if [[ "$(uname)" == "Darwin" ]] then
     # Setup JAVA environment variables
-    [ -x "/usr/libexec/java_home" ] && export JAVA_HOME=$(/usr/libexec/java_home)
+    if [[ -x "/usr/libexec/java_home" ]] then
+        if "/usr/libexec/java_home" &>/dev/null; then
+            export JAVA_HOME=$("/usr/libexec/java_home")
+        fi
+    fi
 
     # Add various fpath directories for ZSH completions
     add_dir_to_fpath "/usr/local/share/zsh/site-functions"           # brew ZSH site functions
@@ -97,9 +117,16 @@ if [[ "$(uname)" == "Darwin" ]] then
     #add_dir_to_linker_path "/usr/local/opt/llvm/lib"
 
     # Add all of the gnu-variant duplicate (newer) versions of binaries
-    add_dir_to_path "/usr/local/opt/coreutils/bin"
     add_dir_to_path "/usr/local/opt/unzip/bin"
+
+    # BEGIN: relationship... the following two paths are related
     add_dir_to_path "/usr/local/opt/coreutils/libexec/gnubin"
+    # The md5sha1sum MUST come after the coreutils since it overlaps md5sum, sha1sum and adds ripemd160sum.
+    #  Declaring this statement after the coreutils 'add_dir_to_path' statement un-intuitively modifies
+    #  the PATH so the md5sha1sum bin directory will come before coreutils.
+    add_dir_to_path "/usr/local/opt/md5sha1sum/bin"
+    # END: relationship...
+
     add_dir_to_path "/usr/local/opt/make/libexec/gnubin"
     add_dir_to_path "/usr/local/opt/grep/libexec/gnubin"
     add_dir_to_path "/usr/local/opt/gnu-sed/libexec/gnubin"
@@ -140,15 +167,9 @@ if [[ "$(uname)" == "Darwin" ]] then
     add_dir_to_path "/Applications/MacVim.app/Contents/bin"
 
     # Setup the EDITOR so ti can be referenced correctly below
-    if [[ $(command -v mvim &>/dev/null) ]] then
-        export EDITOR='mvim';
-    elif [[ $(command -v vim &>/dev/null) ]] then
-        export EDITOR='vim';
-    elif [[ $(command -v vi &>/dev/null) ]] then
-        export EDITOR='vi';
-    else
-        export EDITOR='nano';
-    fi
+    local editors=("mvim" "vim" "mate" "vi" "nano")
+    add_app_to_editor_environment "${editors[@]}"
+
 elif [[ "$(uname -s)" == "Linux" ]] then
     if [[ -d "/usr/lib/jvm/java-11-openjdk-amd64" ]] then
         # Setup JAVA environment variables
@@ -165,6 +186,11 @@ elif [[ "$(uname -s)" == "Linux" ]] then
     add_dir_to_include_path "/usr/include/x86_64-linux-gnu/ruby-2.7.0"
     add_dir_to_linker_path "/usr/lib/x86_64-linux-gnu/ruby/2.7.0"
     add_dir_to_pkg_config_path "/usr/lib/x86_64-linux-gnu/pkgconfig"
+
+    # Setup the EDITOR so ti can be referenced correctly below
+    local editors=("vim" "vi" "nano")
+    add_app_to_editor_environment "${editors[@]}"
+
 fi
 
 
@@ -187,7 +213,10 @@ fi
 #   cp -vi $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/config/filetypes.yml $HOME/.config/vivid
 #   cp -vi $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/themes/*.yml $HOME/.config/vivid/themes
 #
-command -v vivid &>/dev/null && { export LS_COLORS="$(vivid generate snazzy)"; }
+if command -v vivid &>/dev/null; then
+    export LS_COLORS="$(vivid generate molokai)"
+    export EXA_COLORS="$(vivid generate molokai)"
+fi
 
 # Set the location for the SCREENRC config file
 [ -e "$HOME/.config/screen/.screenrc" ] && export SCREENRC=$HOME/.config/screen/.screenrc

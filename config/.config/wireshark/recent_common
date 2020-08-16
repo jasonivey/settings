@@ -1,0 +1,115 @@
+# Common recent settings file for Wireshark 3.2.5.
+#
+# This file is regenerated each time Wireshark is quit
+# and when changing configuration profile.
+# So be careful, if you want to make manual changes here.
+
+######## Recent capture files (latest last), cannot be altered through command line ########
+
+
+######## Recent capture filters (latest last), cannot be altered through command line ########
+
+
+######## Recent display filters (latest last), cannot be altered through command line ########
+
+recent.display_filter: tcp.stream eq 25
+recent.display_filter: (tcp.stream == 25) || (tcp.stream == 49) || (tcp.stream == 70) || (tcp.stream == 77) || (tcp.stream == 83)
+recent.display_filter: ftp
+recent.display_filter: http2
+recent.display_filter: http
+recent.display_filter: ipv6.src == 2601:681:980:3778:d88f:ded9:9bf5:f8c9 && ipv6.dst == 2601:681:980:3778:6238:e0ff:feb5:fce0
+recent.display_filter: ipv6.src == 2601:681:980:3778:d88f:ded9:9bf5:f8c9
+
+# Main window geometry.
+# Decimal numbers.
+gui.geometry_main_x: 0
+gui.geometry_main_y: 23
+gui.geometry_main_width: 1920
+gui.geometry_main_height: 1155
+
+# Main window maximized.
+# TRUE or FALSE (case-insensitive).
+gui.geometry_main_maximized: TRUE
+
+# Leftalign Action Buttons.
+# TRUE or FALSE (case-insensitive).
+gui.geometry_leftalign_actions: FALSE
+
+# Statusbar left pane size.
+# Decimal number.
+gui.geometry_status_pane: 250
+
+# Statusbar middle pane size.
+# Decimal number.
+gui.geometry_status_pane_right: 250
+
+# Last used Configuration Profile.
+gui.last_used_profile: Default
+
+# WLAN statistics upper pane size.
+# Decimal number.
+gui.geometry_status_wlan_stats_pane: 200
+
+# Warn if running with elevated permissions (e.g. as root).
+# TRUE or FALSE (case-insensitive).
+privs.warn_if_elevated: TRUE
+
+# Warn if npf.sys isn't loaded on Windows >= 6.0.
+# TRUE or FALSE (case-insensitive).
+privs.warn_if_no_npf: TRUE
+
+# Find packet search in.
+# One of: PACKET_LIST, PACKET_DETAILS, PACKET_BYTES
+gui.search_in: PACKET_LIST
+
+# Find packet character set.
+# One of: NARROW_AND_WIDE, NARROW, WIDE
+gui.search_char_set: NARROW_AND_WIDE
+
+# Find packet case sensitive search.
+# TRUE or FALSE (case-insensitive).
+gui.search_case_sensitive: FALSE
+
+# Find packet search type.
+# One of: DISPLAY_FILTER, HEX_VALUE, STRING, REGEX
+gui.search_type: STRING
+
+# Geometry and maximized state of http window.
+# Decimal integers.
+gui.geom.http.x: 550
+gui.geom.http.y: 353
+gui.geom.http.width: 800
+gui.geom.http.height: 459
+# TRUE or FALSE (case-insensitive).
+gui.geom.http.maximized: FALSE
+
+# Geometry and maximized state of http_seq window.
+# Decimal integers.
+gui.geom.http_seq.x: 550
+gui.geom.http_seq.y: 353
+gui.geom.http_seq.width: 800
+gui.geom.http_seq.height: 459
+# TRUE or FALSE (case-insensitive).
+gui.geom.http_seq.maximized: FALSE
+
+# Geometry and maximized state of FollowStreamDialog window.
+# Decimal integers.
+gui.geom.FollowStreamDialog.x: 310
+gui.geom.FollowStreamDialog.y: 23
+gui.geom.FollowStreamDialog.width: 1280
+gui.geom.FollowStreamDialog.height: 1155
+# TRUE or FALSE (case-insensitive).
+gui.geom.FollowStreamDialog.maximized: FALSE
+
+# Geometry and maximized state of http_req window.
+# Decimal integers.
+gui.geom.http_req.x: 550
+gui.geom.http_req.y: 353
+gui.geom.http_req.width: 800
+gui.geom.http_req.height: 459
+# TRUE or FALSE (case-insensitive).
+gui.geom.http_req.maximized: FALSE
+
+# Custom colors.
+# List of custom colors selected in Qt color picker.
+gui.custom_colors: 

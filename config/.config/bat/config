@@ -10,7 +10,7 @@
 # terminal emulators (like tmux, by default):
 --italic-text=always
 
-# Enable always use paging -- except when smaller than a page (see below) 
+# Enable always use paging -- except when smaller than a page (see below)
 --paging=always
 
 # Specify the pager here so we don't pollute the environment any further. Its
@@ -38,5 +38,5 @@
 # Specify to wrap the line when it gets to the end of the screen
 --wrap=auto
 
-# Specify the style, currently the only thing outside of 'full' is the 'grid' 
+# Specify the style, currently the only thing outside of 'full' is the 'grid'
 --style="changes,header,numbers,snip"

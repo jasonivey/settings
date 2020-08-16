@@ -1,6 +1,22 @@
 #!/usr/bin/env zsh
 # vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
 
+zmodload zsh/zpty
+
+teletype() {
+    # Applications will often attempt to detect if output is going to a TTY (terminal) or a file.  If the application
+    #  cannot specify --color=always it will assume it's destination is a file.  The following code creates a virtual
+    #  zsh tty and launches the application within that context.  The application then knows its outputting to a TTY
+    #  (terminal) and will not strip the embedded color codes.
+    zpty pty-${UID} ${1+$@}
+    if [[ ! -t 1 ]];then
+        setopt local_traps
+        trap '' INT
+    fi
+    zpty -r pty-${UID}
+    zpty -d pty-${UID}
+}
+
 goclean() {
     local pkg=$1
     local ost
@@ -101,6 +117,16 @@ set-tab-color() {
     elif [ -e "$HOME/.bash_color" ]; then
         echo $(head -n 1 $HOME/.bash_color) | python $HOME/scripts/set_tab_color.py
     fi
+}
+
+man() {
+    LESS_TERMCAP_md=$'\e[01;31m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[01;44;33m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[01;32m' \
+    command man "$@"
 }
 
 ssh-vpn() {
