@@ -5,7 +5,6 @@
 # Source various other zsh/bash modules
 ###
 
-
 # setup autocompletion for iTermocil
 if [[ $(command -v itermocil &> /dev/null) ]] then
     compctl -g '~/.itermocil/*(:t:r)' itermocil

@@ -1,6 +1,10 @@
 #!/usr/bin/env zsh
 # vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
 
+add_dir_to_path_end() {
+    [ -d "$1" ] && export PATH="$PATH:$1"
+}
+
 add_dir_to_path() {
     [ -d "$1" ] && export PATH="$1:$PATH"
 }
@@ -60,7 +64,7 @@ add_app_to_editor_environment() {
 export HISTFILE="$HOME/.zsh_history"
 export HISTFILESIZE=1000000000
 export HISTSIZE=1000000000
-export HIST_STAMPS="mm.dd.yyyy"
+export HIST_STAMPS="%m-%d-%Y %l:%M:%S%p %Z"
 
 # always have the current directory in the path
 export PATH="$PATH:."
@@ -158,13 +162,17 @@ if [[ "$(uname)" == "Darwin" ]] then
     #  install packages can be installed by running the following:
     # pip install -r $HOME/scripts/requirements.txt
 
-    # Setup the QT library environment variables -- uncomment when needed
-    #add_dir_to_include_path "/usr/local/opt/qt5/include"
-    #add_dir_to_linker_path "/usr/local/opt/qt5/lib"
-    #add_dir_to_pkg_config_path "/usr/local/opt/qt5/lib/pkgconfig"
+    # Setup the QT library environment variables
+    #add_dir_to_path "/usr/local/opt/qt/bin"
+    #add_dir_to_include_path "/usr/local/opt/qt/include"
+    #add_dir_to_linker_path "/usr/local/opt/qt/lib"
+    #add_dir_to_pkg_config_path "/usr/local/opt/qt/lib/pkgconfig"
 
     # Setup MacVim environment variables
-    add_dir_to_path "/Applications/MacVim.app/Contents/bin"
+    add_dir_to_path_end "/Applications/MacVim.app/Contents/bin"
+
+    # Add Visual Studio Code (code)
+    add_dir_to_path_end "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
     # Setup the EDITOR so ti can be referenced correctly below
     local editors=("mvim" "vim" "mate" "vi" "nano")

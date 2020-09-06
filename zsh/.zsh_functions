@@ -47,6 +47,15 @@ goclean() {
     unset pkg, ost, cnt
 }
 
+de-duplicate-zsh-paths() {
+    # This ensures that duplicate paths are not persisted to the PATH environment
+    #  variable regaurdless of how many times source .zshrc is executed
+    typeset -U PATH
+    # Shouldn't have to keep track of NIX paths but... oh well!
+    typeset -U NIX_PATH
+    typeset -U NIX_PROFILES
+}
+
 set-cscope() {
     eval `find . -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > ./cscope.files`
     eval `cscope -b`

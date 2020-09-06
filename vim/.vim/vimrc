@@ -136,11 +136,6 @@ let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_color_term = 239
 let g:indentLine_noConcealCursor=""
 
-" Remap F4 <next> and Shift-F4 <previous> to step through the quickfind results
-nnoremap <S-F4> :cp<CR>
-nnoremap <F4> :cn<CR>
-
-
 " Enable code file customization with modelines
 set modeline
 set modelines=5
@@ -149,6 +144,23 @@ set noautochdir
 
 " Remap the leader key from \ to ,
 let mapleader=","
+
+" Map <ctrl-l> to turn off highlighting the search terms
+noremap <silent> <c-l> :nohls<cr><c-l>
+
+" Remap F4 <next> and Shift-F4 <previous> to step through the quickfind results
+nnoremap <S-F4> :cp<CR>
+nnoremap <F4> :cn<CR>
+
+" Remap visual delete, yank and paste which places it into a named register "0.
+"  This overcomes the issue where a paste from a visual yank/delete overwrites
+"  the selected text BUT the newly overwritten text is then placed in the new
+"  default register.  Instead, the original text which was pasted is still in
+"  the named register which can be pasted again, and again, and again...
+vnoremap p "0p
+vnoremap P "0P
+vnoremap y "0y
+vnoremap d "0d
 
 " Set the line wrap
 set nowrap
@@ -202,9 +214,6 @@ set backspace=2
 
 " set the ctags location
 set tags=./tags,./TAGS,tags;~,TAGS;~
-
-" Map <ctrl-l> to turn off highlighting the search terms
-noremap <silent> <c-l> :nohls<cr><c-l>
 
 filetype plugin indent on
 
