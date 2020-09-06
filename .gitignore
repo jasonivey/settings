@@ -1,6 +1,7 @@
 mpv.conf
 .shpotify.cfg
 config/.config/noip2/no-ip2.conf
+config/.config/configstore/update-notifier-npm.json
 vim/.vim/backups/
 vim/.vim/bundle/
 vim/.vim/swapfiles/
