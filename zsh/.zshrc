@@ -29,6 +29,21 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+# start by sourcing the needed zsh functions
+[ -e "$HOME/.zsh_functions" ] && source "$HOME/.zsh_functions"
+
 # User configuration
 [ -e "$HOME/.zsh_aliases" ] && source "$HOME/.zsh_aliases"
 
+# lastly, source the zsh_sources which contains 3rd party module includes
+[ -e "$HOME/.zsh_sources" ] && source "$HOME/.zsh_sources"
+
+# set the iterm tab color if a color is specified using .zsh-color
+set-tab-color
+
+# if HUSH_LOGIN_INFO is not defined then print the custom LOGIN INFO
+[ -z ${HUSH_LOGIN_INFO+x} ] && get-login-info
+
+# if the .zshrc is ran more than once the PATH variable will have duplicates
+#  along with a number of other variables. this function remidies that situation
+de-duplicate-zsh-paths

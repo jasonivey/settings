@@ -5,9 +5,6 @@
 # Aliases for zsh
 ###
 
-# start by sourcing the needed zsh functions
-[ -e "$HOME/.zsh_functions" ] && source "$HOME/.zsh_functions"
-
 # Aliases to open configure files
 alias zshrc='$EDITOR $HOME/.zshrc'
 alias ohmyzsh='$EDITOR $HOME/.oh-my-zsh'
@@ -15,46 +12,51 @@ alias settings='$EDITOR $HOME/settings/.bash_settings'
 alias zsettings='$EDITOR $HOME/settings/.zshrc'
 alias setting-dir='cd $HOME/settings'
 
-# Aliases for network/system/date/time information
-alias mount='mount | column -t'
-alias now='date +"%T"'
-alias nowtime=now
-alias nowdate='date +"%d-%m-%Y"'
-alias ping='ping -c 3'
-alias pingfast='ping -c 10 -i .1'
-alias netiface=get-active-network-interface
+# standard commands made more dummy proof
+alias rm='rm --verbose --interactive=once --preserve-root=all'
+alias mv='mv --verbose --interactive'
+alias cp='cp --verbose --interactive'
+alias ln='ln --verbose --interactive --relative'
+alias chown='chown --verbose --preserve-root'
+alias chmod='chmod --verbose --preserve-root'
+alias chgrp='chgrp --verbose --preserve-root'
 
+# easy to remember time and date
+alias now='date +"%m-%d-%Y %l:%M:%S%p %Z"'
+alias today='date +"%m-%d-%Y"'
+
+# networking ports, interface, ping...
 if [[ "$(uname)" == "Darwin" ]] then
     alias ports='lsof -nP +c 15 | egrep "IPv[46]"'
 else
     alias ports='netstat -tulanp'
 fi
+alias netiface=get-active-network-interface
+alias ping='ping -c 3'
+alias pingfast='ping -c 10 -i .1'
+
+# mounts, disks, dirsize, file count
+alias mounts='mount | column -t'
 alias disks='df --total --human-readable'
 alias dirsize=get-dirsize
-
-# Additional information
-alias hex='hexdump -v -C'
 alias file-count='/bin/ls -1 | wc -l'
+
+# weather and active network adapter/ip address
 alias weather=get-full-weather-info
 alias netinfo=get-network-info
+
+# global aliases for tools which are often PIPED into or out of
+alias -g LESS='less -RFX'
 alias -g XML='tidy -xml -q -i - | bat'
 alias -g UUID=uuid-generator
+alias -g HEX='hexdump -v -C'
 
-
-# Aliases to make the standard commands a little more stupid proof
-alias rm='rm -Iv --preserve-root'
-# make sure you know what you are doing
-alias mv='mv -iv'
-alias cp='cp -iv'
-alias ln='ln -iv'
-# again, don't be stupid!
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
 # make it easy to add a path to the $PATH
 alias update-path='export PATH=`pwd`:$PATH'
+
 # make it simple to find the full path of any file/symlink/dir/etc.
 alias abs_path=abs-path
+
 # these args are impossible to remember
 alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
 alias 7ztest='7z l -slt'
@@ -73,17 +75,6 @@ else
     alias upgrade='brew upgrade && brew cask reinstall $(brew cask outdated) && brew cleanup'
 fi
 
-# Aliases for various applications
-#alias ide='vim -O3'
-#alias cpwp='rsync -aP'
-#alias mvwp='rsync -aP --remove-source-files'
-#alias pylint='pylint -r n --rcfile=$HOME/pylintrc'
-#alias matrix='cmatrix -bs -C red'
-#alias transmission-cli='transmission-remote-cli --config=$HOME/.config/transmission-remote-cli/settings.cfg'
-#alias rickquote='fortune softwareengineering | cowsay -f rick-and-morty | lolcat'
-#alias twopanes='itermocil --here two_panes'
-
-
 # If on macOS the best markdown editor/viewer found is typora. Unfortunately they don't have any CLI support.
 #  This alias enables both a 'typora' command (which nobody will ever remember) and a 'markdown' command
 if [[ "$(uname)" == "Darwin" ]] then
@@ -92,7 +83,28 @@ if [[ "$(uname)" == "Darwin" ]] then
     alias eject='diskutil unmountDisk force'
 fi
 
-# teletype is a function defined in .zsh_functions
+#
+# It used to be that all these aliases were prefaced by unbuffer.  I finally figured out the reason for unbuffer.
+#  When these applications would pipe themselves into 'less' or any other app they were unable to know if they were
+#  still in a terminal (tty) or whether they were going to a file.  To be careful, they assumed they were going to
+#  a file and they stripped the terminal color highlighting from their output.  The one thing that unbuffer does is
+#  it communicates to the application it calls that its output is always going to a terminal (tty).  For this reason
+#  the application never strips off the color highlighting when its called by unbuffer.
+#
+# There is a better and more obvious fix than using unbuffer.  This is great news because unbuffer adds another
+#  dependency and occasionally fails for some reason.  The better solution is to simply tell the application to
+#  always output color.  Since the application is told to always output color it no longer needs to detect whether
+#  its output is a terminal (tty) or a file.  Of course, this option was hiding in plain sight... --color=always.
+#
+# Hence, all of the application calls below either have '--color=always' or the outdated Darwin '/bin/ls' has to
+#  define 'CLICOLOR_FORCE=1 CLICOLOR=1' before its called.
+#
+# Not knowing it could be fixed as simple as that I scoured the internet to find a solution.  I finally found
+#  that zsh could create a virtual tty environment and call an application within it.  This code is wrapped
+#  within a function and placed in .zsh_functions named 'teletype'.
+#
+#  Pretty nifty -- but now un-needed and should be deleted.
+#
 if [[ $(command -v exa) ]] then
     alias  ls='exa --all --long --header --group --links --sort=Name --time-style=default --git --icons --color=always'
     alias  la='exa --all --long --header --group --links --sort=Name --time-style=default --git --icons --color=always'
@@ -140,15 +152,4 @@ else
     fi
 fi
 
-# lastly, source the zsh_sources which contains 3rd party module includes
-[ -e "$HOME/.zsh_sources" ] && source "$HOME/.zsh_sources"
 
-set-tab-color
-get-login-info
-
-# This ensures that duplicate paths are not persisted to the PATH environment
-#  variable regaurdless of how many times source .zshrc is executed
-typeset -U PATH
-# Shouldn't have to keep track of NIX paths but... oh well!
-typeset -U NIX_PATH
-typeset -U NIX_PROFILES
