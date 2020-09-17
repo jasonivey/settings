@@ -94,8 +94,8 @@ if [[ "$(uname)" == "Darwin" ]] then
     fi
 
     # Add various fpath directories for ZSH completions
-    add_dir_to_fpath "/usr/local/share/zsh/site-functions"           # brew ZSH site functions
-    add_dir_to_fpath "/usr/local/opt/curl/share/zsh/site-functions"  # curl ZSH site functions
+    add_dir_to_fpath "/usr/local/share/zsh/functions"
+    add_dir_to_fpath "/usr/local/share/zsh/site-functions"
 
     # Setup libressl environment variables -- uncomment when needed
     add_dir_to_path "/usr/local/opt/libressl/bin"
@@ -169,7 +169,7 @@ if [[ "$(uname)" == "Darwin" ]] then
     #add_dir_to_pkg_config_path "/usr/local/opt/qt/lib/pkgconfig"
 
     # Setup MacVim environment variables
-    add_dir_to_path_end "/Applications/MacVim.app/Contents/bin"
+    add_dir_to_path "/Applications/MacVim.app/Contents/bin"
 
     # Add Visual Studio Code (code)
     add_dir_to_path_end "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"

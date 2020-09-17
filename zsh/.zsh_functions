@@ -56,6 +56,17 @@ de-duplicate-zsh-paths() {
     typeset -U NIX_PROFILES
 }
 
+pretty-print-env-variable() {
+    [ $# -gt 0 ] && local env_var_=$1 || local env_var_="PATH"
+    if [[ ${(P)env_var_} == *":"* ]] then
+        printf "\e[32m$env_var_\e[37;1m:\n    ${${(P)env_var_}//:/\\n    }\e[0m\n"
+    elif [[ ${(P)env_var_} == *";"* ]] then
+        printf "\e[32m$env_var_\e[37;1m:\n    ${${(P)env_var_}//;/\\n    }\e[0m\n"
+    else
+        printf "\e[32m$env_var_\e[37;1m:\n    ${${(P)env_var_}// /\\n    }\e[0m\n"
+    fi
+}
+
 set-cscope() {
     eval `find . -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > ./cscope.files`
     eval `cscope -b`
@@ -126,6 +137,45 @@ set-tab-color() {
     elif [ -e "$HOME/.bash_color" ]; then
         echo $(head -n 1 $HOME/.bash_color) | python3 $HOME/scripts/set_tab_color.py
     fi
+}
+
+apt-update() {
+    sudo apt update
+}
+
+apt-upgrade() {
+    sudo apt dist-upgrade
+}
+
+brew-update() {
+    brew update &&
+    brew outdated &&
+    brew outdated --cask
+}
+
+brew-upgrade() {
+    setopt localoptions ERR_RETURN
+    echo "running brew upgrade"
+    brew upgrade
+    echo "running brew outdated --casks"
+    if [ $(brew outdated --cask | tr -d ' \n\r\t ' | head -c1 | wc -c) -ne 0 ]; then
+        echo "running brew reinstall (brew outdated --casks)"
+        brew reinstall $(brew outdated --cask)
+    fi
+    echo "running brew cleanup"
+    brew cleanup
+}
+
+goto_root() {
+    root="/"
+    curr_dir="$(pwd -P)"
+    while [ $curr_dir != "/" ]; do
+        git_repo="$curr_dir/.git"
+        if [ -d "${git_repo}" ]; then
+            cd $(realpath -LPe $curr_dir)
+        fi
+        curr_dir="$(dirname "$curr_dir")"
+    done
 }
 
 man() {

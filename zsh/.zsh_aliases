@@ -13,7 +13,11 @@ alias zsettings='$EDITOR $HOME/settings/.zshrc'
 alias setting-dir='cd $HOME/settings'
 
 # standard commands made more dummy proof
-alias rm='rm --verbose --interactive=once --preserve-root=all'
+if [[ "$(uname)" == "Darwin" && $(command -v trash) ]] then
+    alias rm='trash -v'
+else
+    alias rm='rm --verbose --interactive=once --preserve-root=all'
+fi
 alias mv='mv --verbose --interactive'
 alias cp='cp --verbose --interactive'
 alias ln='ln --verbose --interactive --relative'
@@ -56,6 +60,12 @@ alias update-path='export PATH=`pwd`:$PATH'
 
 # make it simple to find the full path of any file/symlink/dir/etc.
 alias abs_path=abs-path
+# similar to the python script print_env.py but just deals with environment variables
+alias pprint-env=pretty-print-env-variable
+# print the definition of zsh functions
+alias pprint-function='whence -f'
+# use pysegmentize to color-ize source files
+alias pprint='pygmentize -O "style=fruity,linenos=1" -f terminal16m'
 
 # these args are impossible to remember
 alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
@@ -68,11 +78,11 @@ alias x='exit'
 
 # Package mantanaince applications and commands
 if [[ "$(uname)" == "Linux" ]] then
-    alias update='sudo apt update'
-    alias upgrade='sudo apt dist-upgrade'
+    alias update=apt-update
+    alias upgrade=apt-upgrade
 else
-    alias update='brew update && brew outdated && brew cask outdated'
-    alias upgrade='brew upgrade && brew cask reinstall $(brew cask outdated) && brew cleanup'
+    alias update=brew-update
+    alias upgrade=brew-upgrade
 fi
 
 # If on macOS the best markdown editor/viewer found is typora. Unfortunately they don't have any CLI support.
