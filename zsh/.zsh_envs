@@ -54,32 +54,18 @@ add_dir_to_linker_path() {
     fi
 }
 
-set_env_variable_from_list() {
-    editors=("$@")
-    for i in "${editors[@]}"; do
-        #echo "$i"
-        if command -v "$i" &>/dev/null; then
-            export EDITOR="$i"
-            break
-        fi
-    done
-}
-
 # set the environment variable $1 from the list of values $2..$n to the first
 #  value which is an executable binary
 set_env_variable_from_list() {
     env_variable_name="$1"
     env_variable_values=("${@:2}")
     for i in "${env_variable_values[@]}"; do
-        #echo "$i"
         if command -v "$i" &>/dev/null; then
             export "$env_variable_name=$i";
             break
         fi
     done
 }
-
-set
 
 # setup history file, size and filesize
 export HISTFILE="$HOME/.zsh_history"

@@ -62,8 +62,10 @@ pretty-print-env-variable() {
         printf "\e[32m$env_var_\e[37;1m:\n    ${${(P)env_var_}//:/\\n    }\e[0m\n"
     elif [[ ${(P)env_var_} == *";"* ]] then
         printf "\e[32m$env_var_\e[37;1m:\n    ${${(P)env_var_}//;/\\n    }\e[0m\n"
-    else
+    elif [[ ${(P)env_var_} == *" "* ]] then
         printf "\e[32m$env_var_\e[37;1m:\n    ${${(P)env_var_}// /\\n    }\e[0m\n"
+    else
+        printf "\e[32m$env_var_\e[37;1m: ${(P)env_var_}\e[0m\n"
     fi
 }
 
@@ -80,9 +82,11 @@ pretty-print() {
         # if the user did not pass any argument then assume they want the
         #  PATH environment variable pretty printed
         pretty-print-env-variable
-    elif set | grep -q "^$1="; then
+    fi
+    local env_var_=$(set | sed -n "s/^\($1\)=[^(].*/\1/Ip")
+    if (( $? == 0 )) then
         # if the argument is a variable of any type then pretty print that
-        pretty-print-env-variable "$1"
+        pretty-print-env-variable "$env_var_"
     elif declare -Ff "$1" >/dev/null; then
         # if the argument is a function name then print the function definition
         whence -f $1
@@ -90,7 +94,7 @@ pretty-print() {
         # if the argument is a file -- then pretty print it using pygmentize
         pygmentize -g -O "style=fruity,linenos=1" -f terminal16m $1
     else
-        pretty-print-error("\"$1\" is not a environment variable, function or file name")
+        pretty-print-error "\"$1\" is not a environment variable, function or file name"
     fi
 }
 
@@ -110,13 +114,13 @@ dev() {
 dev-build() {
     if [[ $# -eq 0 ]] then
         cd $HOME/dev
-        pretty-print-info("unable to clean and go into build directory because there was no dev prroject specified")
+        pretty-print-info "unable to clean and go into build directory because there was no dev prroject specified"
     else
         local dev_dir_=$(realpath $HOME/dev/$1)
         local build_dir_=$(realpath $HOME/dev/$1/build)
         [ -d "$build_dir_" ] && /bin/rm -rf "$build_dir_"
         if [[ -d "$build_dir_" ]] then
-            pretty-print-error("unable to delete $build_dir_")
+            pretty-print-error "unable to delete $build_dir_"
         else
             mkdir "$build_dir_"
         fi
