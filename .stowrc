@@ -1,4 +1,4 @@
---verbose
+--verbose=2
 --dir=$HOME/settings
 --target=$HOME
 --no-folding
