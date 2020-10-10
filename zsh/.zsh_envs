@@ -36,6 +36,11 @@ add_dir_to_include_path() {
         else
             export CPPFLAGS="-isystem$1"
         fi
+        if [[ $CFLAGS && ${CFLAGS-x} ]] then
+            export CFLAGS="$CFLAGS -isystem$1"
+        else
+            export CFLAGS="-isystem$1"
+        fi
     fi
 }
 
@@ -49,7 +54,7 @@ add_dir_to_linker_path() {
     fi
 }
 
-add_app_to_editor_environment() {
+set_env_variable_from_list() {
     editors=("$@")
     for i in "${editors[@]}"; do
         #echo "$i"
@@ -60,6 +65,22 @@ add_app_to_editor_environment() {
     done
 }
 
+# set the environment variable $1 from the list of values $2..$n to the first
+#  value which is an executable binary
+set_env_variable_from_list() {
+    env_variable_name="$1"
+    env_variable_values=("${@:2}")
+    for i in "${env_variable_values[@]}"; do
+        #echo "$i"
+        if command -v "$i" &>/dev/null; then
+            export "$env_variable_name=$i";
+            break
+        fi
+    done
+}
+
+set
+
 # setup history file, size and filesize
 export HISTFILE="$HOME/.zsh_history"
 export HISTFILESIZE=1000000000
@@ -69,10 +90,6 @@ export HIST_STAMPS="%m-%d-%Y %l:%M:%S%p %Z"
 # always have the current directory in the path
 export PATH="$PATH:."
 
-# set the various application pager varialbles
-export PAGER="less -RFX"
-export MAN_PAGER="less -RFX"
-export BAT_PAGER="less -RFX"
 
 # add a number of paths which are the same no matter what platform
 add_dir_to_path "/usr/local/bin"
@@ -93,63 +110,96 @@ if [[ "$(uname)" == "Darwin" ]] then
         fi
     fi
 
+    # Ignore the following error from Tcl/Tk since brew installed python relies on macOS version of Tcl/Tk which is
+    #  outdated.  Make sure to follow-up on this variable to ensure it is needed in the future.
+    export TK_SILENCE_DEPRECATION=1
+
     # Add various fpath directories for ZSH completions
     add_dir_to_fpath "/usr/local/share/zsh/functions"
     add_dir_to_fpath "/usr/local/share/zsh/site-functions"
+    add_dir_to_fpath "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
     # Setup libressl environment variables -- uncomment when needed
-    add_dir_to_path "/usr/local/opt/libressl/bin"
-    #add_dir_to_include_path "/usr/local/opt/libressl/include"
-    #add_dir_to_linker_path "/usr/local/opt/libressl/lib"
-    #add_dir_to_pkg_config_path "/usr/local/opt/libressl/lib/pkgconfig"
+    #[ -d "/usr/local/opt/libressl" ] && local component_dir="/usr/local/opt/libressl" || local component_dir="$(brew --prefix libressl)"
+    #add_dir_to_path "$component_dir/bin"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
     # Setup curl environment variables -- uncomment when needed
-    add_dir_to_path "/usr/local/opt/curl/bin"
-    #add_dir_to_include_path "/usr/local/opt/curl/include"
-    #add_dir_to_linker_path "/usr/local/opt/curl/lib"
-    #add_dir_to_pkg_config_path "/usr/local/opt/curl/lib/pkgconfig"
+    [ -d "/usr/local/opt/curl" ] && local component_dir="/usr/local/opt/curl" || local component_dir="$(brew --prefix curl)"
+    add_dir_to_path "$component_dir/bin"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
     # Setup sqlite3 environment variables -- uncomment when needed
-    add_dir_to_path "/usr/local/opt/sqlite/bin"
-    #add_dir_to_include_path "/usr/local/opt/sqlite/include"
-    #add_dir_to_linker_path "/usr/local/opt/sqlite/lib"
-    #add_dir_to_pkg_config_path "/usr/local/opt/sqlite/lib/pkgconfig"
+    [ -d "/usr/local/opt/sqlite" ] && local component_dir="/usr/local/opt/sqlite" || local component_dir="$(brew --prefix sqlite)"
+    add_dir_to_path "$component_dir/bin"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
     # Setup LLVM/clang C++ environment variables -- uncomment when needed
-    add_dir_to_path "/usr/local/opt/llvm/bin"
-    #add_dir_to_include_path "/usr/local/opt/llvm/include"
-    #add_dir_to_linker_path "/usr/local/opt/llvm/lib"
+    [ -d "/usr/local/opt/llvm" ] && local component_dir="/usr/local/opt/llvm" || local component_dir="$(brew --prefix llvm)"
+    add_dir_to_path "$component_dir/bin"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_linker_path "$component_dir/lib"
 
     # Add all of the gnu-variant duplicate (newer) versions of binaries
-    add_dir_to_path "/usr/local/opt/unzip/bin"
+    [ -d "/usr/local/opt/unzip" ] && local component_dir="/usr/local/opt/unzip" || local component_dir="$(brew --prefix unzip)"
+    add_dir_to_path "$component_dir/bin"
 
     # BEGIN: relationship... the following two paths are related
-    add_dir_to_path "/usr/local/opt/coreutils/libexec/gnubin"
+    [ -d "/usr/local/opt/coreutils" ] && local component_dir="/usr/local/opt/coreutils" || local component_dir="$(brew --prefix coreutils)"
+    add_dir_to_path "$component_dir/libexec/gnubin"
     # The md5sha1sum MUST come after the coreutils since it overlaps md5sum, sha1sum and adds ripemd160sum.
     #  Declaring this statement after the coreutils 'add_dir_to_path' statement un-intuitively modifies
     #  the PATH so the md5sha1sum bin directory will come before coreutils.
-    add_dir_to_path "/usr/local/opt/md5sha1sum/bin"
+    [ -d "/usr/local/opt/md5sha1sum" ] && local component_dir="/usr/local/opt/md5sha1sum" || local component_dir="$(brew --prefix md5sha1sum)"
+    add_dir_to_path "$component_dir/bin"
     # END: relationship...
 
-    add_dir_to_path "/usr/local/opt/make/libexec/gnubin"
-    add_dir_to_path "/usr/local/opt/grep/libexec/gnubin"
-    add_dir_to_path "/usr/local/opt/gnu-sed/libexec/gnubin"
-    add_dir_to_path "/usr/local/opt/gnu-getopt/bin"
+    [ -d "/usr/local/opt/make" ]       && add_dir_to_path "/usr/local/opt/make/libexec/gnubin"       || add_dir_to_path "$(brew --prefix make)/libexec/gnubin"
+    [ -d "/usr/local/opt/grep" ]       && add_dir_to_path "/usr/local/opt/grep/libexec/gnubin"       || add_dir_to_path "$(brew --prefix grep)/libexec/gnubin"
+    [ -d "/usr/local/opt/gnu-sed" ]    && add_dir_to_path "/usr/local/opt/gnu-sed/libexec/gnubin"    || add_dir_to_path "$(brew --prefix gnu-sed)/libexec/gnubin"
+    [ -d "/usr/local/opt/gnu-getopt" ] && add_dir_to_path "/usr/local/opt/gnu-getopt/bin"            || add_dir_to_path "$(brew --prefix gnu-getopt)/bin"
 
     # Setup ruby binaries before system ruby
-    add_dir_to_path "/usr/local/opt/ruby/bin"
-    add_dir_to_path "/usr/local/lib/ruby/gems/2.7.0/bin"
-    add_dir_to_include_path "/usr/local/opt/ruby/include"
-    add_dir_to_linker_path "/usr/local/opt/ruby/lib"
-    add_dir_to_pkg_config_path "/usr/local/opt/ruby/lib/pkgconfig"
+    #[ -d "/usr/local/opt/ruby" ] && local component_dir="/usr/local/opt/ruby" || local component_dir="$(brew --prefix ruby)"
+    #add_dir_to_path "$component_dir/libexec/gembin"
+    #add_dir_to_path "$component_dir/bin"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
-    add_dir_to_path "/usr/local/opt/tcl-tk/bin"
-    add_dir_to_linker_path "/usr/local/opt/tcl-tk/lib"
-    add_dir_to_include_path "/usr/local/opt/tcl-tk/include"
-    add_dir_to_pkg_config_path "/usr/local/opt/tcl-tk/lib/pkgconfig"
+    [ -d "/usr/local/opt/tcl-tk" ] && local component_dir="/usr/local/opt/tcl-tk" || local component_dir="$(brew --prefix tcl-tk)"
+    add_dir_to_path "$component_dir/bin"
+    add_dir_to_linker_path "$component_dir/lib"
+    add_dir_to_include_path "$component_dir/include"
+    add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
-    add_dir_to_pkg_config_path "/usr/local/opt/python/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
-    add_dir_to_pkg_config_path "/usr/local/opt/oniguruma/lib/pkgconfig"
+    #[ -d "/usr/local/opt/zlib" ] && local component_dir="/usr/local/opt/zlib" || local component_dir="$(brew --prefix zlib)"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
+
+    #[ -d "/usr/local/opt/readline" ] && local component_dir="/usr/local/opt/readline" || local component_dir="$(brew --prefix readline)"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
+
+    #[ -d "/usr/local/opt/openssl" ] && local component_dir="/usr/local/opt/openssl" || local component_dir="$(brew --prefix openssl)"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
+
+    #add_dir_to_pkg_config_path "/usr/local/opt/python/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
+
+    [ -d "/usr/local/opt/oniguruma" ] && local component_dir="/usr/local/opt/oniguruma" || local component_dir="$(brew --prefix oniguruma)"
+    add_dir_to_linker_path "$component_dir/lib"
+    add_dir_to_include_path "$component_dir/include"
+    add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
     # add_dir_to_path $HOME/Library/Python/3.7/bin
     #  The above command would be the place where the `macOS system`
@@ -163,20 +213,20 @@ if [[ "$(uname)" == "Darwin" ]] then
     # pip install -r $HOME/scripts/requirements.txt
 
     # Setup the QT library environment variables
-    #add_dir_to_path "/usr/local/opt/qt/bin"
-    #add_dir_to_include_path "/usr/local/opt/qt/include"
-    #add_dir_to_linker_path "/usr/local/opt/qt/lib"
-    #add_dir_to_pkg_config_path "/usr/local/opt/qt/lib/pkgconfig"
+    #[ -d "/usr/local/opt/qt" ] && local component_dir="/usr/local/opt/qt" || local component_dir="$(brew --prefix qt)"
+    #add_dir_to_path "$component_dir/bin"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
+
+    # I think this is already a part of the built-in include path... but.. here we are anyway...
+    #add_dir_to_include_path "$(xcrun --show-sdk-path)/usr/include"
 
     # Setup MacVim environment variables
     add_dir_to_path "/Applications/MacVim.app/Contents/bin"
 
     # Add Visual Studio Code (code)
     add_dir_to_path_end "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-
-    # Setup the EDITOR so ti can be referenced correctly below
-    local editors=("mvim" "vim" "mate" "vi" "nano")
-    add_app_to_editor_environment "${editors[@]}"
 
 elif [[ "$(uname -s)" == "Linux" ]] then
     if [[ -d "/usr/lib/jvm/java-11-openjdk-amd64" ]] then
@@ -195,12 +245,20 @@ elif [[ "$(uname -s)" == "Linux" ]] then
     add_dir_to_linker_path "/usr/lib/x86_64-linux-gnu/ruby/2.7.0"
     add_dir_to_pkg_config_path "/usr/lib/x86_64-linux-gnu/pkgconfig"
 
-    # Setup the EDITOR so ti can be referenced correctly below
-    local editors=("vim" "vi" "nano")
-    add_app_to_editor_environment "${editors[@]}"
-
 fi
 
+# set the various application environment variables
+set_env_variable_from_list "EDITOR" "mvim" "vim" "mate" "code" "vi" "nano"
+set_env_variable_from_list "VISUAL" "mvim" "gvim" "mate" "code"
+
+# for macOS this alias is set in .zsh_aliases and Linux it is what the Chrome binary is called
+[ -n "$DISPLAY" ] && export BROWSER=google-chrome
+
+export TMPDIR=${TMPDIR:-"/tmp"}
+export TMP=${TMP:-"/tmp"}
+export PAGER="less -RFX"
+export MAN_PAGER="less -RFX"
+export BAT_PAGER="less -RFX"
 
 #
 # Create the LS_COLORS environment variable using the 'vivid' applilcation
@@ -258,6 +316,7 @@ typeset -xTU PATH path ':'
 typeset -TU FPATH fpath ':'
 typeset -xTU PKG_CONFIG_PATH pkg_config_path ':'
 typeset -xTU CPPFLAGS cppflags ' '
+typeset -xTU CFLAGS cppflags ' '
 typeset -xTU LDFLAGS ldflags ' '
 typeset -xTU TCLLIBPATH tcllibpath ' '
 
@@ -277,6 +336,7 @@ zstyle ':completion:*' expand prefix suffix
 # Load ZSH bashcompinit for some old bash completions
 autoload bashcompinit && bashcompinit
 
+# Finally, clean-up the environment before leaving
 unfunction add_dir_to_path
 unfunction add_dir_to_fpath
 unfunction add_dir_to_pkg_config_path

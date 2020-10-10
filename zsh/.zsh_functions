@@ -67,13 +67,61 @@ pretty-print-env-variable() {
     fi
 }
 
+pretty-print-info() {
+    printf "\e[32mINFO\e[37;1m: $1\e[0m\n"
+}
+
+pretty-print-error() {
+    printf "\e[31mERROR\e[37;1m: $1\e[0m\n"
+}
+
+pretty-print() {
+    if [[ $# == 0 ]] then
+        # if the user did not pass any argument then assume they want the
+        #  PATH environment variable pretty printed
+        pretty-print-env-variable
+    elif set | grep -q "^$1="; then
+        # if the argument is a variable of any type then pretty print that
+        pretty-print-env-variable "$1"
+    elif declare -Ff "$1" >/dev/null; then
+        # if the argument is a function name then print the function definition
+        whence -f $1
+    elif [[ -r $1 ]] then
+        # if the argument is a file -- then pretty print it using pygmentize
+        pygmentize -g -O "style=fruity,linenos=1" -f terminal16m $1
+    else
+        pretty-print-error("\"$1\" is not a environment variable, function or file name")
+    fi
+}
+
 set-cscope() {
     eval `find . -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' > ./cscope.files`
     eval `cscope -b`
 }
 
 dev() {
-    cd $HOME/dev/$1
+    if [[ $# -gt 0 && -d $HOME/dev/$1 ]] then
+        cd $HOME/dev/$1
+    else
+        cd $HOME/dev
+    fi
+}
+
+dev-build() {
+    if [[ $# -eq 0 ]] then
+        cd $HOME/dev
+        pretty-print-info("unable to clean and go into build directory because there was no dev prroject specified")
+    else
+        local dev_dir_=$(realpath $HOME/dev/$1)
+        local build_dir_=$(realpath $HOME/dev/$1/build)
+        [ -d "$build_dir_" ] && /bin/rm -rf "$build_dir_"
+        if [[ -d "$build_dir_" ]] then
+            pretty-print-error("unable to delete $build_dir_")
+        else
+            mkdir "$build_dir_"
+        fi
+        cd "$build_dir_"
+    fi
 }
 
 get-login-info() {
@@ -158,7 +206,8 @@ brew-upgrade() {
     echo "running brew upgrade"
     brew upgrade
     echo "running brew outdated --casks"
-    if [ $(brew outdated --cask | tr -d ' \n\r\t ' | head -c1 | wc -c) -ne 0 ]; then
+    local outdated_count = $(brew outdated --cask | awk 'BEGIN { i = 0 } { ++i } END { print i }')
+    if [ $outdated_count -ne 0 ]; then
         echo "running brew reinstall (brew outdated --casks)"
         brew reinstall $(brew outdated --cask)
     fi

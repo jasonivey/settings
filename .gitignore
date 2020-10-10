@@ -2,6 +2,9 @@ mpv.conf
 .shpotify.cfg
 config/.config/noip2/no-ip2.conf
 config/.config/configstore/update-notifier-npm.json
+config/.config/gcloud
+config/.config/pulse
+config/.config/conky
 vim/.vim/backups/
 vim/.vim/bundle/
 vim/.vim/swapfiles/

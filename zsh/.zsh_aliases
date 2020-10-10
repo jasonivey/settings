@@ -60,12 +60,9 @@ alias update-path='export PATH=`pwd`:$PATH'
 
 # make it simple to find the full path of any file/symlink/dir/etc.
 alias abs_path=abs-path
-# similar to the python script print_env.py but just deals with environment variables
-alias pprint-env=pretty-print-env-variable
-# print the definition of zsh functions
-alias pprint-function='whence -f'
-# use pysegmentize to color-ize source files
-alias pprint='pygmentize -O "style=fruity,linenos=1" -f terminal16m'
+
+# print environment variables, zsh functions or source code files using pysegmentize to color-ize contents
+alias pprint=pretty-print
 
 # these args are impossible to remember
 alias 7zenc='7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on -mhe=on -p'
@@ -88,6 +85,8 @@ fi
 # If on macOS the best markdown editor/viewer found is typora. Unfortunately they don't have any CLI support.
 #  This alias enables both a 'typora' command (which nobody will ever remember) and a 'markdown' command
 if [[ "$(uname)" == "Darwin" ]] then
+    alias chrome='open -a "Google Chrome"'
+    alias google-chrome='open -a "Google Chrome"'
     alias typora='open -a typora'
     alias mark-down='open -a typora'
     alias eject='diskutil unmountDisk force'

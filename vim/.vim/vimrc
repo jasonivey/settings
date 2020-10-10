@@ -43,10 +43,12 @@ Plugin 'vhdirk/vim-cmake'
 Plugin 'davidhalter/jedi-vim'
 " activate and deactivate the pyenv Python
 Plugin 'lambdalisue/vim-pyenv'
+" Asynchronous Lint Engine provides Python linting
+Plugin 'dense-analysis/ale'
 " Plugin for go-lang
 Plugin 'fatih/vim-go'
 " Syntax Checker for Python, Rust, go... see below
-Plugin 'vim-syntastic/syntastic'
+" Plugin 'vim-syntastic/syntastic'
 Plugin 'vim-scripts/indentpython.vim'
 " Code completion for C/C++
 Plugin 'Valloric/YouCompleteMe.git'
@@ -123,16 +125,29 @@ let g:laststatus=2
 let g:airline_theme='molokai'
 
 " Syntastic Plugin Modifications
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_python_checkers=['pylint', 'flake8']
-let g:syntastic_aggregate_errors=1
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_auto_loc_list=1
-let g:syntastic_check_on_open=1
-let g:syntastic_check_on_wq=0
-let python_highlight_all=1
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"let g:syntastic_python_checkers=['pylint', 'flake8']
+"let g:syntastic_aggregate_errors=1
+"let g:syntastic_always_populate_loc_list=1
+"let g:syntastic_auto_loc_list=1
+"let g:syntastic_check_on_open=1
+"let g:syntastic_check_on_wq=0
+"let python_highlight_all=1
+
+" ALE settings
+let g:ale_linters={
+  \   'csh': ['shell'],
+  \   'go': ['gofmt', 'golint', 'go vet'],
+  \   'python': ['flake8', 'mypy', 'pylint', 'pyright'],
+  \   'rust': ['cargo', 'rls'],
+  \   'zsh': ['shell'],
+  \}
+let g:ale_fixers={'python': ['autopep8', 'yapf']}
+let g:ale_fix_on_save=1
+let g:ale_warn_about_trailing_whitespace=1
+let g:airline#extensions#ale#enabled=1
 
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_color_term = 239
