@@ -1110,3 +1110,34 @@ All programming is maintenance programming, because you are rarely writing origi
 %
 Even the best planning is not so omniscient as to get it right the first time.
   Fred Brooks
+%
+All problems in computer science can be solved by another level of indirection.
+  David Wheeler
+%
+All problems in computer science can be solved by another level
+of indirection. But that usually will create another problem.
+  David Wheeler
+%
+Simplicity is prerequisite for reliability.
+  Edsger Dijkstra
+%
+If we wish to count lines of code, we should not regard them as 'lines produced' but as 'lines spent.'
+  Edsger Dijkstra
+%
+It’s harder to read code than to write it.
+  Joel Spolsky
+%
+Any fool can write code that a computer can understand. Good programmers write code that humans can understand.
+  Martin Fowler
+%
+Don’t repeat yourself. Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.
+  Andy Hunt and Dave Thomas
+%
+Code never lies; comments sometimes do.
+  Ron Jeffries
+%
+There are only two hard things in computer science: cache invalidation and naming things.
+  Phil Karlton
+%
+There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.
+  Leon Bambrick
