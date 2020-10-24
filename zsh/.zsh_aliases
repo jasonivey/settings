@@ -45,6 +45,9 @@ alias disks='df --total --human-readable'
 alias dirsize=get-dirsize
 alias file-count='/bin/ls -1 | wc -l'
 
+# always trying a new system monitor tool
+alias top='bpytop'
+
 # weather and active network adapter/ip address
 alias weather=get-full-weather-info
 alias netinfo=get-network-info

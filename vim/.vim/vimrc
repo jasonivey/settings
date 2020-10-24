@@ -36,6 +36,8 @@ Plugin 'bling/vim-bufferline'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'arzg/vim-colors-xcode'
+" the editor config plugin
+Plugin 'editorconfig/editorconfig-vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 " Plugin for making cmake projects easier
 Plugin 'vhdirk/vim-cmake'

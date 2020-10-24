@@ -165,37 +165,27 @@ if [[ "$(uname)" == "Darwin" ]] then
     add_dir_to_include_path "$component_dir/include"
     add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
-    #[ -d "/usr/local/opt/zlib" ] && local component_dir="/usr/local/opt/zlib" || local component_dir="$(brew --prefix zlib)"
-    #add_dir_to_linker_path "$component_dir/lib"
-    #add_dir_to_include_path "$component_dir/include"
-    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
+    [ -d "/usr/local/opt/zlib" ] && local component_dir="/usr/local/opt/zlib" || local component_dir="$(brew --prefix zlib)"
+    add_dir_to_linker_path "$component_dir/lib"
+    add_dir_to_include_path "$component_dir/include"
+    add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
     #[ -d "/usr/local/opt/readline" ] && local component_dir="/usr/local/opt/readline" || local component_dir="$(brew --prefix readline)"
     #add_dir_to_linker_path "$component_dir/lib"
     #add_dir_to_include_path "$component_dir/include"
     #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
-    #[ -d "/usr/local/opt/openssl" ] && local component_dir="/usr/local/opt/openssl" || local component_dir="$(brew --prefix openssl)"
-    #add_dir_to_linker_path "$component_dir/lib"
-    #add_dir_to_include_path "$component_dir/include"
-    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
-
-    #add_dir_to_pkg_config_path "/usr/local/opt/python/Frameworks/Python.framework/Versions/Current/lib/pkgconfig"
+    [ -d "/usr/local/opt/openssl" ] && export OPENSSL_ROOT_DIR="/usr/local/opt/openssl" || export OPENSSL_ROOT_DIR="$(brew --prefix openssl)"
+    add_dir_to_path "$OPENSSL_ROOT_DIR/bin"
+    add_dir_to_linker_path "$OPENSSL_ROOT_DIR/lib"
+    add_dir_to_include_path "$OPENSSL_ROOT_DIR/include"
+    add_dir_to_pkg_config_path "$OPENSSL_ROOT_DIR/lib/pkgconfig"
 
     [ -d "/usr/local/opt/oniguruma" ] && local component_dir="/usr/local/opt/oniguruma" || local component_dir="$(brew --prefix oniguruma)"
     add_dir_to_linker_path "$component_dir/lib"
     add_dir_to_include_path "$component_dir/include"
     add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
-    # add_dir_to_path $HOME/Library/Python/3.7/bin
-    #  The above command would be the place where the `macOS system`
-    #  `Python3` is added into the PATH environment variable.  But
-    #  since we want to allow installation of multiple versions of
-    #  Python3 at the same time with only one version active at a
-    #  time.  Pyenv has been installed and this module should install
-    #  without any issues. At that point python3, python, pip
-    #  and pip will all have been installed. The rest of the global
-    #  install packages can be installed by running the following:
     # pip install -r $HOME/scripts/requirements.txt
 
     # Setup the QT library environment variables
@@ -204,9 +194,6 @@ if [[ "$(uname)" == "Darwin" ]] then
     #add_dir_to_include_path "$component_dir/include"
     #add_dir_to_linker_path "$component_dir/lib"
     #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
-
-    # I think this is already a part of the built-in include path... but.. here we are anyway...
-    #add_dir_to_include_path "$(xcrun --show-sdk-path)/usr/include"
 
     # Setup MacVim environment variables
     add_dir_to_path "/Applications/MacVim.app/Contents/bin"
