@@ -84,6 +84,7 @@ add_dir_to_path "$HOME/settings"
 add_dir_to_path "$HOME/scripts"
 add_dir_to_path "$HOME/.local/bin"
 add_dir_to_path "$HOME/.cargo/bin"
+add_dir_to_path "$HOME/.iterm2"
 
 # For using a2x for manpage generation
 [ -e "/usr/local/etc/xml/catalog" ] && export XML_CATALOG_FILES="/usr/local/etc/xml/catalog"

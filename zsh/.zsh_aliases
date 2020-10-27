@@ -25,6 +25,22 @@ alias chown='chown --verbose --preserve-root'
 alias chmod='chmod --verbose --preserve-root'
 alias chgrp='chgrp --verbose --preserve-root'
 
+# Stow app aliases because they are impossible to remember
+alias install-links-simulate='stow --simulate --stow'
+alias install-links='stow --stow'
+alias reinstall-links-simulate='stow --simulate --restow'
+alias reinstall-links='stow --restow'
+alias uninstall-links-simulate='stow --simulate --delete'
+alias uninstall-links='stow --delete'
+
+local stowable_packages="config gdb git vim zsh"
+alias install-all-links-simulate="install-links-simulate $stowable_packages"
+alias install-all-links="install-links $stowable_packages"
+alias reinstall-all-links-simulate="reinstall-links-simulate $stowable_packages"
+alias reinstall-all-links="reinstall-links $stowable_packages"
+alias uninstall-all-links-simulate="uninstall-links-simulate $stowable_packages"
+alias uninstall-all-links="uninstall-links $stowable_packages"
+
 # easy to remember time and date
 alias now='date +"%m-%d-%Y %l:%M:%S%p %Z"'
 alias today='date +"%m-%d-%Y"'
