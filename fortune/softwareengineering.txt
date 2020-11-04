@@ -1141,3 +1141,9 @@ There are only two hard things in computer science: cache invalidation and namin
 %
 There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.
   Leon Bambrick
+%
+Modern compilers can do a lot of modifications to the code
+in order to improve performance. It is useful for the
+programmer to know what the compiler can do and what it
+can not do.
+  Agner Fog -- "Optimizing Software in C++"
