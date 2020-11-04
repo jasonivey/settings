@@ -201,7 +201,6 @@ if [[ "$(uname)" == "Darwin" ]] then
 
     # Add Visual Studio Code (code)
     add_dir_to_path_end "/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-
 elif [[ "$(uname -s)" == "Linux" ]] then
     if [[ -d "/usr/lib/jvm/java-11-openjdk-amd64" ]] then
         # Setup JAVA environment variables
@@ -218,8 +217,11 @@ elif [[ "$(uname -s)" == "Linux" ]] then
     add_dir_to_include_path "/usr/include/x86_64-linux-gnu/ruby-2.7.0"
     add_dir_to_linker_path "/usr/lib/x86_64-linux-gnu/ruby/2.7.0"
     add_dir_to_pkg_config_path "/usr/lib/x86_64-linux-gnu/pkgconfig"
-
 fi
+
+# Create the ~/.zsh_functions directory for user defined zsh command completions
+[ ! -d "$HOME/.zsh_functions" ] && mkdir "$HOME/.zsh_functions"
+add_dir_to_fpath "$HOME/.zsh_functions"
 
 # set the various application environment variables
 set_env_variable_from_list "EDITOR" "mvim" "vim" "mate" "code" "vi" "nano"

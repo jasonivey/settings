@@ -1,3 +1,12 @@
 # Comments and blank lines are allowed.
 
-p10k-historical-configs/
+aliases.zsh
+color.zsh
+color.example.zsh
+default_user.zsh
+default_user.example.zsh
+envs.zsh
+functions.zsh
+.gitignore
+p10k-historical-configs
+sources.zsh

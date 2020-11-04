@@ -184,8 +184,8 @@ get-confirmation() {
 }
 
 set-tab-color() {
-    if [ -e "$HOME/.zsh_color" ]; then
-        echo $(head -n 1 $HOME/.zsh_color) | python3 $HOME/scripts/set_tab_color.py
+    if [ -e "$HOME/color.zsh" ]; then
+        echo $(head -n 1 $HOME/color.zsh) | python3 $HOME/scripts/set_tab_color.py
     elif [ -e "$HOME/.bash_color" ]; then
         echo $(head -n 1 $HOME/.bash_color) | python3 $HOME/scripts/set_tab_color.py
     fi

@@ -2,10 +2,10 @@
 # vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
 
 # Set the DEFAULT_USER environment variable
-[ -e "$HOME/.zsh_default_user" ] && source "$HOME/.zsh_default_user"
+[ -e "$HOME/settings/zsh/default_user.zsh" ] && source "$HOME/settings/zsh/default_user.zsh"
 
 # If you come from bash you might have to change your $PATH.
-[ -e "$HOME/.zsh_envs" ] && source "$HOME/.zsh_envs"
+[ -e "$HOME/settings/zsh/envs.zsh" ] && source "$HOME/settings/zsh/envs.zsh"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -30,13 +30,13 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # start by sourcing the needed zsh functions
-[ -e "$HOME/.zsh_functions" ] && source "$HOME/.zsh_functions"
+[ -e "$HOME/settings/zsh/functions.zsh" ] && source "$HOME/settings/zsh/functions.zsh"
 
 # User configuration
-[ -e "$HOME/.zsh_aliases" ] && source "$HOME/.zsh_aliases"
+[ -e "$HOME/settings/zsh/aliases.zsh" ] && source "$HOME/settings/zsh/aliases.zsh"
 
 # lastly, source the zsh_sources which contains 3rd party module includes
-[ -e "$HOME/.zsh_sources" ] && source "$HOME/.zsh_sources"
+[ -e "$HOME/settings/zsh/sources.zsh" ] && source "$HOME/settings/zsh/sources.zsh"
 
 # set the iterm tab color if a color is specified using .zsh-color
 set-tab-color
