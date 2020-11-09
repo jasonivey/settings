@@ -130,8 +130,8 @@ if [[ "$(uname)" == "Darwin" ]] then
     # Setup LLVM/clang C++ environment variables -- uncomment when needed
     [ -d "/usr/local/opt/llvm" ] && local component_dir="/usr/local/opt/llvm" || local component_dir="$(brew --prefix llvm)"
     add_dir_to_path "$component_dir/bin"
-    #add_dir_to_include_path "$component_dir/include"
-    #add_dir_to_linker_path "$component_dir/lib"
+    LDFLAGS="$LDFLAGS -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+    add_dir_to_include_path "$component_dir/include"
 
     # Add all of the gnu-variant duplicate (newer) versions of binaries
     [ -d "/usr/local/opt/unzip" ] && local component_dir="/usr/local/opt/unzip" || local component_dir="$(brew --prefix unzip)"

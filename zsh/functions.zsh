@@ -83,10 +83,10 @@ pretty-print() {
         #  PATH environment variable pretty printed
         pretty-print-env-variable
     fi
-    local env_var_=$(set | sed -n "s/^\($1\)=[^(].*/\1/Ip")
-    if (( $? == 0 )) then
+    set | grep --max-count=1 -e "^$1=.*$" &>/dev/null
+    if [[ $? == 0 ]] then
         # if the argument is a variable of any type then pretty print that
-        pretty-print-env-variable "$env_var_"
+        pretty-print-env-variable "$1"
     elif declare -Ff "$1" >/dev/null; then
         # if the argument is a function name then print the function definition
         whence -f $1
@@ -210,7 +210,7 @@ brew-upgrade() {
     echo "running brew upgrade"
     brew upgrade
     echo "running brew outdated --casks"
-    local outdated_count = $(brew outdated --cask | awk 'BEGIN { i = 0 } { ++i } END { print i }')
+    local outdated_count=$(brew outdated --cask | awk 'BEGIN { i = 0 } { ++i } END { print i }')
     if [ $outdated_count -ne 0 ]; then
         echo "running brew reinstall (brew outdated --casks)"
         brew reinstall $(brew outdated --cask)
