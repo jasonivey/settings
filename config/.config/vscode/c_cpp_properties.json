@@ -11,7 +11,7 @@
             ],
             "compilerPath": "/usr/local/opt/llvm/bin/clang",
             "intelliSenseMode": "clang-x64",
-            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "compileCommands": "${workspaceFolder}/compile_commands.json",
             "configurationProvider": "go2sh.cmake-integration"
         }
     ],

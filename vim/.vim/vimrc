@@ -36,47 +36,67 @@ Plugin 'bling/vim-bufferline'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'arzg/vim-colors-xcode'
-" the editor config plugin
+
+" Plugin for productivity metrics, goals, leaderboards, and automatic time tracking.
+Plugin 'wakatime/vim-wakatime'
+
+" Plugin for editor config
 Plugin 'editorconfig/editorconfig-vim'
+
+" Plugin to quickly open files using a fuzzy finder
 Plugin 'ctrlpvim/ctrlp.vim'
-" Plugin for making cmake projects easier
+
+" Plugin for cmake projects
 Plugin 'vhdirk/vim-cmake'
-" awesome Python autocompletion
+
+" Plugin for python autocompletion
 Plugin 'davidhalter/jedi-vim'
-" activate and deactivate the pyenv Python
+
+" Plugin to activate and deactivate the pyenv
 Plugin 'lambdalisue/vim-pyenv'
-" Asynchronous Lint Engine provides Python linting
+
+" Plugin for asynchronous lint engine
 Plugin 'dense-analysis/ale'
+
 " Plugin for go-lang
 Plugin 'fatih/vim-go'
-" Syntax Checker for Python, Rust, go... see below
-" Plugin 'vim-syntastic/syntastic'
-Plugin 'vim-scripts/indentpython.vim'
-" Code completion for C/C++
+
+" Plugin for C/C++ code completion
 Plugin 'Valloric/YouCompleteMe.git'
+
+" Plugin to create an explorer-like panel to browse directories/files
 Plugin 'scrooloose/nerdtree.git'
+
+" Plugin to quickly comment/uncomment lines/ranges of code
 Plugin 'scrooloose/nerdcommenter.git'
+
+" Plugin formats your code with coding style using clang-format
 Plugin 'rhysd/vim-clang-format.git'
-" Indent line plugin where indent marks are shown throughout the source file
+
+" Plugin for showing indent marks throughout the source file
 Plugin 'Yggdroot/indentLine'
-" Better JSON for VIM -- distinct highlighting of keywords vs values. JSON-specific warnings and quote concealing.
+
+" Plugin for better JSON for VIM
 Plugin 'elzr/vim-json'
-" Add support for . repeat commands
-Plugin 'tpope/vim-repeat'
-" Add support for various shortcuts
-Plugin 'tpope/vim-unimpaired'
+
 " Add git support inside vim
 Plugin 'tpope/vim-fugitive.git'
+
 " Add ripgrep commands inside vim
 Plugin 'jremmen/vim-ripgrep'
+
 " Highlights trailing whitespace in red -- call :FixWhitespace to strip
 Plugin 'bronson/vim-trailing-whitespace'
-" Add :Bclose will close and destroy buffer
-Plugin 'rbgrouleff/bclose.vim.git'
+
 " Open the tldr abbreviated man page for a command
 Plugin 'wlemuel/vim-tldr'
+
+" Add :Bclose will close and destroy buffer
+Plugin 'rbgrouleff/bclose.vim.git'
+
 " Open header of the source file you are in
 Plugin 'a.vim'
+
 call vundle#end()
 
 " create a custom command SortLine which will take a line and sort the words
@@ -88,7 +108,6 @@ if shell_error == 0
 else
   let g:ycm_python_binary_path = 'python'
 endif
-
 
 " Always set encoding to utf-8
 set encoding=utf-8
@@ -126,18 +145,6 @@ let g:airline#extensions#tabline#enabled=1
 let g:laststatus=2
 let g:airline_theme='molokai'
 
-" Syntastic Plugin Modifications
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-"let g:syntastic_python_checkers=['pylint', 'flake8']
-"let g:syntastic_aggregate_errors=1
-"let g:syntastic_always_populate_loc_list=1
-"let g:syntastic_auto_loc_list=1
-"let g:syntastic_check_on_open=1
-"let g:syntastic_check_on_wq=0
-"let python_highlight_all=1
-
 " ALE settings
 let g:ale_linters={
   \   'csh': ['shell'],
@@ -153,7 +160,10 @@ let g:airline#extensions#ale#enabled=1
 
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_color_term = 239
-let g:indentLine_noConcealCursor=""
+let g:indentLine_concealcursor=""
+
+" json syntax highlighting settings to show the string quotes
+let g:vim_json_syntax_conceal = 0
 
 " Enable code file customization with modelines
 set modeline

@@ -5,6 +5,7 @@ config/.config/configstore/update-notifier-npm.json
 config/.config/gcloud
 config/.config/pulse
 config/.config/conky
+secrets/retrieve_secrets.sh
 vim/.vim/backups/
 vim/.vim/bundle/
 vim/.vim/swapfiles/

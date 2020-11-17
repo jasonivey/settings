@@ -29,6 +29,9 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+# retreive the stored secrets and storing them in the environment
+[ -e "$HOME/settings/secrets/retrieve_secrets.sh" ] && source "$HOME/settings/secrets/retrieve_secrets.sh"
+
 # start by sourcing the needed zsh functions
 [ -e "$HOME/settings/zsh/functions.zsh" ] && source "$HOME/settings/zsh/functions.zsh"
 
