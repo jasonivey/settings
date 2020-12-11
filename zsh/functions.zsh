@@ -170,6 +170,38 @@ get-dirsize() {
     du -hcs "$dir_" | sed -n '1p;$p' | awk -f $HOME/scripts/dirsize.awk
 }
 
+get-include-paths() {
+    python3 $HOME/scripts/get_include_paths.py
+}
+
+go-to-stdlib-include() {
+    local stdlib_dir=''
+    python3 $HOME/scripts/get_include_paths.py "$@" | while read output_str
+    do
+        echo $output_str;
+        if [[ $output_str =~ .*c\\+\\+.* ]] then
+            if [[ ${#stdlib_dir} -eq 0 || ${#output_str} -lt ${#stdlib_dir} ]] then
+                stdlib_dir=$output_str;
+            fi
+        fi
+    done
+    [[ ${#stdlib_dir} -gt 0 ]] && cd $stdlib_dir
+}
+
+go-to-system-include() {
+    local system_include_dir=''
+    python3 $HOME/scripts/get_include_paths.py "$@" | while read output_str
+    do
+        echo $output_str;
+        if [[ $output_str =~ .*\\.sdk\\/usr\\/include$ ]] then
+            if [[ ${#system_include_dir} -eq 0 || ${#output_str} -lt ${#system_include_dir} ]] then
+                system_include_dir=$output_str;
+            fi
+        fi
+    done
+    [[ ${#system_include_dir} -gt 0 ]] && cd $system_include_dir
+}
+
 get-active-network-interface() {
     ip route get 1.1.1.1 | awk '{ if (NR == 1) { print $5; } }'
 }
@@ -184,8 +216,8 @@ get-confirmation() {
 }
 
 set-tab-color() {
-    if [ -e "$HOME/color.zsh" ]; then
-        echo $(head -n 1 $HOME/color.zsh) | python3 $HOME/scripts/set_tab_color.py
+    if [ -e "$HOME/settings/zsh/color.zsh" ]; then
+        echo $(head -n 1 $HOME/settings/zsh/color.zsh) | python3 $HOME/scripts/set_tab_color.py
     elif [ -e "$HOME/.bash_color" ]; then
         echo $(head -n 1 $HOME/.bash_color) | python3 $HOME/scripts/set_tab_color.py
     fi
@@ -278,4 +310,3 @@ shutoff() {
         echo "Not shutting down now..."
     fi
 }
-

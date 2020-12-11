@@ -35,6 +35,12 @@ if [[ -d "$HOME/.nvm" && -e "$HOME/.nvm/nvm.sh" ]] then
     [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
 fi
 
+# Setup ruby environment, this will probably break vim & mvim
+if [[ -d "/usr/local/opt/openssl@1.1" ]] then
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
+fi
+command -v rbenv &>/dev/null && { eval "$(rbenv init -)"; }
+
 # Setup pyenv environment
 command -v pyenv &>/dev/null && { eval "$(pyenv init -)"; }
 

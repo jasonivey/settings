@@ -92,13 +92,22 @@ alias 7zdec='7z x'
 alias cls='clear && echo -en "\e[3J"'
 alias x='exit'
 
+# Compiler and standard library helpers
+alias include=get-include-paths
+alias includelib=go-to-stdlib-include
+alias includesys=go-to-system-include
+
 # Package mantanaince applications and commands
 if [[ "$(uname)" == "Linux" ]] then
     alias update=apt-update
     alias upgrade=apt-upgrade
+    alias llvm='cd /usr/lib/llvm-10'
+    alias gnugcc='cd /usr/lib/gcc/x86_64-linux-gnu/9'
 else
     alias update=brew-update
     alias upgrade=brew-upgrade
+    alias llvm='cd /usr/local/opt/llvm'
+    alias gnugcc='cd /usr/local/opt/gcc'
 fi
 
 # If on macOS the best markdown editor/viewer found is typora. Unfortunately they don't have any CLI support.
@@ -179,5 +188,3 @@ else
         alias lst='/bin/ls --almost-all -l --classify --human-readable --color=always -t'
     fi
 fi
-
-

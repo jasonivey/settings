@@ -1,0 +1,22 @@
+[
+  {
+    "name": "LLVM Clang 11.0.0",
+    "compilers": {
+      "C": "/usr/local/opt/llvm/bin/clang-11",
+      "CXX": "/usr/local/opt/llvm/bin/clang-11"
+    },
+    "preferredGenerator": {
+      "name": "Ninja"
+    }
+  },
+  {
+    "name": "GNU GCC 10.2.0",
+    "compilers": {
+      "C": "/usr/local/Cellar/gcc/10.2.0/bin/gcc-10",
+      "CXX": "/usr/local/Cellar/gcc/10.2.0/bin/g++-10"
+    },
+    "preferredGenerator": {
+      "name": "Ninja"
+    }
+  }
+]

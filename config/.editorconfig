@@ -9,18 +9,22 @@ end_of_line = lf
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-# 4 space indentation
+# standard space indentation
 [*.{py,c,cpp,h,hpp,inl}]
 charset = utf-8
 indent_style = space
 indent_size = 4
 tab_width = 4
+max_line_length = 120
 
 # Tab indentation (no size specified)
 [Makefile]
 indent_style = tab
 
-# Indentation override for all JS under lib directory
+[*.mak]
+indent_style = tab
+
+# Javascript only has indent of 2 spaces
 [lib/**.js]
 indent_style = space
 indent_size = 2
