@@ -47,6 +47,11 @@ goclean() {
     unset pkg, ost, cnt
 }
 
+gitdiff() {
+    preview="git diff $@ --color=always -- {-1}"
+    git diff $@ --name-only | sk -m --ansi --preview $preview
+}
+
 de-duplicate-zsh-paths() {
     # This ensures that duplicate paths are not persisted to the PATH environment
     #  variable regaurdless of how many times source .zshrc is executed

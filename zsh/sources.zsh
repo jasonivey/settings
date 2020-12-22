@@ -36,8 +36,8 @@ if [[ -d "$HOME/.nvm" && -e "$HOME/.nvm/nvm.sh" ]] then
 fi
 
 # Setup ruby environment, this will probably break vim & mvim
-if [[ -d "/usr/local/opt/openssl@1.1" ]] then
-    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
+if [[ -d "/usr/local/opt/openssl" ]] then
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl"
 fi
 command -v rbenv &>/dev/null && { eval "$(rbenv init -)"; }
 

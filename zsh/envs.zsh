@@ -275,6 +275,12 @@ if [[ -d "/usr/local/go" ]] then
     add_dir_to_path "$GOROOT/bin"
 fi
 
+# Add environment variable for CMake CPM (cmake package manager) module
+if [[ ! -d "$HOME/.cache/CPM" ]] then
+    mkdir -p $HOME/.cache/CPM
+fi
+export CPM_SOURCE_CACHE=$HOME/.cache/CPM
+
 # Add the environment variable which speciifies where the cheat sheet configuration file is located
 if [[ -e "$HOME/.config/cht.sh/cht.sh.conf" ]] then
     export CHTSH_CONF="$HOME/.config/cht.sh/cht.sh.conf"
