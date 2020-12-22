@@ -115,7 +115,7 @@ set termencoding=utf-8
 set t_Co=256
 
 " Set colorscheme (i.e. theme)
-colorscheme xcodelighthc
+colorscheme xcodedarkhc
 
 " Enable true color 启用终端24位色
 if exists('+termguicolors')
@@ -130,13 +130,13 @@ if has("gui_running") && has("gui_macvim")
   set guifont=MesloLGS-NF-Regular:h11
 endif
 
-" xcode-light-hc theme settings
-let g:xcodelighthc_green_comments=1
-let g:xcodelighthc_emph_types=1
-let g:xcodelighthc_emph_funcs=1
-let g:xcodelighthc_emph_idents=1
-let g:xcodelighthc_match_paren_style=1
-let g:xcodelighthc_dim_punctuation=0
+" xcode-dark-hc theme settings
+let g:xcodedarkhc_green_comments=1
+let g:xcodedarkhc_emph_types=1
+let g:xcodedarkhc_emph_funcs=1
+let g:xcodedarkhc_emph_idents=1
+let g:xcodedarkhc_match_paren_style=1
+let g:xcodedarkhc_dim_punctuation=0
 
 " Airline settings
 let g:Powerline_symbols='unicode'
