@@ -9,10 +9,18 @@ set history=1000
 if !isdirectory($HOME . "/.vim")
     call mkdir($HOME . "/.vim", "p")
 endif
-set viminfo=%,'100,n~/.vim/viminfo
-"           | |    + viminfo file path
-"           | + files marks saved
-"           + save/restore buffer list
+
+set viminfo='50,<1000,s100,:0,n~/vim/viminfo
+"           |   |     |    |  |
+"           |   |     |    |  +
+"           |   |     |    +   n~/.vim/viminfo  The name of the file to use is "~/vim/viminfo".
+"           |   |     +    :0  Command-line history will not be saved.
+"           |   +     s100  Registers with more than 100 Kbyte text are skipped.
+"           +   <1000  Contents of registers (up to 1000 lines each) will be remembered.
+"           '50  Marks will be remembered for the last 50 files you edited.
+" Missing options and meaning
+" no %  The buffer list will not be saved nor read back.
+" no h  'hlsearch' highlighting will be restored.
 
 " Move backups and swp files to a dedicated location
 if !isdirectory($HOME . "/.vim/backups")
@@ -161,7 +169,7 @@ let g:airline#extensions#ale#enabled=1
 
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_color_term = 239
-let g:indentLine_concealcursor=""
+let g:indentLine_noconcealcursor=""
 
 " json syntax highlighting settings to show the string quotes
 let g:vim_json_syntax_conceal = 0
@@ -232,12 +240,6 @@ set autoread
 
 " w!! to save file with sudo.
 cmap w!! w !sudo tee % > /dev/null
-
-" restore previous cursor position
-au BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") && &filetype != "gitcommit" |
-        \ execute("normal `\"") |
-    \ endif
 
 " Fix the backspace key
 set backspace=2
