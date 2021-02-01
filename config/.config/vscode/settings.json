@@ -6,6 +6,7 @@
     "cmake.preferredGenerators": [
         "Ninja"
     ],
-    "cmake.buildDirectory": "${workspaceFolder}/vs-build",
-    "cmake.parallelJobs": 8
+    "cmake.buildDirectory": "${workspaceFolder}/vsbuild",
+    "cmake.parallelJobs": 4,
+    "C_Cpp.dimInactiveRegions": false
 }

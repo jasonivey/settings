@@ -17,6 +17,14 @@ teletype() {
     zpty -d pty-${UID}
 }
 
+open-vscode() {
+    if (($# > 0)) then
+        HUSH_LOGIN_INFO=1 VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $@
+    else
+        HUSH_LOGIN_INFO=1 VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode"
+    fi
+}
+
 goclean() {
     local pkg=$1
     local ost
@@ -108,7 +116,7 @@ set-cscope() {
     eval `cscope -b`
 }
 
-dev() {
+goto-dev-dir() {
     if [[ $# -gt 0 && -d $HOME/dev/$1 ]] then
         cd $HOME/dev/$1
     else
@@ -116,7 +124,7 @@ dev() {
     fi
 }
 
-dev-build() {
+make-dev-build-dir() {
     if [[ $# -eq 0 ]] then
         cd $HOME/dev
         pretty-print-info "unable to clean and go into build directory because there was no dev prroject specified"
@@ -134,7 +142,9 @@ dev-build() {
 }
 
 get-login-info() {
-    if [[ -e "$HOME/scripts/login_info.py" ]] then
+    if [[ -e "$HOME/settings/mmotd" ]] then
+        "$HOME/settings/mmotd"
+    elif [[ -e "$HOME/scripts/login_info.py" ]] then
         python3 $HOME/scripts/login_info.py
     fi
 }

@@ -14,18 +14,28 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 plugins=(
     brew
-    command-not-found # install in linux
+    command-not-found        # install in linux
     dircycle
-    extract
+    extract                  # install all number of aliases for compressing and decompressing zip/tar/7z/etc.
     git
     git-extras
-    httpie # adds httpie completions
+    httpie                   # adds httpie completions
     sudo
-    tldr
-    z
-    zsh-syntax-highlighting
-    zsh-autosuggestions
+    tldr                     # install tldr (too-long-didn't-read) help pages, see note #1 below
+    z                        # fast directory jumping
+    zsh-autosuggestions      # git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    zsh-syntax-highlighting  # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    zsh-vi-mode              # git clone https://github.com/jeffreytse/zsh-vi-mode $HOME/.oh-my-zsh/custom/plugins/zsh-vi-mode
 )
+
+#
+# note #1: tldr installation instructions ($ZSH_CUSTOM should be defined as $HOME/.oh-my-zsh/custom)
+# npm install -g tldr
+# mkdir -p $ZSH_CUSTOM/plugins/tldr
+# ln -sr "$(dirname $(readlink -f $(which tldr)))/completion/zsh/_tldr" _tldr
+#
+# result: this will create a symbolic <relative> link to the zsh completions file
+#
 
 source $ZSH/oh-my-zsh.sh
 
@@ -50,3 +60,6 @@ set-tab-color
 # if the .zshrc is ran more than once the PATH variable will have duplicates
 #  along with a number of other variables. this function remidies that situation
 de-duplicate-zsh-paths
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+

@@ -5,32 +5,15 @@
             "label": "C/C++: clang++ build active file",
             "command": "/usr/local/opt/llvm/bin/clang++",
             "args": [
+                "-std=c++17",
+                "-stdlib=libc++",
                 "-g",
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
             "options": {
-                "cwd": "/usr/local/opt/llvm/bin"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": "build",
-            "detail": "Generated task by Debugger"
-        },
-        {
-            "type": "cppbuild",
-            "label": "C/C++: clang++ build active file",
-            "command": "/usr/local/opt/llvm/bin/clang++",
-            "args": [
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
-            ],
-            "options": {
-                "cwd": "/usr/local/opt/llvm/bin"
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [
                 "$gcc"

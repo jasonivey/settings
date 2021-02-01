@@ -9,10 +9,10 @@
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks"
             ],
-            "compilerPath": "/usr/local/opt/llvm/bin/clang",
+            "compilerPath": "/usr/local/opt/llvm/bin/clang-11",
             "intelliSenseMode": "clang-x64",
-            "compileCommands": "${workspaceFolder}/compile_commands.json",
-            "configurationProvider": "go2sh.cmake-integration"
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

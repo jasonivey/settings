@@ -8,8 +8,11 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/bin/test_app",
-            "args": [],
+            "program": "${workspaceFolder}/build/apps/mmotd/mmotd",
+            "args": [
+                "--template",
+                "${workspaceFolder}/config/mmotd_double_column_template1.json"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build",
             "environment": [],

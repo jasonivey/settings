@@ -68,6 +68,11 @@ alias top='bpytop'
 alias weather=get-full-weather-info
 alias netinfo=get-network-info
 
+# development aliases
+alias vscode=open-vscode
+alias dev=goto-dev-dir
+alias dev-build=make-dev-build-dir
+
 # global aliases for tools which are often PIPED into or out of
 alias -g LESS='less -RFX'
 alias -g XML='tidy -xml -q -i - | bat'

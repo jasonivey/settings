@@ -1145,5 +1145,41 @@ There are two hard things in computer science: cache invalidation, naming things
 Modern compilers can do a lot of modifications to the code
 in order to improve performance. It is useful for the
 programmer to know what the compiler can do and what it
-can not do.
+cannot do.
   Agner Fog -- "Optimizing Software in C++"
+%
+"Respect yourself enough to walk away from anything that
+ no longer serves you, grows you, or makes you happy."
+  Robert Tew
+%
+"Experience is the name everyone gives to their mistakes."
+  Oscar Wilde
+%
+"In order to be irreplaceable, one must always be different"
+  Coco Chanel
+%
+"Java is to JavaScript what car is to Carpet."
+  Chris Heilmann
+%
+"Knowledge is power."
+  Francis Bacon
+%
+"Sometimes it pays to stay in bed on Monday, rather than spending the
+ rest of the week debugging Monday’s code."
+  Dan Salomon
+%
+"Ruby is rubbish! PHP is phpantastic!"
+  Nikita Popov
+%
+"Code is like humor. When you have to explain it, it’s bad."
+  Cory House
+%
+"Fix the cause, not the symptom."
+  Steve Maguire
+%
+"Make it work, make it right, make it fast."
+  Kent Beck
+%
+"When to use iterative development? You should use iterative
+ development only on projects that you want to succeed."
+  Martin Fowler
