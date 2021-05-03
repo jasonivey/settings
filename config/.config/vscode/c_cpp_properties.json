@@ -11,7 +11,7 @@
             ],
             "compilerPath": "/usr/local/opt/llvm/bin/clang-11",
             "intelliSenseMode": "clang-x64",
-            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
+            "compileCommands": "${workspaceFolder}/.vsbuild/compile_commands.json",
             "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],

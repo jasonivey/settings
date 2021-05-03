@@ -68,6 +68,9 @@ alias top='bpytop'
 alias weather=get-full-weather-info
 alias netinfo=get-network-info
 
+# cat alias
+alias ccat='ccat -G Keyword="green" -G Punctuation="teal" -G Plaintext="white" -G Comment="yellow"'
+
 # development aliases
 alias vscode=open-vscode
 alias dev=goto-dev-dir
@@ -106,13 +109,23 @@ alias includesys=go-to-system-include
 if [[ "$(uname)" == "Linux" ]] then
     alias update=apt-update
     alias upgrade=apt-upgrade
-    alias llvm='cd /usr/lib/llvm-10'
-    alias gnugcc='cd /usr/lib/gcc/x86_64-linux-gnu/9'
+    alias llvm='cd /usr/lib/llvm-11'
+    alias gnugcc='cd /usr/lib/gcc/x86_64-linux-gnu/10'
+    alias boost='cd $(realpath -LPe /usr/include/boost)'
+    alias includes-clang='python3 $HOME/dev/scripts/get_include_paths.py --compiler=clang-11'
+    alias includes-gcc='python3 $HOME/dev/scripts/get_include_paths.py --compiler=g++-10'
+    alias includes='python3 $HOME/dev/scripts/get_include_paths.py --compiler=clang-11 --stdlib=libc++'
+    alias include='cd $(python3 $HOME/dev/scripts/get_include_paths.py --compiler=clang-11 --stdlib=libc++ | sed 1q)'
 else
     alias update=brew-update
     alias upgrade=brew-upgrade
     alias llvm='cd /usr/local/opt/llvm'
     alias gnugcc='cd /usr/local/opt/gcc'
+    alias boost='cd $(realpath -LPe /usr/local/include/boost)'
+    alias includes-clang='python3 $HOME/dev/scripts/get_include_paths.py --compiler=clang-11 --stdlib=libc++'
+    alias includes-gcc='python3 $HOME/dev/scripts/get_include_paths.py --compiler=g++-10'
+    alias includes='python3 $HOME/dev/scripts/get_include_paths.py --compiler=clang-11 --stdlib=libc++'
+    alias include='cd $(python3 $HOME/dev/scripts/get_include_paths.py --compiler=clang-11 --stdlib=libc++ | sed 1q)'
 fi
 
 # If on macOS the best markdown editor/viewer found is typora. Unfortunately they don't have any CLI support.
@@ -123,6 +136,15 @@ if [[ "$(uname)" == "Darwin" ]] then
     alias typora='open -a typora'
     alias mark-down='open -a typora'
     alias eject='diskutil unmountDisk force'
+fi
+
+if [[ $(command -v rg) ]] then
+    alias rg-case='rg --color always --case-sensitive'
+    alias rg-files-case='rg --color always --case-sensitive --files-with-matches'
+    alias rg-all='rg --color always --unrestricted --unrestricted --follow'
+    alias rg-case-all='rg --color always --unrestricted --unrestricted --follow --case-sensitive'
+    alias rg-file-all='rg --color always --unrestricted --unrestricted --follow --files-with-matches'
+    alias rg-file-case-all='rg --color always --unrestricted --unrestricted --follow --files-with-matches --case-sensitive'
 fi
 
 #

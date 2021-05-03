@@ -44,6 +44,7 @@ Plugin 'bling/vim-bufferline'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'arzg/vim-colors-xcode'
+Plugin 'endel/vim-github-colorscheme'
 
 " Plugin for productivity metrics, goals, leaderboards, and automatic time tracking.
 Plugin 'wakatime/vim-wakatime'
@@ -59,9 +60,6 @@ Plugin 'vhdirk/vim-cmake'
 
 " Plugin for python autocompletion
 Plugin 'davidhalter/jedi-vim'
-
-" Plugin to activate and deactivate the pyenv
-Plugin 'lambdalisue/vim-pyenv'
 
 " Plugin for asynchronous lint engine
 Plugin 'dense-analysis/ale'
@@ -123,6 +121,7 @@ set termencoding=utf-8
 set t_Co=256
 
 " Set colorscheme (i.e. theme)
+" colorscheme github
 colorscheme xcodedarkhc
 
 " Enable true color 启用终端24位色
@@ -164,6 +163,8 @@ let g:ale_linters={
 let g:ale_fixers={'python': ['autopep8']}
 let g:ale_fix_on_save=1
 let g:ale_warn_about_trailing_whitespace=1
+let g:ale_lint_on_text_changed='never'
+let g:ale_linters_explicit=1
 
 let g:airline#extensions#ale#enabled=1
 
@@ -254,7 +255,7 @@ syntax on
 
 " Not sure why, but these theme/color customizations must after the above two lines
 highlight ColorColumn ctermbg=cyan guibg=cyan
-highlight LineNr term=NONE cterm=NONE ctermbg=NONE ctermfg=black guibg=NONE guifg=black
+" highlight LineNr term=NONE cterm=NONE ctermbg=NONE ctermfg=black guibg=NONE guifg=black
 highlight clear CursorLine
 highlight CursorLine term=underline cterm=underline gui=underline ctermbg=NONE guibg=NONE
 
@@ -310,8 +311,16 @@ filetype plugin on
 autocmd FileType make set noexpandtab
 autocmd Filetype c,cpp,cs,java,objc,php,py set cindent tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 
+" Setup spell checking features on markdown and gitcommit files
+" autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
+" autocmd FileType gitcommit setlocal spell spelllang=en_us
+" set complete+=kspell
+
 " CTRL-P Settings
 let g:ctrlp_map='<Leader>t'
-let g:ctrlp_max_files=200000
+let g:ctrlp_max_files=0
 let g:ctrlp_show_hidden=1
-set wildignore+=*.o,*.d,*.git,CMakeFiles
+let g:ctrlp_working_path_mode='ra'
+let g:ctrlp_match_window='bottom,order:btt,min:1,max:30,results:30'
+set wildignore+=*.o,*.d,*.so,*.dylib,*.a,*.DS_Store,*.suo,*.pyc,*.pyo,*.pyd,*/__pycache__/*,*/build/*,*/vsbuild/*,*/.git/*,*/.cache/*,*/.clangd/*
+

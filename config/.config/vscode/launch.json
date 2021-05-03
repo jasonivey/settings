@@ -6,18 +6,14 @@
     "configurations": [
         {
             "name": "(lldb) Launch",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/build/apps/mmotd/mmotd",
             "args": [
-                "--template",
-                "${workspaceFolder}/config/mmotd_double_column_template1.json"
+                "-t",
+                "${workspaceFolder}/config/mmotd_2_column_template.json"
             ],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "lldb"
+            "cwd": "${workspaceFolder}/build"
         }
     ]
 }

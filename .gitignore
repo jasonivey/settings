@@ -7,6 +7,7 @@ config/.config/noip2/no-ip2.conf
 config/.config/pulse
 iterm2/.iterm2
 mmotd
+!config/.config/mmotd/
 mpv.conf
 secrets/retrieve_secrets.sh
 settings_tree.txt

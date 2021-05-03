@@ -235,6 +235,8 @@ set-tab-color() {
         echo $(head -n 1 $HOME/settings/zsh/color.zsh) | python3 $HOME/scripts/set_tab_color.py
     elif [ -e "$HOME/.bash_color" ]; then
         echo $(head -n 1 $HOME/.bash_color) | python3 $HOME/scripts/set_tab_color.py
+    else
+        python3 $HOME/scripts/set_tab_color.py --random
     fi
 }
 

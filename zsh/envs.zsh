@@ -44,13 +44,17 @@ add_dir_to_include_path() {
     fi
 }
 
+add_to_linker_environment_variable() {
+    if [[ $LDFLAGS && ${LDFLAGS-x} ]] then
+        export LDFLAGS="$LDFLAGS $1"
+    else
+        export LDFLAGS="$1"
+    fi
+}
+
 add_dir_to_linker_path() {
     if [[ -d "$1" ]] then
-        if [[ $LDFLAGS && ${LDFLAGS-x} ]] then
-            export LDFLAGS="$LDFLAGS -L$1"
-        else
-            export LDFLAGS="-L$1"
-        fi
+        add_to_linker_environment_variable "-L$1"
     fi
 }
 
@@ -76,8 +80,7 @@ export HIST_STAMPS="%m-%d-%Y %l:%M:%S%p %Z"
 # always have the current directory in the path
 export PATH="$PATH:."
 
-
-# add a number of paths which are the same no matter what platform
+# add the following to PATH regardless of platform
 add_dir_to_path "/usr/local/bin"
 add_dir_to_path "/usr/local/sbin"
 add_dir_to_path "$HOME/settings"
@@ -85,9 +88,6 @@ add_dir_to_path "$HOME/scripts"
 add_dir_to_path "$HOME/.local/bin"
 add_dir_to_path "$HOME/.cargo/bin"
 add_dir_to_path "$HOME/.iterm2"
-
-# For using a2x for manpage generation
-[ -e "/usr/local/etc/xml/catalog" ] && export XML_CATALOG_FILES="/usr/local/etc/xml/catalog"
 
 if [[ "$(uname)" == "Darwin" ]] then
     # Setup JAVA environment variables
@@ -97,9 +97,8 @@ if [[ "$(uname)" == "Darwin" ]] then
         fi
     fi
 
-    # Ignore the following error from Tcl/Tk since brew installed python relies on macOS version of Tcl/Tk which is
-    #  outdated.  Make sure to follow-up on this variable to ensure it is needed in the future.
-    export TK_SILENCE_DEPRECATION=1
+    # For using a2x for manpage generation
+    [ -e "/usr/local/etc/xml/catalog" ] && export XML_CATALOG_FILES="/usr/local/etc/xml/catalog"
 
     # Add various fpath directories for ZSH completions
     add_dir_to_fpath "/usr/local/share/zsh/functions"
@@ -127,10 +126,16 @@ if [[ "$(uname)" == "Darwin" ]] then
     #add_dir_to_linker_path "$component_dir/lib"
     #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
-    # Setup LLVM/clang C++ environment variables -- uncomment when needed
+    # Setup binutils variables
+    [ -d "/usr/local/opt/binutils" ] && local component_dir="/usr/local/opt/binutils" || local component_dir="$(brew --prefix binutils)"
+    #add_dir_to_path "$component_dir/bin"
+    add_dir_to_linker_path "$component_dir/lib"
+    add_dir_to_include_path "$component_dir/include"
+
+    # Setup LLVM/clang C++ environment variables
     [ -d "/usr/local/opt/llvm" ] && local component_dir="/usr/local/opt/llvm" || local component_dir="$(brew --prefix llvm)"
     add_dir_to_path "$component_dir/bin"
-    LDFLAGS="$LDFLAGS -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+    add_to_linker_environment_variable "-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
     add_dir_to_include_path "$component_dir/include"
 
     # Add all of the gnu-variant duplicate (newer) versions of binaries
@@ -140,6 +145,7 @@ if [[ "$(uname)" == "Darwin" ]] then
     # BEGIN: relationship... the following two paths are related
     [ -d "/usr/local/opt/coreutils" ] && local component_dir="/usr/local/opt/coreutils" || local component_dir="$(brew --prefix coreutils)"
     add_dir_to_path "$component_dir/libexec/gnubin"
+
     # The md5sha1sum MUST come after the coreutils since it overlaps md5sum, sha1sum and adds ripemd160sum.
     #  Declaring this statement after the coreutils 'add_dir_to_path' statement un-intuitively modifies
     #  the PATH so the md5sha1sum bin directory will come before coreutils.
@@ -147,12 +153,12 @@ if [[ "$(uname)" == "Darwin" ]] then
     add_dir_to_path "$component_dir/bin"
     # END: relationship...
 
-    [ -d "/usr/local/opt/make" ]       && add_dir_to_path "/usr/local/opt/make/libexec/gnubin"       || add_dir_to_path "$(brew --prefix make)/libexec/gnubin"
-    [ -d "/usr/local/opt/grep" ]       && add_dir_to_path "/usr/local/opt/grep/libexec/gnubin"       || add_dir_to_path "$(brew --prefix grep)/libexec/gnubin"
-    [ -d "/usr/local/opt/gnu-sed" ]    && add_dir_to_path "/usr/local/opt/gnu-sed/libexec/gnubin"    || add_dir_to_path "$(brew --prefix gnu-sed)/libexec/gnubin"
-    [ -d "/usr/local/opt/gnu-getopt" ] && add_dir_to_path "/usr/local/opt/gnu-getopt/bin"            || add_dir_to_path "$(brew --prefix gnu-getopt)/bin"
+    [ -d "/usr/local/opt/make/libexec/gnubin" ]    && add_dir_to_path "/usr/local/opt/make/libexec/gnubin"    || add_dir_to_path "$(brew --prefix make)/libexec/gnubin"
+    [ -d "/usr/local/opt/grep/libexec/gnubin" ]    && add_dir_to_path "/usr/local/opt/grep/libexec/gnubin"    || add_dir_to_path "$(brew --prefix grep)/libexec/gnubin"
+    [ -d "/usr/local/opt/gnu-sed/libexec/gnubin" ] && add_dir_to_path "/usr/local/opt/gnu-sed/libexec/gnubin" || add_dir_to_path "$(brew --prefix gnu-sed)/libexec/gnubin"
+    [ -d "/usr/local/opt/gnu-getopt/bin" ]         && add_dir_to_path "/usr/local/opt/gnu-getopt/bin"         || add_dir_to_path "$(brew --prefix gnu-getopt)/bin"
 
-    # Setup ruby binaries before system ruby
+    # Setup ruby binaries before system ruby -- uncomment when needed
     #[ -d "/usr/local/opt/ruby" ] && local component_dir="/usr/local/opt/ruby" || local component_dir="$(brew --prefix ruby)"
     #add_dir_to_path "$component_dir/libexec/gembin"
     #add_dir_to_path "$component_dir/bin"
@@ -160,36 +166,45 @@ if [[ "$(uname)" == "Darwin" ]] then
     #add_dir_to_linker_path "$component_dir/lib"
     #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
-    [ -d "/usr/local/opt/tcl-tk" ] && local component_dir="/usr/local/opt/tcl-tk" || local component_dir="$(brew --prefix tcl-tk)"
-    add_dir_to_path "$component_dir/bin"
-    add_dir_to_linker_path "$component_dir/lib"
-    add_dir_to_include_path "$component_dir/include"
-    add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
+    # Setup TCL-TK environment variables -- uncomment when needed -- needed for compiling VIM
+    #[ -d "/usr/local/opt/tcl-tk" ] && local component_dir="/usr/local/opt/tcl-tk" || local component_dir="$(brew --prefix tcl-tk)"
+    #add_dir_to_path "$component_dir/bin"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
+    # Ignore the following error from Tcl/Tk since brew installed python relies on macOS version of Tcl/Tk which is
+    #  outdated.  Make sure to follow-up on this variable to ensure it is needed in the future.
+    export TK_SILENCE_DEPRECATION=1
+
+    # Setup zlib environment variables
     [ -d "/usr/local/opt/zlib" ] && local component_dir="/usr/local/opt/zlib" || local component_dir="$(brew --prefix zlib)"
     add_dir_to_linker_path "$component_dir/lib"
     add_dir_to_include_path "$component_dir/include"
     add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
-    #[ -d "/usr/local/opt/readline" ] && local component_dir="/usr/local/opt/readline" || local component_dir="$(brew --prefix readline)"
-    #add_dir_to_linker_path "$component_dir/lib"
-    #add_dir_to_include_path "$component_dir/include"
-    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
+    # Setup readline environment variables
+    [ -d "/usr/local/opt/readline" ] && local component_dir="/usr/local/opt/readline" || local component_dir="$(brew --prefix readline)"
+    add_dir_to_linker_path "$component_dir/lib"
+    add_dir_to_include_path "$component_dir/include"
+    add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
+    # Setup OpenSSL environment variables
     [ -d "/usr/local/opt/openssl" ] && export OPENSSL_ROOT_DIR="/usr/local/opt/openssl" || export OPENSSL_ROOT_DIR="$(brew --prefix openssl)"
     add_dir_to_path "$OPENSSL_ROOT_DIR/bin"
     add_dir_to_linker_path "$OPENSSL_ROOT_DIR/lib"
     add_dir_to_include_path "$OPENSSL_ROOT_DIR/include"
     add_dir_to_pkg_config_path "$OPENSSL_ROOT_DIR/lib/pkgconfig"
 
-    [ -d "/usr/local/opt/oniguruma" ] && local component_dir="/usr/local/opt/oniguruma" || local component_dir="$(brew --prefix oniguruma)"
-    add_dir_to_linker_path "$component_dir/lib"
-    add_dir_to_include_path "$component_dir/include"
-    add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
+    # Setup oniguruma (modern and flexible regular expressions library) environment variables -- uncomment when needed
+    #[ -d "/usr/local/opt/oniguruma" ] && local component_dir="/usr/local/opt/oniguruma" || local component_dir="$(brew --prefix oniguruma)"
+    #add_dir_to_linker_path "$component_dir/lib"
+    #add_dir_to_include_path "$component_dir/include"
+    #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
     # pip install -r $HOME/scripts/requirements.txt
 
-    # Setup the QT library environment variables
+    # Setup the QT library environment variables -- uncomment when needed
     #[ -d "/usr/local/opt/qt" ] && local component_dir="/usr/local/opt/qt" || local component_dir="$(brew --prefix qt)"
     #add_dir_to_path "$component_dir/bin"
     #add_dir_to_include_path "$component_dir/include"
@@ -236,6 +251,10 @@ export PAGER="less -RFX"
 export MAN_PAGER="less -RFX"
 export BAT_PAGER="less -RFX"
 
+# Setup perlbrew environment variables
+export PERLBREW_ROOT=$HOME/perl5/perlbrew
+export PERLBREW_HOME=$HOME/.perlbrew
+
 #
 # Create the LS_COLORS environment variable using the 'vivid' applilcation
 # Oh Ubuntu `apt` will install filetypes.yml to /usr/share/vivid and themees (*.yml) to /usr/share/vivid/themes
@@ -275,30 +294,24 @@ if [[ -d "/usr/local/go" ]] then
     add_dir_to_path "$GOROOT/bin"
 fi
 
-# Add environment variable for CMake CPM (cmake package manager) module
-if [[ ! -d "$HOME/.cache/CPM" ]] then
-    mkdir -p $HOME/.cache/CPM
-fi
-export CPM_SOURCE_CACHE=$HOME/.cache/CPM
-
 # Add the environment variable which speciifies where the cheat sheet configuration file is located
 if [[ -e "$HOME/.config/cht.sh/cht.sh.conf" ]] then
     export CHTSH_CONF="$HOME/.config/cht.sh/cht.sh.conf"
 fi
 
 # Ensure that the TCL interpretter can find the expect library
-if [[ $TCLLIBPATH && ${TCLLIBPATH-x} ]] then
-    export TCLLIBPATH="$TCLLIBPATH /usr/local/lib"
-else
-    export TCLLIBPATH="/usr/local/lib"
-fi
+#if [[ $TCLLIBPATH && ${TCLLIBPATH-x} ]] then
+#    export TCLLIBPATH="$TCLLIBPATH /usr/local/lib"
+#else
+#    export TCLLIBPATH="/usr/local/lib"
+#fi
 
 # Make all the paths unique
 typeset -xTU PATH path ':'
 typeset -TU FPATH fpath ':'
 typeset -xTU PKG_CONFIG_PATH pkg_config_path ':'
 typeset -xTU CPPFLAGS cppflags ' '
-typeset -xTU CFLAGS cppflags ' '
+typeset -xTU CFLAGS cflags ' '
 typeset -xTU LDFLAGS ldflags ' '
 typeset -xTU TCLLIBPATH tcllibpath ' '
 
@@ -323,4 +336,5 @@ unfunction add_dir_to_path
 unfunction add_dir_to_fpath
 unfunction add_dir_to_pkg_config_path
 unfunction add_dir_to_include_path
+unfunction add_to_linker_environment_variable
 unfunction add_dir_to_linker_path

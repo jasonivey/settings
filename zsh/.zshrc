@@ -21,35 +21,25 @@ plugins=(
     git-extras
     httpie                   # adds httpie completions
     sudo
-    tldr                     # install tldr (too-long-didn't-read) help pages, see note #1 below
     z                        # fast directory jumping
     zsh-autosuggestions      # git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
     zsh-syntax-highlighting  # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
     zsh-vi-mode              # git clone https://github.com/jeffreytse/zsh-vi-mode $HOME/.oh-my-zsh/custom/plugins/zsh-vi-mode
 )
 
-#
-# note #1: tldr installation instructions ($ZSH_CUSTOM should be defined as $HOME/.oh-my-zsh/custom)
-# npm install -g tldr
-# mkdir -p $ZSH_CUSTOM/plugins/tldr
-# ln -sr "$(dirname $(readlink -f $(which tldr)))/completion/zsh/_tldr" _tldr
-#
-# result: this will create a symbolic <relative> link to the zsh completions file
-#
-
 source $ZSH/oh-my-zsh.sh
+
+# zsh-vi-mode requires: remap the backspace key to delete the previous character
+bindkey "^?" backward-delete-char
 
 # retreive the stored secrets and storing them in the environment
 [ -e "$HOME/settings/secrets/retrieve_secrets.sh" ] && source "$HOME/settings/secrets/retrieve_secrets.sh"
 
-# start by sourcing the needed zsh functions
+# source the needed zsh functions
 [ -e "$HOME/settings/zsh/functions.zsh" ] && source "$HOME/settings/zsh/functions.zsh"
 
-# User configuration
+# source the user configuration and aliases
 [ -e "$HOME/settings/zsh/aliases.zsh" ] && source "$HOME/settings/zsh/aliases.zsh"
-
-# lastly, source the zsh_sources which contains 3rd party module includes
-[ -e "$HOME/settings/zsh/sources.zsh" ] && source "$HOME/settings/zsh/sources.zsh"
 
 # set the iterm tab color if a color is specified using .zsh-color
 set-tab-color
@@ -57,9 +47,9 @@ set-tab-color
 # if HUSH_LOGIN_INFO is not defined then print the custom LOGIN INFO
 [ -z ${HUSH_LOGIN_INFO+x} ] && get-login-info
 
+# lastly, source the zsh_sources which contains 3rd party module includes
+[ -e "$HOME/settings/zsh/sources.zsh" ] && source "$HOME/settings/zsh/sources.zsh"
+
 # if the .zshrc is ran more than once the PATH variable will have duplicates
 #  along with a number of other variables. this function remidies that situation
 de-duplicate-zsh-paths
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
