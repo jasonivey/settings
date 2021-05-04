@@ -9,9 +9,11 @@ iterm2/.iterm2
 mmotd
 !config/.config/mmotd/
 mpv.conf
-secrets/retrieve_secrets.sh
 settings_tree.txt
 vim/.vim/backups/
 vim/.vim/bundle/
 vim/.vim/swapfiles/
 vim/.vim/viminfo
+.gitsecret/keys/random_seed
+!*.secret
+wakatime.api.key

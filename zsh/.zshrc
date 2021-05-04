@@ -33,7 +33,7 @@ source $ZSH/oh-my-zsh.sh
 bindkey "^?" backward-delete-char
 
 # retreive the stored secrets and storing them in the environment
-[ -e "$HOME/settings/secrets/retrieve_secrets.sh" ] && source "$HOME/settings/secrets/retrieve_secrets.sh"
+[ -e "$HOME/settings/secrets/export_secrets.sh" ] && source "$HOME/settings/secrets/export_secrets.sh"
 
 # source the needed zsh functions
 [ -e "$HOME/settings/zsh/functions.zsh" ] && source "$HOME/settings/zsh/functions.zsh"
