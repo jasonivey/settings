@@ -1,9 +1,9 @@
 [
   {
-    "name": "LLVM Clang 11.0.0",
+    "name": "LLVM Clang 12.0.0",
     "compilers": {
-      "C": "/usr/local/opt/llvm/bin/clang-11",
-      "CXX": "/usr/local/opt/llvm/bin/clang-11"
+      "C": "/usr/local/opt/llvm/bin/clang-12",
+      "CXX": "/usr/local/opt/llvm/bin/clang++"
     },
     "preferredGenerator": {
       "name": "Ninja"

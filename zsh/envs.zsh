@@ -113,8 +113,8 @@ if [[ "$(uname)" == "Darwin" ]] then
     #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
 
     # Setup curl environment variables -- uncomment when needed
-    [ -d "/usr/local/opt/curl" ] && local component_dir="/usr/local/opt/curl" || local component_dir="$(brew --prefix curl)"
-    add_dir_to_path "$component_dir/bin"
+    #[ -d "/usr/local/opt/curl" ] && local component_dir="/usr/local/opt/curl" || local component_dir="$(brew --prefix curl)"
+    #add_dir_to_path "$component_dir/bin"
     #add_dir_to_include_path "$component_dir/include"
     #add_dir_to_linker_path "$component_dir/lib"
     #add_dir_to_pkg_config_path "$component_dir/lib/pkgconfig"
@@ -238,9 +238,19 @@ fi
 [ ! -d "$HOME/.zsh_functions" ] && mkdir "$HOME/.zsh_functions"
 add_dir_to_fpath "$HOME/.zsh_functions"
 
+
 # set the various application environment variables
 set_env_variable_from_list "EDITOR" "mvim" "vim" "mate" "code" "vi" "nano"
-set_env_variable_from_list "VISUAL" "mvim" "gvim" "mate" "code"
+set_env_variable_from_list "VISUAL" "mvim" "gvim" "mate" "code" "vim" "vi" "nano"
+
+if command -v brew &>/dev/null; then
+    export HOMEBREW_NO_AUTO_UPDATE=1
+    set_env_variable_from_list "HOMEBREW_EDITOR" "mvim" "vim" "mate" "code" "vi" "nano"
+    if command -v bat &>/dev/null; then
+        export HOMEBREW_BAT=1
+        export HOMEBREW_BAT_CONFIG_PATH=$HOME/.config/bat/config
+    fi
+fi
 
 # for macOS this alias is set in .zsh_aliases and Linux it is what the Chrome binary is called
 [ -n "$DISPLAY" ] && export BROWSER=google-chrome
