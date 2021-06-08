@@ -52,7 +52,7 @@ fi
 command -v rbenv &>/dev/null && { eval "$(rbenv init -)"; }
 
 # Setup pyenv environment
-command -v pyenv &>/dev/null && { eval "$(pyenv init -)"; }
+command -v pyenv &>/dev/null && { eval "$(pyenv init --path)"; }
 
 # Setup the pyenv-virtualenv environment
 command -v pyenv-virtualenv-init &>/dev/null && { eval "$(pyenv virtualenv-init -)"; }

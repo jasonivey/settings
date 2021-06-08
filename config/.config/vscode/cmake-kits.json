@@ -10,10 +10,10 @@
     }
   },
   {
-    "name": "GNU GCC 10.2.0",
+    "name": "GNU GCC 11.1.0",
     "compilers": {
-      "C": "/usr/local/Cellar/gcc/10.2.0/bin/gcc-10",
-      "CXX": "/usr/local/Cellar/gcc/10.2.0/bin/g++-10"
+      "C": "/usr/local/opt/gcc/bin/gcc-11",
+      "CXX": "/usr/local/opt/gcc/bin/g++-11"
     },
     "preferredGenerator": {
       "name": "Ninja"

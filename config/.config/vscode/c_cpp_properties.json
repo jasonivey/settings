@@ -9,7 +9,7 @@
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks"
             ],
-            "compilerPath": "/usr/local/opt/llvm/bin/clang-11",
+            "compilerPath": "/usr/local/opt/llvm/bin/clang-12",
             "intelliSenseMode": "clang-x64",
             "compileCommands": "${workspaceFolder}/.vsbuild/compile_commands.json",
             "configurationProvider": "ms-vscode.cmake-tools"
