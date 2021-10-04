@@ -141,6 +141,42 @@ make-dev-build-dir() {
     fi
 }
 
+config-mmotd() {
+    CC=clang-12 CXX=clang++ cmake -S .. -B . -DCMAKE_BUILD_TYPE=Debug -GNinja && cmake --build . --target all
+}
+
+build-mmotd() {
+    cmake --build . --target all
+}
+
+test-mmotd() {
+    ctest && apps/mmotd_raw/mmotd_raw && apps/mmotd/mmotd -t ../config/mmotd_1_column_template.json && apps/mmotd/mmotd -t ../config/mmotd_2_column_template.json
+}
+
+clean-config-build-test-mmotd() {
+    make-dev-build-dir $1
+    config-mmotd $1
+    build-mmotd $1
+    test-mmotd $1
+}
+
+clean-config-build-mmotd() {
+    make-dev-build-dir $1
+    config-mmotd $1
+    build-mmotd $1
+}
+
+config-build-mmotd() {
+    goto-dev-dir "$1/build"
+    config-mmotd $1
+    build-mmotd $1
+}
+
+build-test-mmotd() {
+    build-mmotd $1
+    test-mmotd $1
+}
+
 get-login-info() {
     if [[ -e "$HOME/settings/mmotd" ]] then
         "$HOME/settings/mmotd"

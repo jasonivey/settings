@@ -75,6 +75,12 @@ alias ccat='ccat -G Keyword="green" -G Punctuation="teal" -G Plaintext="white" -
 alias vscode=open-vscode
 alias dev=goto-dev-dir
 alias dev-build=make-dev-build-dir
+alias mmotd-ccbt=clean-config-build-test-mmotd
+alias mmotd-clean-config-build=clean-config-build-mmotd
+alias mmotd-config-build=config-build-mmotd
+alias mmotd-build=build-mmotd
+alias mmotd-test=test-mmotd
+alias mmotd-build-test=build-test-mmotd
 
 # global aliases for tools which are often PIPED into or out of
 alias -g LESS='less -RFX'

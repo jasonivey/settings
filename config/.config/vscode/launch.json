@@ -5,13 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(lldb) Launch",
+            "name": "Mmotd Debug",
             "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/build/apps/mmotd/mmotd",
             "args": [
-                "-t",
-                "${workspaceFolder}/config/mmotd_2_column_template.json"
+                "--log-severity=verbose",
+                "--pretty=auto"
+            ],
+            "cwd": "${workspaceFolder}/build"
+        },
+        {
+            "name": "Unit Test Debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/test/mmotd_test",
+            "args": [
+                "[config options]"
             ],
             "cwd": "${workspaceFolder}/build"
         }

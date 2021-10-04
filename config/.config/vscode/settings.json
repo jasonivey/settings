@@ -107,6 +107,6 @@
     ],
     "cmake.buildDirectory": "${workspaceFolder}/.vsbuild",
     "cmake.parallelJobs": 4,
-    "C_Cpp.dimInactiveRegions": false,
+    "C_Cpp.dimInactiveRegions": true,
     "python.pythonPath": "/Users/jasoni/.pyenv/versions/3.9.1/envs/py-3.9.1/bin/python"
 }

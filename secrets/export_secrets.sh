@@ -3,6 +3,8 @@
 
 pushd "$(dirname "$(readlink -f "$0")")" > /dev/null
 
-cat $HOME/settings/secrets/.wakatime.cfg.in | sed "s/%WAKATIME_API_KEY%/$(git secret cat wakatime.api.key.secret)/g" > $HOME/.wakatime.cfg
+if [[ $(command git-secret)  && -e $HOME/settings/secrets/.wakatime.cfg.in ]] then
+    cat $HOME/settings/secrets/.wakatime.cfg.in | sed "s/%WAKATIME_API_KEY%/$(git secret cat wakatime.api.key.secret)/g" > $HOME/.wakatime.cfg
+fi
 
 popd > /dev/null
