@@ -89,7 +89,7 @@ Plugin 'elzr/vim-json'
 Plugin 'tpope/vim-fugitive.git'
 
 " Add ripgrep commands inside vim
-Plugin 'jremmen/vim-ripgrep'
+Plugin 'andyjack/vim-ripgrep'
 
 " Highlights trailing whitespace in red -- call :FixWhitespace to strip
 Plugin 'bronson/vim-trailing-whitespace'
@@ -122,7 +122,7 @@ set t_Co=256
 
 " Set colorscheme (i.e. theme)
 " colorscheme github
-colorscheme xcodedarkhc
+colorscheme xcodelighthc
 
 " Enable true color 启用终端24位色
 if exists('+termguicolors')
@@ -168,8 +168,9 @@ let g:ale_linters_explicit=1
 
 let g:airline#extensions#ale#enabled=1
 
-let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_enabled = 1
 let g:indentLine_color_term = 239
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_noconcealcursor=""
 
 " json syntax highlighting settings to show the string quotes
@@ -300,6 +301,7 @@ autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 " Adjust the NERDCommenter settings
+let g:NERDSpaceDelims=1        " add spaces after comment delimiters by default
 let g:NERDRemoveExtraSpaces=0  " if value=1 '// int a = 0;' will uncomment to 'int a = 0;'
 let g:NERDDefaultNesting=0     " disable the ability to comment block and then comment again nesting them
 map <Leader>c <plug>NERDCommenterAlignLeft

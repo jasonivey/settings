@@ -1,6 +1,7 @@
 [user]
   name = Jason Ivey
   email = jasonivey@gmail.com
+  signingkey = D7AA98F8D58D848C
 [alias]
   st = status
   ci = commit

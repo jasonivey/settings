@@ -181,7 +181,9 @@ get-login-info() {
     if [[ -e "$HOME/settings/mmotd" ]] then
         "$HOME/settings/mmotd" -c "$HOME/.config/mmotd/mmotd_config.toml"
     elif [[ -e "$HOME/scripts/login_info.py" ]] then
-        python3 $HOME/scripts/login_info.py
+        cd ~/scripts;
+		/usr/bin/env python3 $HOME/scripts/login_info.py;
+		cd -
     fi
 }
 

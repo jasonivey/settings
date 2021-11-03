@@ -234,10 +234,15 @@ elif [[ "$(uname -s)" == "Linux" ]] then
     add_dir_to_pkg_config_path "/usr/lib/x86_64-linux-gnu/pkgconfig"
 fi
 
+# Setup pyenv environment
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+# Setup the pyenv-virtualenv environment
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+
 # Create the ~/.zsh_functions directory for user defined zsh command completions
 [ ! -d "$HOME/.zsh_functions" ] && mkdir "$HOME/.zsh_functions"
 add_dir_to_fpath "$HOME/.zsh_functions"
-
 
 # set the various application environment variables
 set_env_variable_from_list "EDITOR" "mvim" "vim" "mate" "code" "vi" "nano"

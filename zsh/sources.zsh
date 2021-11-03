@@ -34,9 +34,10 @@ test -r $HOME/.opam/opam-init/init.zsh && source $HOME/.opam/opam-init/init.zsh 
 
 # setup command-not-found
 if [[ "$(uname)" == "Darwin" ]] then
-    HB_CNF_HANDLER="/usr/local/Homebrew/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-    [ -f "$HB_CNF_HANDLER" ] && source "$HB_CNF_HANDLER"
-    unset HB_CNF_HANDLER
+    HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+    if [ -f "$HB_CNF_HANDLER" ]; then
+        source "$HB_CNF_HANDLER";
+    fi
 fi
 
 # load the perlbrew perl package manager
@@ -53,12 +54,6 @@ if [[ -d "/usr/local/opt/openssl" ]] then
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl"
 fi
 command -v rbenv &>/dev/null && { eval "$(rbenv init -)"; }
-
-# Setup pyenv environment
-command -v pyenv &>/dev/null && { eval "$(pyenv init --path)"; }
-
-# Setup the pyenv-virtualenv environment
-command -v pyenv-virtualenv-init &>/dev/null && { eval "$(pyenv virtualenv-init -)"; }
 
 if [ -e "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
     source "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

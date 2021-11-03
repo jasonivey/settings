@@ -53,3 +53,6 @@ set-tab-color
 # if the .zshrc is ran more than once the PATH variable will have duplicates
 #  along with a number of other variables. this function remidies that situation
 de-duplicate-zsh-paths
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
