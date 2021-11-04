@@ -16,4 +16,4 @@ vim/.vim/swapfiles/
 vim/.vim/viminfo
 .gitsecret/keys/random_seed
 !*.secret
-wakatime.api.key
+secrets/wakatime.api.key

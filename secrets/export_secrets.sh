@@ -5,7 +5,7 @@ pushd "$(dirname "$(readlink -f "$0")")" > /dev/null
 
 if command -v git-secret &> /dev/null; then
     if [[ -e $HOME/settings/secrets/.wakatime.cfg.in ]] then
-        cat $HOME/settings/secrets/.wakatime.cfg.in | sed "s/%WAKATIME_API_KEY%/$(git secret cat wakatime.api.key.secret)/g" > $HOME/.wakatime.cfg
+        cat $HOME/settings/secrets/.wakatime.cfg.in | sed "s/%WAKATIME_API_KEY%/$(git secret cat secrets/wakatime.api.key.secret)/g" > $HOME/.wakatime.cfg
     fi
 fi
 
