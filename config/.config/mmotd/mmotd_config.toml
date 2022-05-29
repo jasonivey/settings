@@ -1,20 +1,17 @@
-#
 # modified message of the day
-#
-
-# Enabling this may cause a performance cost. Every write to the log file will be flushed
-#  when set to 'true'. This disables the natural file output caching of log file writes and
-#  may enable seeing more debug statements before a crash.
-logging_flush=false
-
-# replace the following with the location of where your "mmotd_template.json" exists
+[core]
+output_color=true
 template_path="$HOME/.config/mmotd/mmotd_template.json"
 
-# This is the same value that is the last couple of segments of the file linked to /etc/localtime
-# /var/db/timezone/zoneinfo/America/Denver
-timezone="America/Denver"
+[fortune]
+db_directory="$HOME/.config/mmotd"
+file_name="softwareengineering"
 
-# The following three values are used to look-up the local whether, http://wttr.in/Albuquerque%20NM%20USA
+[location]
+timezone="America/Denver"
 city="Lehi"
 state="UT"
 country="US"
+
+[logging]
+severity="trace"

@@ -12,6 +12,15 @@ alias settings='$EDITOR $HOME/settings/.bash_settings'
 alias zsettings='$EDITOR $HOME/settings/.zshrc'
 alias setting-dir='cd $HOME/settings'
 
+# Aliases to show/hide the macOS dock
+if [[ "$(uname)" == "Darwin" ]] then
+    alias show_dock='defaults write com.apple.dock autohide -bool false && defaults delete com.apple.dock autohide-delay && defaults write com.apple.dock no-bouncing -bool false && killall Dock'
+    alias hide_dock='defaults write com.apple.dock autohide -bool true && defaults write com.apple.dock autohide-delay -float 1000 && defaults write com.apple.dock no-bouncing -bool true && killall Dock'
+else
+    alias show_dock='echo "show_dock is undefined for platform: $(uname)'
+    alias hide_dock='echo "hide_dock is undefined for platform: $(uname)'
+fi
+
 # standard commands made more dummy proof
 if [[ "$(uname)" == "Darwin" && $(command -v trash) ]] then
     alias rm='trash -v'
@@ -125,7 +134,7 @@ if [[ "$(uname)" == "Linux" ]] then
 else
     alias update=brew-update
     alias upgrade=brew-upgrade
-    alias llvm='cd /usr/local/opt/llvm'
+    alias llvm='cd /usr/local/llvm/14.0.3_0'
     alias gnugcc='cd /usr/local/opt/gcc'
     alias boost='cd $(realpath -LPe /usr/local/include/boost)'
     alias includes-clang='python3 $HOME/dev/scripts/get_include_paths.py --compiler=clang-11 --stdlib=libc++'

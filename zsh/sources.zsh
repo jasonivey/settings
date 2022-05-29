@@ -5,13 +5,6 @@
 # Source various other zsh/bash modules
 ###
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # load autojump
 [ -f /usr/local/etc/profile.d/autojump.sh ] && source /usr/local/etc/profile.d/autojump.sh
 
@@ -41,7 +34,7 @@ if [[ "$(uname)" == "Darwin" ]] then
 fi
 
 # load the perlbrew perl package manager
-[ -e "$PERLBREW_ROOT/etc/bashrc" ] && source "$PERLBREW_ROOT/etc/bashrc"
+#[ -e "$PERLBREW_ROOT/etc/bashrc" ] && source "$PERLBREW_ROOT/etc/bashrc"
 
 # load nvm npm package manager
 if [[ -d "$HOME/.nvm" && -e "$HOME/.nvm/nvm.sh" ]] then
@@ -59,12 +52,12 @@ if [ -e "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/
     source "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
-
 # If its available install the iterm2 shell integrations
 [ -e "$HOME/.iterm2_shell_integration.zsh" ] && source "$HOME/.iterm2_shell_integration.zsh"
 
 # load the configuration for fzf
 [ -f "${HOME}/.config/fzf/fzf.zsh" ] && source "${HOME}/.config/fzf/fzf.zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+#[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
 

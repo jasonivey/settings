@@ -128,13 +128,13 @@ colorscheme xcodelighthc
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  "set termguicolors
+  set termguicolors
 endif
 
 set term=xterm-256color
 
 if has("gui_running") && has("gui_macvim")
-  set guifont=MesloLGS-NF-Regular:h11
+  set guifont=SFMonoSquare-Regular:h14
 endif
 
 " xcode-dark-hc theme settings

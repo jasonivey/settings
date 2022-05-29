@@ -178,12 +178,16 @@ build-test-mmotd() {
 }
 
 get-login-info() {
-    if [[ -e "$HOME/settings/mmotd" ]] then
-        "$HOME/settings/mmotd" -c "$HOME/.config/mmotd/mmotd_config.toml"
+    if [[ -x "$HOME/settings/mmotd" ]] then
+        if [[ -r "$HOME/.config/mmotd/mmotd_config.toml" ]] then
+            "$HOME/settings/mmotd" -c "$HOME/.config/mmotd/mmotd_config.toml"
+        else
+            "$HOME/settings/mmotd"
+        fi
     elif [[ -e "$HOME/scripts/login_info.py" ]] then
-        cd ~/scripts;
-		/usr/bin/env python3 $HOME/scripts/login_info.py;
-		cd -
+        pushd $HOME/scripts 2&>1 > /dev/null
+        /usr/bin/env python3 $HOME/scripts/login_info.py
+        popd 2&>1 > /dev/null
     fi
 }
 

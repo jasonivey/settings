@@ -31,10 +31,10 @@ add_dir_to_pkg_config_path() {
 
 add_dir_to_include_path() {
     if [[ -d "$1" ]] then
-        if [[ $CPPFLAGS && ${CPPFLAGS-x} ]] then
-            export CPPFLAGS="$CPPFLAGS -isystem$1"
+        if [[ $CXXFLAGS && ${CXXFLAGS-x} ]] then
+            export CXXFLAGS="$CXXFLAGS -isystem$1"
         else
-            export CPPFLAGS="-isystem$1"
+            export CXXFLAGS="-isystem$1"
         fi
         if [[ $CFLAGS && ${CFLAGS-x} ]] then
             export CFLAGS="$CFLAGS -isystem$1"
@@ -132,10 +132,21 @@ if [[ "$(uname)" == "Darwin" ]] then
     add_dir_to_linker_path "$component_dir/lib"
     add_dir_to_include_path "$component_dir/include"
 
-    # Setup LLVM/clang C++ environment variables
-    [ -d "/usr/local/opt/llvm" ] && local component_dir="/usr/local/opt/llvm" || local component_dir="$(brew --prefix llvm)"
+    # Setup LLVM/clang C++ environment variables -- for brew versions of llvm
+    # [ -d "/usr/local/opt/llvm" ] && local component_dir="/usr/local/opt/llvm" || local component_dir="$(brew --prefix llvm)"
+    # add_dir_to_path "$component_dir/bin"
+    # add_to_linker_environment_variable "-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+    # add_dir_to_include_path "$component_dir/include"
+
+    # Setup LLVM/clang C++ environment variables -- for non-brew versions of llvm (i.e. llvm-14)
+    [ -d "/usr/local/llvm/14.0.3_0" ] && local component_dir="/usr/local/llvm/14.0.3_0"
     add_dir_to_path "$component_dir/bin"
-    add_to_linker_environment_variable "-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+    add_to_linker_environment_variable "-L/usr/local/llvm/14.0.3_0/lib -Wl,-rpath,/usr/local/llvm/14.0.3_0/lib"
+    # The builtin paths within the llvm-14 compiler point towards '/System/Library/Frameworks' and
+    #  '/Library/Frameworks' which would work if the command line tools were installed via XCode but
+    #  most brew users have it installed from the command line.  Hence the following addition to the
+    #  linker flag.
+    add_to_linker_environment_variable "-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib -Wl,-rpath,/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"
     add_dir_to_include_path "$component_dir/include"
 
     # Add all of the gnu-variant duplicate (newer) versions of binaries
@@ -176,6 +187,9 @@ if [[ "$(uname)" == "Darwin" ]] then
     # Ignore the following error from Tcl/Tk since brew installed python relies on macOS version of Tcl/Tk which is
     #  outdated.  Make sure to follow-up on this variable to ensure it is needed in the future.
     export TK_SILENCE_DEPRECATION=1
+
+    # No longer remove older versions of apps when updating/installing new apps (i.e. do not run `brew cleanup`)
+    export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
 
     # Setup zlib environment variables
     [ -d "/usr/local/opt/zlib" ] && local component_dir="/usr/local/opt/zlib" || local component_dir="$(brew --prefix zlib)"
@@ -235,10 +249,10 @@ elif [[ "$(uname -s)" == "Linux" ]] then
 fi
 
 # Setup pyenv environment
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+#if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # Setup the pyenv-virtualenv environment
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+#if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 # Create the ~/.zsh_functions directory for user defined zsh command completions
 [ ! -d "$HOME/.zsh_functions" ] && mkdir "$HOME/.zsh_functions"
@@ -289,9 +303,35 @@ export PERLBREW_HOME=$HOME/.perlbrew
 #   cp -vi $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/config/filetypes.yml $HOME/.config/vivid
 #   cp -vi $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/vivid-0.5.0/themes/*.yml $HOME/.config/vivid/themes
 #
+
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Vivid has a number of builtin themese. List them by calling:
+#  `vivid themese`
+# It is also able to show a preview of each listed theme:
+#  `vivid preview <theme-name>` e.g. `vivid preview solarized-light`
+# Here are my recommendations:
+# [     ] ayu
+# [     ] dracula
+# [     ] gruvbox-dark
+# [     ] gruvbox-dark-hard
+# [     ] gruvbox-dark-soft
+# [     ] gruvbox-light
+# [     ] gruvbox-light-hard
+# [     ] gruvbox-light-soft
+# [     ] iceberg-dark
+# [   **] jellybeans
+# [    *] lava
+# [    *] molokai
+# [     ] nord
+# [   **] one-dark
+# [  ***] one-light
+# [ ****] snazzy
+# [     ] solarized-dark
+# [     ] solarized-light
 if command -v vivid &>/dev/null; then
-    export LS_COLORS="$(vivid generate molokai)"
-    export EXA_COLORS="$(vivid generate molokai)"
+    export LS_COLORS="$(vivid generate snazzy)"
+    export EXA_COLORS="$(vivid generate snazzy)"
 fi
 
 # Set the location for the SCREENRC config file
@@ -321,11 +361,13 @@ fi
 #    export TCLLIBPATH="/usr/local/lib"
 #fi
 
+add_dir_to_fpath "${ZSH_CUSTOM:-${ZSH:-${HOME}/.oh-my-zsh}/custom}/plugins/zsh-completions/src"
+
 # Make all the paths unique
 typeset -xTU PATH path ':'
 typeset -TU FPATH fpath ':'
 typeset -xTU PKG_CONFIG_PATH pkg_config_path ':'
-typeset -xTU CPPFLAGS cppflags ' '
+typeset -xTU CXXFLAGS cxxflags ' '
 typeset -xTU CFLAGS cflags ' '
 typeset -xTU LDFLAGS ldflags ' '
 typeset -xTU TCLLIBPATH tcllibpath ' '

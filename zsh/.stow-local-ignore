@@ -1,12 +1,12 @@
 # Comments and blank lines are allowed.
-
+.gitignore
+.hushlogin
 aliases.zsh
-color.zsh
 color.example.zsh
-default_user.zsh
+color.zsh
 default_user.example.zsh
+default_user.zsh
 envs.zsh
 functions.zsh
-.gitignore
 p10k-historical-configs
 sources.zsh

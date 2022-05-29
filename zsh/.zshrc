@@ -1,5 +1,16 @@
 #!/usr/bin/env zsh
 # vim: awa:sts=4:ts=4:sw=4:et:cin:fdm=manual:tw=120:ft=zsh
+#zmodload zsh/zprof
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Fig pre block. Keep at the top of this file.
+source "$HOME/.fig/shell/zshrc.pre.zsh"
 
 # Set the DEFAULT_USER environment variable
 [ -e "$HOME/settings/zsh/default_user.zsh" ] && source "$HOME/settings/zsh/default_user.zsh"
@@ -23,6 +34,7 @@ plugins=(
     sudo
     z                        # fast directory jumping
     zsh-autosuggestions      # git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    zsh-completions
     zsh-syntax-highlighting  # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
     zsh-vi-mode              # git clone https://github.com/jeffreytse/zsh-vi-mode $HOME/.oh-my-zsh/custom/plugins/zsh-vi-mode
 )
@@ -45,7 +57,7 @@ bindkey "^?" backward-delete-char
 set-tab-color
 
 # if HUSH_LOGIN_INFO is not defined then print the custom LOGIN INFO
-[ -z ${HUSH_LOGIN_INFO+x} ] && get-login-info
+[ -e "$HOME/.hushlogin" ] || get-login-info
 
 # lastly, source the zsh_sources which contains 3rd party module includes
 [ -e "$HOME/settings/zsh/sources.zsh" ] && source "$HOME/settings/zsh/sources.zsh"
@@ -54,5 +66,14 @@ set-tab-color
 #  along with a number of other variables. this function remidies that situation
 de-duplicate-zsh-paths
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# start starship cross-shell prompt
+# export STARSHIP_CONFIG=~/.config/starship/starship.toml
+# eval "$(starship init zsh)"
 
+# Fig post block. Keep at the bottom of this file.
+source "$HOME/.fig/shell/zshrc.post.zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+#zprof
