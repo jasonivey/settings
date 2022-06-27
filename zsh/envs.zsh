@@ -103,7 +103,6 @@ if [[ "$(uname)" == "Darwin" ]] then
     # Add various fpath directories for ZSH completions
     add_dir_to_fpath "/usr/local/share/zsh/functions"
     add_dir_to_fpath "/usr/local/share/zsh/site-functions"
-    add_dir_to_fpath "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
     # Setup libressl environment variables -- uncomment when needed
     #[ -d "/usr/local/opt/libressl" ] && local component_dir="/usr/local/opt/libressl" || local component_dir="$(brew --prefix libressl)"

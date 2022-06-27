@@ -10,7 +10,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Fig pre block. Keep at the top of this file.
-source "$HOME/.fig/shell/zshrc.pre.zsh"
+[ -e "$HOME/.fig/shell/zshrc.pre.zsh" ] && source "$HOME/.fig/shell/zshrc.pre.zsh"
 
 # Set the DEFAULT_USER environment variable
 [ -e "$HOME/settings/zsh/default_user.zsh" ] && source "$HOME/settings/zsh/default_user.zsh"
@@ -56,8 +56,8 @@ bindkey "^?" backward-delete-char
 # set the iterm tab color if a color is specified using .zsh-color
 set-tab-color
 
-# if HUSH_LOGIN_INFO is not defined then print the custom LOGIN INFO
-[ -e "$HOME/.hushlogin" ] || get-login-info
+# print the (modified) message of the day [mmotd]
+get-mmotd
 
 # lastly, source the zsh_sources which contains 3rd party module includes
 [ -e "$HOME/settings/zsh/sources.zsh" ] && source "$HOME/settings/zsh/sources.zsh"
@@ -71,7 +71,7 @@ de-duplicate-zsh-paths
 # eval "$(starship init zsh)"
 
 # Fig post block. Keep at the bottom of this file.
-source "$HOME/.fig/shell/zshrc.post.zsh"
+[ -e "$HOME/.fig/shell/zshrc.post.zsh" ] && source "$HOME/.fig/shell/zshrc.post.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

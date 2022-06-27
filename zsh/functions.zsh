@@ -177,17 +177,28 @@ build-test-mmotd() {
     test-mmotd $1
 }
 
-get-login-info() {
-    if [[ -x "$HOME/settings/mmotd" ]] then
-        if [[ -r "$HOME/.config/mmotd/mmotd_config.toml" ]] then
-            "$HOME/settings/mmotd" -c "$HOME/.config/mmotd/mmotd_config.toml"
-        else
-            "$HOME/settings/mmotd"
+get-mmotd() {
+    # If `~/.hushmmotd` does not exist then print the custom message of the day.  The `~/.hushmmotd` file is
+    #  analogous to the `~/.hushlogin` file.
+    #   1. If the `~/.hushlogin` exists then the traditional `/etc/motd` (motd: message of the day) is not displayed.
+    #   2. if the `~/.hushmmotd` exists then `mmotd` (mmotd: modified message of the day) is not displayed.
+    # Both of the files noted above:
+    #   1. can be empty (zero length) files (i.e. `touch ~/.hushlogin`
+    #   2. can be symbolically linked to somewhere in a user's <dot-files> directory
+    if [[ ! -e "$HOME/.hush-mmotd-login" ]] then
+        if [[ -x "$HOME/settings/mmotd" ]] then
+            if [[ -r "$HOME/.config/mmotd/mmotd_config.toml" ]] then
+                # Use the user's custom config file if it exists
+                "$HOME/settings/mmotd" -c "$HOME/.config/mmotd/mmotd_config.toml"
+            else
+                # Otherwise, allow `mmotd` to just use it's builtin config and template
+                "$HOME/settings/mmotd"
+            fi
+        elif [[ -e "$HOME/scripts/login_info.py" ]] then
+            pushd $HOME/scripts 2&>1 > /dev/null
+            /usr/bin/env python3 $HOME/scripts/login_info.py
+            popd 2&>1 > /dev/null
         fi
-    elif [[ -e "$HOME/scripts/login_info.py" ]] then
-        pushd $HOME/scripts 2&>1 > /dev/null
-        /usr/bin/env python3 $HOME/scripts/login_info.py
-        popd 2&>1 > /dev/null
     fi
 }
 
